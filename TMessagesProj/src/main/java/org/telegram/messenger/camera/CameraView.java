@@ -159,7 +159,7 @@ public class CameraView extends FrameLayout implements TextureView.SurfaceTextur
     private float[][] cameraMatrix = new float[2][16];
     private volatile float lastCrossfadeValue = 0;
 
-    private final static int audioSampleRate = 44100;
+    private final static int audioSampleRate = 48000;
 
     public void setRecordFile(File generateVideoPath) {
         recordFile = generateVideoPath;
