@@ -12,6 +12,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+
 public class BuildVars {
 
     public static boolean DEBUG_VERSION = BuildConfig.DEBUG_VERSION;
@@ -24,6 +28,13 @@ public class BuildVars {
 
     public static int APP_ID = BuildConfig.APP_ID;
     public static String APP_HASH = BuildConfig.APP_HASH;
+
+    public static HashSet<String> LOCKED_LOCAL_STRINGS = new HashSet<>(Arrays.asList(
+            "AppName",
+            "Page1Message",
+            "TelegramVersion",
+            "UnsupportedMedia2"
+    ));
 
     // SafetyNet key for Google Identity SDK, disabled on FOSS builds
     public static String SAFETYNET_KEY = "";

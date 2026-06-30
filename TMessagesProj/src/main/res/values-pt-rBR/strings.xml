@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">Telegram</string>
-    <string name="AppNameBeta">Telegram Beta</string>
     <string name="LanguageName">Português (Brasil)</string>
     <string name="English">Inglês</string>
     <string name="LanguageNameInEnglish">Portuguese (Brazil)</string>
@@ -1192,7 +1190,6 @@
     <string name="PermissionDrawAboveOtherAppsTitle">Picture-in-Picture</string>
     <string name="PermissionDrawAboveOtherAppsGroupCallTitle">Chat de vídeo flutuante</string>
     <!--Intro view-->
-    <string name="Page1Title">Telegram</string>
     <string name="Page2Title">Rápido</string>
     <string name="Page3Title">Gratuito</string>
     <string name="Page4Title">Seguro</string>

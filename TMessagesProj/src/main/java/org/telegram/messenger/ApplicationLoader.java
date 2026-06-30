@@ -169,7 +169,7 @@ public class ApplicationLoader extends Application {
         } catch (Exception e) {
             FileLog.e(e);
         }
-        return new File("/data/data/org.telegram.messenger/files");
+        return new File("/data/data/org.justgram.messenger/files");
     }
 
     public static File getFilesDirFixed(String child) {
