@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="JustgramSettings">Настройки Justgram</string>
+
+    <string name="JustgramSettingsGeneral">Основные</string>
+    <string name="JustgramSettingsChats">Чаты</string>
+    <string name="JustgramSettingsExperimental">Эксперементальные</string>
+
+    <string name="JustgramSettingsAbout">"О проекте"</string>
+
+    <string name="JustgramComingSoon">Здесь пока ничего нет, но это ненадолго.</string>
+
+    <string name="TelegramChannel">Канал</string>
+    <string name="TelegramChat">Чат</string>
+</resources>

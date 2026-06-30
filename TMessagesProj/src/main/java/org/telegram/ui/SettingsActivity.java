@@ -63,6 +63,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.justgram.messenger.settings.JustgramSettingsActivity;
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -690,6 +691,9 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             items.add(UItem.asShadow(null));
         }
 
+        items.add(SettingCell.Factory.of(100, 0xFFFF76A8, 0xFFBE85F5, R.drawable.filled_profile_settings, getString(R.string.JustgramSettings)));
+        items.add(UItem.asShadow(null));
+        
         final boolean walletAbove = getConnectionsManager().getCurrentTime() - 1791538462 < 4 * 7 * 24 * 60 * 60;
         if (walletAbove && getMessagesController().config.walletAvailable.get()) {
             final GramWallet wallet = GramWallet.getInstance(currentAccount);
@@ -893,6 +897,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             }
             case 24: {
                 presentFragment(new RoundVideoSettingsActivity());
+            case 100: {
+                presentFragment(new JustgramSettingsActivity());
                 break;
             }
         }
