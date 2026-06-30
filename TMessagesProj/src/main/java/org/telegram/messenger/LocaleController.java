@@ -1452,7 +1452,7 @@ public class LocaleController {
     }
 
     public static String getServerString(String key) {
-        String value = getInstance().localizationExternal.getByResName(key);
+        String value = (BuildVars.USE_CLOUD_STRINGS && (key == null || !BuildVars.LOCKED_LOCAL_STRINGS.contains(key))) ? getInstance().localizationExternal.getByResName(key) : null;
         if (value == null) {
             value = getInstance().getLocalizedString(key);
         }
@@ -4446,14 +4446,18 @@ public class LocaleController {
         String value;
 
         if (BuildVars.USE_CLOUD_STRINGS) {
-            value = localizationExternal.getByResNameOrResId(context, key, stringRes);
-            if (value != null) {
-                return value;
+            if (key == null || !BuildVars.LOCKED_LOCAL_STRINGS.contains(key)) {
+                value = localizationExternal.getByResNameOrResId(context, key, stringRes);
+                if (value != null) {
+                    return value;
+                }
             }
 
-            value = localizationExternal.getByResName(fallback);
-            if (value != null) {
-                return value;
+            if (fallback == null || !BuildVars.LOCKED_LOCAL_STRINGS.contains(fallback)) {
+                value = localizationExternal.getByResName(fallback);
+                if (value != null) {
+                    return value;
+                }
             }
         }
 
