@@ -63,6 +63,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.collect.Lists;
 
+import org.justgram.messenger.settings.JustgramSettingsActivity;
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -688,6 +689,9 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             items.add(UItem.asShadow(null));
         }
 
+        items.add(SettingCell.Factory.of(100, 0xFFFF76A8, 0xFFBE85F5, R.drawable.filled_profile_settings, getString(R.string.JustgramSettings)));
+        items.add(UItem.asShadow(null));
+
         items.add(SettingCell.Factory.of(1, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.settings_account, getString(R.string.SettingsAccount), getString(R.string.SettingsAccountInfo)));
         items.add(SettingCell.Factory.of(2, IconBackgroundColors.ORANGE.top, IconBackgroundColors.ORANGE.bottom, R.drawable.settings_chat, getString(R.string.SettingsChat), getString(R.string.SettingsChatInfo)));
         items.add(SettingCell.Factory.of(3, IconBackgroundColors.GREEN.top, IconBackgroundColors.GREEN.bottom, R.drawable.settings_privacy, getString(R.string.SettingsPrivacySecurity), getString(R.string.SettingsPrivacySecurityInfo)));
@@ -878,6 +882,10 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 } else {
                     Browser.openUrl(getContext(), LocaleController.getString(R.string.TelegramFeaturesUrl));
                 }
+                break;
+            }
+            case 100: {
+                presentFragment(new JustgramSettingsActivity());
                 break;
             }
         }
