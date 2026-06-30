@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">Telegram</string>
-    <string name="AppNameBeta">Telegram Beta</string>
+    <string name="AppName" translatable="false">Justgram</string>
+    <string name="AppNameBeta" translatable="false">Justgram Beta</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
     <string name="LanguageNameInEnglish">English</string>
@@ -2627,7 +2627,7 @@
     <string name="DirectShareInfo">Show recent chats in Android share menu</string>
     <string name="Emoji">Emoji</string>
     <string name="LargeEmoji">Large Emoji</string>
-    <string name="TelegramVersion">Telegram for Android %1$s</string>
+    <string name="TelegramVersion">Justgram for Android %1$s</string>
     <string name="DebugMenu">Debug Menu</string>
     <string name="DebugMenuLongPress">Long press again for debug menu</string>
     <string name="DebugSendLogs">Send Logs</string>
@@ -3898,7 +3898,7 @@
     <string name="ActionBotDocumentEmail">Email Address</string>
     <string name="ActionNewCreatorPending">un1 will be the new main admin in 7 days if un2 does not return.</string>
     <string name="ActionChangeCreator">un1 has transferred ownership of the group to un2.</string>
-    <string name="UnsupportedMedia2">This message is not supported on your version of Telegram. Please update to the latest version.</string>
+    <string name="UnsupportedMedia2">This message is not supported on your version of Justgram. Please update to the latest version.</string>
     <string name="YourVersionIsLatest">Your version is up to date.</string>
     <string name="AttachPhoto">Photo</string>
     <string name="AttachVideo">Video</string>
@@ -4199,13 +4199,13 @@
     <string name="ViewMessageStatistic">Message Statistic</string>
     <string name="ViewMessage">Open Message</string>
     <!--Intro view-->
-    <string name="Page1Title">Telegram</string>
+    <string name="Page1Title" translatable="false">Justgram</string>
     <string name="Page2Title">Fast</string>
     <string name="Page3Title">Free</string>
     <string name="Page4Title">Secure</string>
     <string name="Page5Title">Powerful</string>
     <string name="Page6Title">Cloud-Based</string>
-    <string name="Page1Message">The world\'s **fastest** messaging app.\nIt is **free** and **secure**.</string>
+    <string name="Page1Message">Just another interesting Telegram client.</string>
     <string name="Page2Message">**Telegram** delivers messages faster than\nany other application.</string>
     <string name="Page3Message">**Telegram** provides free unlimited cloud storage for chats and media.</string>
     <string name="Page4Message">**Telegram** keeps your messages safe\nfrom hacker attacks.</string>

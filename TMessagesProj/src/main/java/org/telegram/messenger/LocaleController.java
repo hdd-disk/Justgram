@@ -1431,9 +1431,9 @@ public class LocaleController {
     }
 
     private String getStringInternal(String key, String fallback, int fallbackRes, int res) {
-        String value = BuildVars.USE_CLOUD_STRINGS ? localeValues.get(key) : null;
+        String value = BuildVars.USE_CLOUD_STRINGS && !BuildVars.LOCKED_LOCAL_STRINGS.contains(key) ? localeValues.get(key) : null;
         if (value == null) {
-            if (BuildVars.USE_CLOUD_STRINGS && fallback != null) {
+            if (BuildVars.USE_CLOUD_STRINGS && fallback != null && !BuildVars.LOCKED_LOCAL_STRINGS.contains(fallback)) {
                 value = localeValues.get(fallback);
             }
             if (value == null) {
@@ -1456,7 +1456,7 @@ public class LocaleController {
     }
 
     public static String getServerString(String key) {
-        String value = getInstance().localeValues.get(key);
+        String value = BuildVars.USE_CLOUD_STRINGS && !BuildVars.LOCKED_LOCAL_STRINGS.contains(key) ? getInstance().localeValues.get(key) : null;
         if (value == null) {
             int resourceId = ApplicationLoader.applicationContext.getResources().getIdentifier(key, "string", ApplicationLoader.applicationContext.getPackageName());
             if (resourceId != 0) {
@@ -1669,9 +1669,9 @@ public class LocaleController {
 
     public static String formatString(String key, String fallback, int res, int fallbackRes, Object... args) {
         try {
-            String value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localeValues.get(key) : null;
+            String value = BuildVars.USE_CLOUD_STRINGS && !BuildVars.LOCKED_LOCAL_STRINGS.contains(key) ? getInstance().localeValues.get(key) : null;
             if (value == null) {
-                if (BuildVars.USE_CLOUD_STRINGS && fallback != null) {
+                if (BuildVars.USE_CLOUD_STRINGS && fallback != null && !BuildVars.LOCKED_LOCAL_STRINGS.contains(fallback)) {
                     value = getInstance().localeValues.get(fallback);
                 }
                 if (value == null) {
@@ -1718,9 +1718,9 @@ public class LocaleController {
 
     public static CharSequence formatSpannable(String key, String fallback, int res, int fallbackRes, Object... args) {
         try {
-            String value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localeValues.get(key) : null;
+            String value = BuildVars.USE_CLOUD_STRINGS && !BuildVars.LOCKED_LOCAL_STRINGS.contains(key) ? getInstance().localeValues.get(key) : null;
             if (value == null) {
-                if (BuildVars.USE_CLOUD_STRINGS && fallback != null) {
+                if (BuildVars.USE_CLOUD_STRINGS && fallback != null && !BuildVars.LOCKED_LOCAL_STRINGS.contains(fallback)) {
                     value = getInstance().localeValues.get(fallback);
                 }
                 if (value == null) {

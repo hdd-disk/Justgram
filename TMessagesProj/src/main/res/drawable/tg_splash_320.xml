@@ -18,9 +18,19 @@
                     <path
                         android:name="circle"
                         android:pathData="M 160 110 C 146.744 110 134.018 115.271 124.645 124.645 C 115.271 134.018 110 146.744 110 160 C 110 173.256 115.271 185.982 124.645 195.355 C 134.018 204.729 146.744 210 160 210 C 173.256 210 185.982 204.729 195.355 195.355 C 204.729 185.982 210 173.256 210 160 C 210 146.744 204.729 134.018 195.355 124.645 C 185.982 115.271 173.256 110 160 110 Z"
-                        android:fillColor="#2aabee"
                         android:fillAlpha="0"
-                        android:strokeWidth="1"/>
+                        android:strokeWidth="1">
+                        <aapt:attr name="android:fillColor">
+                            <gradient
+                                android:type="linear"
+                                android:startX="160"
+                                android:startY="260"
+                                android:endX="160"
+                                android:endY="60"
+                                android:startColor="#be85f5"
+                                android:endColor="#ff76a8" />
+                        </aapt:attr>
+                    </path>
                 </group>
                 <group
                     android:name="fg"
