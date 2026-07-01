@@ -53,11 +53,16 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
 
     private void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
         items.add(UItem.asCheck(1, getString(R.string.DisableAds)).setChecked(JustgramConfig.disableAds));
+        items.add(UItem.asCheck(2, getString(R.string.ShowAccountId)).setChecked(JustgramConfig.showAccountId));
     }
 
     private void onClick(UItem item, View view) {
         if (item.id == 1) {
             JustgramConfig.disableAds = !JustgramConfig.disableAds;
+            JustgramConfig.saveConfig();
+            listView.adapter.update(true);
+        } else if (item.id == 2) {
+            JustgramConfig.showAccountId = !JustgramConfig.showAccountId;
             JustgramConfig.saveConfig();
             listView.adapter.update(true);
         }
