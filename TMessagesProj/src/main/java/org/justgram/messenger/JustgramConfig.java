@@ -10,6 +10,7 @@ public class JustgramConfig {
     private static boolean loaded = false;
 
     public static boolean disableAds = true;
+    public static boolean showAccountId = true;
 
     static {
         loadConfig();
@@ -22,6 +23,7 @@ public class JustgramConfig {
             }
             SharedPreferences preferences = getSettings();
             disableAds = preferences.getBoolean("disableAds", true);
+            showAccountId = preferences.getBoolean("showAccountId", true);
             loaded = true;
         }
     }
@@ -31,6 +33,7 @@ public class JustgramConfig {
             SharedPreferences preferences = getSettings();
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("disableAds", disableAds);
+            editor.putBoolean("showAccountId", showAccountId);
             editor.apply();
         }
     }

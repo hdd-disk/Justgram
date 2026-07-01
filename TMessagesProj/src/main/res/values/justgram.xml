@@ -9,6 +9,9 @@
     <string name="JustgramSettingsAbout">About project</string>
 
     <string name="DisableAds">Disable Ads</string>
+    <string name="ShowAccountId">Show Account ID</string>
+    <string name="AccountId">Account ID</string>
+
 
     <string name="JustgramComingSoon">There\'s nothing here, but not for long.</string>
 
