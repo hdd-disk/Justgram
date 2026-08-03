@@ -11,10 +11,16 @@ import org.telegram.messenger.R;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.justgram.messenger.JustgramConfig;
+
 public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
     private State currentState;
     private TransitState animatingState;
     private final int sizeDp;
+
+    private static boolean iosInput() {
+        return JustgramConfig.iOSMessageInputField;
+    }
 
     private final Map<TransitState, RLottieDrawable> stateMap = new HashMap<TransitState, RLottieDrawable>() {
         @Nullable
@@ -24,6 +30,13 @@ public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
             if (obj == null) {
                 TransitState state = (TransitState) key;
                 int res = state.resource;
+                if (iosInput()) {
+                    if (state == TransitState.VOICE_TO_VIDEO) {
+                        res = R.raw.voice_and_video_cg;
+                    } else if (state == TransitState.VIDEO_TO_VOICE) {
+                        res = R.raw.voice_and_video_cg_2;
+                    }
+                }
                 RLottieDrawable rLottieDrawable = new RLottieDrawable(res, String.valueOf(res), AndroidUtilities.dp(sizeDp), AndroidUtilities.dp(sizeDp));
                 put(state, rLottieDrawable);
                 return rLottieDrawable;
@@ -51,7 +64,7 @@ public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
             RLottieDrawable drawable = stateMap.get(getAnyState(currentState));
             drawable.stop();
 
-            drawable.setProgress(state == State.VOICE ? 0.5f : 0, false);
+            drawable.setProgress(state == State.VOICE && !iosInput() ? 0.5f : 0, false);
             setAnimation(drawable);
         } else {
             TransitState transitState = getState(fromState, currentState);
@@ -62,10 +75,10 @@ public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
             animatingState = transitState;
             RLottieDrawable drawable = stateMap.get(transitState);
             drawable.stop();
-            if (transitState == TransitState.VIDEO_TO_VOICE) {
+            if (transitState == TransitState.VIDEO_TO_VOICE && !iosInput()) {
                 drawable.setCustomEndFrame(30);
                 drawable.setProgress(0, false);
-            } else if (transitState == TransitState.VOICE_TO_VIDEO) {
+            } else if (transitState == TransitState.VOICE_TO_VIDEO && !iosInput()) {
                 drawable.setCustomEndFrame(60);
                 drawable.setProgress(0.5f, false);
             } else {

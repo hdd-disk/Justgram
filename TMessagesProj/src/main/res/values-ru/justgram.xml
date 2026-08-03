@@ -78,4 +78,6 @@
     <string name="ResetPluginSettingsInfo">Вы уверены, что хотите сбросить настройки **%1$s** до стандартных?</string>
     <string name="RestartPluginSystemToApplyUpdate">Обновление загружено, перезапустите систему плагинов для применения</string>
 
+    <string name="IOSMessageInputField">Поле ввода в стиле IOS</string>
+
 </resources>

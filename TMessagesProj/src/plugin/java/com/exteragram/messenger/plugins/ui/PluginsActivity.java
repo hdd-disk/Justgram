@@ -318,7 +318,7 @@ public class PluginsActivity extends BasePreferencesActivity implements Notifica
             text = LocaleController.getString(R.string.PluginsNativeRuntimeUnavailable);
         } else if ("python_runtime_unavailable".equals(issue)) {
             text = LocaleController.getString(R.string.PluginsPythonRuntimeUnavailable);
-        } else {Ы
+        } else {
             return null;
         }
         return UItem.asShadow(text);
