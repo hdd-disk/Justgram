@@ -119,4 +119,6 @@
     <string name="RestoreSdkFromApk">Restore SDK from APK</string>
     <string name="PluginsRestartEngine">Restart Plugin Engine</string>
 
+    <string name="iOSMessageInputField">IOS-styled message input field</string>
+
 </resources>

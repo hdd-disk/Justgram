@@ -21,6 +21,8 @@ public class JustgramConfig {
     public static boolean hideCallButton = false;
 
     public static boolean altSoundIn = false;
+    public static boolean useChatAttachMediaMenu = false;
+    public static boolean iOSMessageInputField = false;
 
     static {
         loadConfig();
@@ -41,6 +43,8 @@ public class JustgramConfig {
             adaptiveChatTitle = preferences.getBoolean("adaptiveChatTitle", true);
             hideCallButton = preferences.getBoolean("hideCallButton", false);
             altSoundIn = preferences.getBoolean("altSoundIn", false);
+            useChatAttachMediaMenu = preferences.getBoolean("useChatAttachMediaMenu", false);
+            iOSMessageInputField = preferences.getBoolean("iOSMessageInputField", false);
             loaded = true;
         }
     }
@@ -60,6 +64,8 @@ public class JustgramConfig {
             editor.putBoolean("adaptiveChatTitle", adaptiveChatTitle);
             editor.putBoolean("hideCallButton", hideCallButton);
             editor.putBoolean("altSoundIn", altSoundIn);
+            editor.putBoolean("useChatAttachMediaMenu", useChatAttachMediaMenu);
+            editor.putBoolean("iOSMessageInputField", iOSMessageInputField);
             editor.apply();
         }
     }

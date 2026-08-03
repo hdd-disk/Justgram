@@ -31,6 +31,7 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
 
     private final static int ID_ADAPTIVE_CHAT_TITLE = 3;
     private final static int ID_HIDE_CALL_BUTTON = 4;
+    private final static int ID_IOS_MESSAGE_INPUT_FIELD = 5;
 
     @Override
     public View createView(Context context) {
@@ -86,6 +87,7 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
         adapter.whiteSectionStart();
         items.add(UItem.asCheck(ID_ADAPTIVE_CHAT_TITLE, getString(R.string.AdaptiveChatTitle)).setChecked(JustgramConfig.adaptiveChatTitle));
         items.add(UItem.asCheck(ID_HIDE_CALL_BUTTON, getString(R.string.HideCallButton)).setChecked(JustgramConfig.hideCallButton));
+        items.add(UItem.asCheck(ID_IOS_MESSAGE_INPUT_FIELD, getString(R.string.IOSMessageInputField)).setChecked(JustgramConfig.iOSMessageInputField));
         adapter.whiteSectionEnd();
     }
 
@@ -126,6 +128,11 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
                     parentLayout.rebuildAllFragmentViews(true, true);
                 }
                 break;
+            case ID_IOS_MESSAGE_INPUT_FIELD:
+                JustgramConfig.iOSMessageInputField = !JustgramConfig.iOSMessageInputField;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(true);
+                break;    
 
         }
     }
