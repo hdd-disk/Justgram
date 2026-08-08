@@ -335,8 +335,14 @@ public class TextCell extends FrameLayout {
 
     private CharSequence valueText;
 
+    private void clearSubtitle() {
+        subtitleView.setVisibility(View.GONE);
+        subtitleView.setText(null);
+    }
+
     public void setText(CharSequence text, boolean divider) {
         imageLeft = 16;
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);
@@ -363,6 +369,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndIcon(CharSequence text, int resId, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);
@@ -382,6 +389,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndColorfulIcon(CharSequence text, int resId, int color, boolean divider) {
         imageLeft = 16;
         offsetFromImage = 58;
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);
@@ -398,6 +406,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndIcon(CharSequence text, Drawable drawable, boolean divider) {
         offsetFromImage = 58;
         imageLeft = 18;
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);
@@ -421,6 +430,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndValueAndIcon(CharSequence text, CharSequence value, Drawable drawable, boolean divider) {
         offsetFromImage = 58;
         imageLeft = 18;
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = value, false);
@@ -456,6 +466,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndValue(CharSequence text, CharSequence value, boolean animated, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueText = value;
@@ -481,6 +492,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndValueAndColorfulIcon(String text, CharSequence value, boolean animated, int resId, int colorTop, int colorBottom, boolean divider) {
         imageLeft = 21;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(value == null ? "" : TextUtils.ellipsize(valueText = value, valueTextView.getPaint(), AndroidUtilities.displaySize.x / 2.5f, TextUtils.TruncateAt.END), animated);
@@ -501,6 +513,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndCheckAndColorfulIcon(CharSequence text, boolean checked, int resId, int color, boolean divider) {
         imageLeft = 21;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setVisibility(GONE);
@@ -526,6 +539,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndSpoilersValueAndIcon(String text, CharSequence value, int resId, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueSpoilersTextView.setVisibility(VISIBLE);
@@ -550,6 +564,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndSpoilersValueAndColorfulIcon(String text, CharSequence value, int resId, int color, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueSpoilersTextView.setVisibility(VISIBLE);
@@ -574,6 +589,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndValueAndIcon(CharSequence text, CharSequence value, boolean animated, int resId, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         imageView.setVisibility(VISIBLE);
@@ -640,6 +656,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndCheck(CharSequence text, boolean checked, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         imageView.setVisibility(GONE);
@@ -658,6 +675,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndCheckAndIcon(CharSequence text, boolean checked, int resId, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setVisibility(GONE);
@@ -680,6 +698,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndCheckAndIcon(String text, boolean checked, Drawable resDrawable, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setVisibility(GONE);
@@ -702,6 +721,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndValueDrawable(CharSequence text, Drawable drawable, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);
@@ -724,6 +744,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndSticker(CharSequence text, TLRPC.Document document, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);
@@ -743,6 +764,7 @@ public class TextCell extends FrameLayout {
     public void setTextAndSticker(CharSequence text, String localPath, boolean divider) {
         imageLeft = 16;
         offsetFromImage = getOffsetFromImage(false);
+        clearSubtitle();
         textView.setText(text);
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);

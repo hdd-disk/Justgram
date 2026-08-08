@@ -2536,6 +2536,9 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
         if (!inPreviewMode && !transitionAnimationPreviewMode) {
             return;
         }
+        if (transitionAnimationInProgress) {
+            return;
+        }
         if (delayedOpenAnimationRunnable != null) {
             AndroidUtilities.cancelRunOnUIThread(delayedOpenAnimationRunnable);
             delayedOpenAnimationRunnable = null;
