@@ -52,6 +52,10 @@ import android.text.style.ClickableSpan;
 import android.util.Base64;
 import android.util.SparseIntArray;
 import android.view.ActionMode;
+
+import com.exteragram.messenger.ExteraConfig;
+import com.exteragram.messenger.plugins.IntentsController;
+import com.exteragram.messenger.plugins.PluginsController;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
@@ -404,6 +408,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
         instance = this;
         ApplicationLoader.postInitApplication();
+        ExteraConfig.init();
         AndroidUtilities.checkDisplaySize(this, getResources().getConfiguration());
         currentAccount = UserConfig.selectedAccount;
         registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -573,7 +578,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             .add(NotificationCenter.requestPermissions)
             .add(NotificationCenter.billingConfirmPurchaseError)
             .add(NotificationCenter.tlSchemeParseException)
-            .add(NotificationCenter.memoryLeakFoundException);
+            .add(NotificationCenter.memoryLeakFoundException)
+            .add(NotificationCenter.pluginMenuItemsUpdated);
 
         LiteMode.addOnPowerSaverAppliedListener(onPowerSaverCallback = this::onPowerSaver);
         if (actionBarLayout.getFragmentStack().isEmpty() && (layersActionBarLayout == null || layersActionBarLayout.getFragmentStack().isEmpty())) {
@@ -1238,6 +1244,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         }
         updateCurrentConnectionState(currentAccount);
 
+        PluginsController.getInstance().loadPluginSettings();
         switchingAccount = false;
     }
 
@@ -1510,6 +1517,19 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     @SuppressLint("Range")
     private boolean handleIntent(Intent intent, boolean isNew, boolean restore, boolean fromPassword, Browser.Progress progress, boolean rebuildFragments, boolean openedTelegram) {
+        boolean stopped = IntentsController.dispatchBeforeIntent(intent);
+        try {
+            if (stopped) {
+                return true;
+            }
+            return handleIntentInternal(intent, isNew, restore, fromPassword, progress, rebuildFragments, openedTelegram);
+        } finally {
+            IntentsController.dispatchAfterIntent(intent);
+        }
+    }
+
+    @SuppressLint("Range")
+    private boolean handleIntentInternal(Intent intent, boolean isNew, boolean restore, boolean fromPassword, Browser.Progress progress, boolean rebuildFragments, boolean openedTelegram) {
         if (GiftInfoBottomSheet.handleIntent(intent, progress)) {
             return true;
         }
@@ -3252,7 +3272,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     final String finalNewContactPhone = NewContactBottomSheet.getPhoneNumber(this, UserConfig.getInstance(currentAccount).getCurrentUser(), newContactPhone, false);
                     final AlertDialog newContactAlertDialog = new AlertDialog.Builder(lastFragment.getParentActivity())
                             .setTitle(LocaleController.getString(R.string.NewContactAlertTitle))
-                            .setMessage(AndroidUtilities.replaceTags(LocaleController.formatString("NewContactAlertMessage", R.string.NewContactAlertMessage, PhoneFormat.getInstance().format(finalNewContactPhone))))
+                            .setMessage(AndroidUtilities.replaceTags(formatString("NewContactAlertMessage", R.string.NewContactAlertMessage, PhoneFormat.getInstance().format(finalNewContactPhone))))
                             .setPositiveButton(LocaleController.getString(R.string.NewContactAlertButton), (d, i) -> {
                                 final NewContactBottomSheet fragment = new NewContactBottomSheet(lastFragment, this);
                                 fragment.setInitialPhoneNumber(finalNewContactPhone, false);
@@ -3985,7 +4005,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(LaunchActivity.this);
                 builder.setTitle(LocaleController.getString(R.string.AppName));
-                builder.setMessage(AndroidUtilities.replaceTags(LocaleController.formatString(R.string.OtherLoginCode, code)));
+                builder.setMessage(AndroidUtilities.replaceTags(formatString(R.string.OtherLoginCode, code)));
                 builder.setPositiveButton(LocaleController.getString(R.string.OK), null);
                 showAlertDialog(builder);
             }
@@ -4591,7 +4611,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                                     builder.setTitle(LocaleController.getString(R.string.AddBot));
                                     String chatName = chat == null ? "" : chat.title;
-                                    builder.setMessage(AndroidUtilities.replaceTags(LocaleController.formatString("AddMembersAlertNamesText", R.string.AddMembersAlertNamesText, UserObject.getUserName(user), chatName)));
+                                    builder.setMessage(AndroidUtilities.replaceTags(formatString("AddMembersAlertNamesText", R.string.AddMembersAlertNamesText, UserObject.getUserName(user), chatName)));
                                     builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
                                     builder.setPositiveButton(LocaleController.getString(R.string.AddBot), (di, i) -> {
                                         Bundle args12 = new Bundle();
@@ -6569,7 +6589,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         BulletinFactory.of(lastFragment).createSimpleBulletin(
             new BatteryDrawable(percent / 100F, Color.WHITE, lastFragment.getThemedColor(Theme.key_dialogSwipeRemove), 1.3f),
             LocaleController.getString(R.string.LowPowerEnabledTitle),
-            LocaleController.formatString("LowPowerEnabledSubtitle", R.string.LowPowerEnabledSubtitle, String.format("%d%%", percent)),
+            formatString("LowPowerEnabledSubtitle", R.string.LowPowerEnabledSubtitle, String.format("%d%%", percent)),
             LocaleController.getString(R.string.Disable),
             () -> presentFragment(new LiteModeSettingsActivity())
         ).setDuration(Bulletin.DURATION_PROLONG).show();
@@ -7174,7 +7194,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         } else if (id == NotificationCenter.mainUserInfoChanged) {
 
         } else if (id == NotificationCenter.attachMenuBotsDidLoad) {
-
+            refreshDrawer(true);
+        } else if (id == NotificationCenter.pluginMenuItemsUpdated) {
+            refreshDrawer(true);
         } else if (id == NotificationCenter.needShowAlert) {
             final Integer reason = (Integer) args[0];
             if (reason == 6 || reason == 3 && proxyErrorDialog != null) {
@@ -9202,6 +9224,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
         public void hide() {
             setHidden(true);
+        }
+    }
+
+    public void refreshDrawer(boolean recreate) {
+        if (drawerLayoutContainer != null) {
+            drawerLayoutContainer.invalidate();
         }
     }
 

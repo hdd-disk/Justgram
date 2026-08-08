@@ -1,4 +1,10 @@
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+import java.nio.file.Paths
+import org.gradle.internal.os.OperatingSystem
+import org.telegram.chaquopy.ChaquopyBuildJson
+import org.telegram.chaquopy.ChaquopyClangLink
+import org.telegram.chaquopy.ChaquopyCythonize
+import org.telegram.chaquopy.ChaquopyFreezeBootstrap
+import org.telegram.chaquopy.ChaquopyFreezeStdlibAbi
 
 apply plugin: 'com.android.library'
 apply plugin: 'org.telegram.lottie-meta'
@@ -19,93 +25,112 @@ idea {
 repositories {
     mavenCentral()
     google()
+    maven { url 'https://chaquo.com/maven-central' }
 }
 
 configurations {
     compile.exclude module: 'support-v4'
+    chaquopyTargetJni
+    chaquopyStdlibPyc
+    chaquopyGradlePlugin
 }
+
+def nativeTarget = getProps('NATIVE_TARGET') ?: System.getenv('NATIVE_TARGET') ?: (project.hasProperty('NATIVE_TARGET') ? project.property('NATIVE_TARGET') : '')
+
+// Plugin package is arm-only: shadowhook doesn't support x86.
+def pluginAbis = ['armeabi-v7a', 'arm64-v8a']
+def normalAbis = ['armeabi-v7a', 'arm64-v8a', 'x86_64']
+
+// Java runtime classes come from src/plugin/java/com/chaquo (see README there).
+def chaquopyTargetVersion = '3.11.10-1'
+def chaquopyPluginVersion = '16.1.0'
+def chaquopyAbis = pluginAbis.findAll { nativeTarget.isBlank() || it == nativeTarget }
+def abiToNdkTriple = [
+    'armeabi-v7a': 'arm-linux-androideabi',
+    'arm64-v8a'  : 'aarch64-linux-android',
+    'x86_64'     : 'x86_64-linux-android',
+]
+
+def ndkHostTag = {
+    def os = OperatingSystem.current()
+    if (os.isWindows()) {
+        return 'windows-x86_64'
+    }
+    if (os.isLinux()) {
+        return 'linux-x86_64'
+    }
+    if (os.isMacOsX()) {
+        return System.getProperty('os.arch') == 'aarch64' ? 'darwin-arm64' : 'darwin-x86_64'
+    }
+    throw new GradleException("Unsupported host OS for NDK: ${os}")
+}
+
+def resolveNdkDir = {
+    def ndkDirPath = getProps('ndk.dir') ?: System.getenv('ANDROID_NDK_ROOT') ?: System.getenv('ANDROID_NDK_HOME')
+    if (ndkDirPath != null && !ndkDirPath.isBlank()) {
+        return file(ndkDirPath)
+    }
+    def sdkDirPath = getProps('sdk.dir') ?: System.getenv('ANDROID_HOME') ?: System.getenv('ANDROID_SDK_ROOT')
+    if (sdkDirPath != null && !sdkDirPath.isBlank()) {
+        def candidate = file("${sdkDirPath}/ndk/27.2.12479018")
+        if (candidate.exists()) {
+            return candidate
+        }
+    }
+    return null
+}
+
+def resolvedNdkDir = resolveNdkDir()
 
 configurations.all {
     exclude group: 'androidx.recyclerview', module: 'recyclerview'
+    exclude group: 'org.jetbrains', module: 'annotations-java5'
 }
 
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'com.google.android.material:material:1.14.0'
-    implementation 'androidx.core:core:1.16.0'
-    implementation 'androidx.media:media:1.7.0'
-    implementation 'androidx.palette:palette:1.0.0'
-    implementation 'androidx.exifinterface:exifinterface:1.3.6'
-    implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
-    implementation "androidx.sharetarget:sharetarget:1.2.0"
-    implementation 'androidx.interpolator:interpolator:1.0.0'
-    implementation 'androidx.biometric:biometric:1.1.0'
-
-    // zxing core is Apache-2.0 pure Java on Maven Central, not Play Services;
-    // the com.google group id is a naming coincidence. Upstream dropped its
-    // vendored copy of these sources in 12.10.0 in favour of the artifact.
-    implementation 'com.google.zxing:core:3.5.4'
-
-    implementation 'androidx.car.app:app:1.4.0'
-    implementation 'androidx.car.app:app-projected:1.4.0'
-    implementation 'org.nanohttpd:nanohttpd:2.3.1'
-
-    compileOnly 'org.checkerframework:checker-qual:2.5.2'
-    compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
-
-    implementation 'com.googlecode.mp4parser:isoparser:1.0.6'
-    implementation 'com.stripe:stripe-android:2.0.2'
-    implementation 'com.google.code.gson:gson:2.11.0'
-    implementation 'com.google.guava:guava:31.1-android'
-
-    implementation "androidx.credentials:credentials:1.6.0-alpha04"
-
-    implementation "io.noties.markwon:core:4.6.2"
-    implementation "io.noties.markwon:ext-strikethrough:4.6.2"
-    implementation "io.noties.markwon:ext-tables:4.6.2"
-    implementation "io.noties.markwon:html:4.6.2"
-    implementation "io.noties.markwon:inline-parser:4.6.2"
-    implementation("io.noties.markwon:ext-latex:4.6.2") {
-        exclude group: 'ru.noties', module: 'jlatexmath-android'
-    }
-    api project(':jlatexmath')
-
-//    implementation 'com.google.mlkit:translate:17.0.3'
-
-    constraints {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
-            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-        }
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
-            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-        }
-    }
-
-    // Pinned to 3.0.x: 3.1.0 bumped kotlin-stdlib to 2.2.20 (3.2.0+ to 2.3.0), which exceeds
-    // what R8 8.6.27 (AGP 8.6.x) can parse. Lift when upgrading AGP to 8.7+ (needs Gradle 8.9+).
-    // 3.0.10 is the last of that line and fixes push delivery here: the connector binds our
-    // PushService to hand over an event and unbinds on a fixed timer; 3.0.9 gave it 1s, which
-    // the cold start of this app regularly loses, and a bind that never connects leaves the
-    // connector's internal event queue stuck for the whole process (no endpoint, no messages).
-    // 3.0.10 raises that window to 5s and keeps kotlin-stdlib 2.0.21, so the R8 pin still holds.
-    implementation 'org.unifiedpush.android:connector:3.0.10'
-    // Pinned to 3.0.0 for the same reason: 3.1.0 requires kotlin-stdlib 2.3.0.
-    implementation 'org.unifiedpush.android:embedded-fcm-distributor:3.0.0'
-    // kotlin-stdlib 2.0.20 via okhttp/okio — safe with R8 8.6.27. Re-check on major version bumps.
-    implementation 'org.maplibre.gl:android-sdk:13.0.1'
-
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
-}
 android {
-    compileSdkVersion 36
+    compileSdk 36
     buildToolsVersion '36.0.0'
     ndkVersion "27.2.12479018"
 
+    // splits.abi is not flavor-aware; the plugin flavor prunes x86_64 and universal below.
+    splits {
+        abi {
+            enable = true
+            reset()
+            include(*(nativeTarget.isBlank() ? normalAbis : [nativeTarget]))
+            universalApk = nativeTarget.isBlank()
+        }
+    }
+
+    flavorDimensions 'runtime'
+
+    productFlavors {
+        normal {
+            dimension 'runtime'
+            ndk.abiFilters.addAll(normalAbis)
+            externalNativeBuild.cmake.arguments '-DENABLE_PLUGINS=OFF'
+        }
+        plugin {
+            dimension 'runtime'
+            ndk.abiFilters.addAll(pluginAbis)
+            externalNativeBuild.cmake.arguments '-DENABLE_PLUGINS=ON'
+            proguardFiles 'proguard-plugin-rules.pro'
+            consumerProguardFiles 'proguard-plugin-rules.pro'
+        }
+    }
+
     sourceSets.main.jniLibs.srcDirs = ['./jni/']
+    sourceSets.plugin.jniLibs.srcDirs += "$buildDir/generated/chaquopyJniLibs"
+    sourceSets.plugin.assets.srcDirs += "$buildDir/generated/chaquopyBootstrapNative"
+    sourceSets.plugin.assets.srcDirs += "$buildDir/generated/chaquopyStdlib"
+    sourceSets.plugin.assets.srcDirs += "$buildDir/generated/chaquopyBootstrap"
+    // Generated build.json carries the hashes of the assets packaged in this build.
+    sourceSets.plugin.assets.srcDirs += "$buildDir/generated/chaquopyBuildJson"
 
     externalNativeBuild {
         cmake {
             path 'jni/CMakeLists.txt'
+            version '3.31.6'
         }
     }
 
@@ -122,7 +147,6 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
-
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 36
@@ -133,13 +157,12 @@ android {
 
         externalNativeBuild {
             cmake {
-                version '3.22.1'
-                def cmakeArgs = ['-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21'] //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
+                version '3.31.6'
+                def cmakeArgs = ['-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21']
                 if (getProps('QUIET_NATIVE_BUILD')) {
                     cmakeArgs += '-DQUIET_BUILD=ON'
                 }
                 arguments(*cmakeArgs)
-                targets 'tmessages.49'
             }
         }
     }
@@ -197,6 +220,283 @@ android {
     namespace 'org.telegram.messenger'
 }
 
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.14.0'
+    implementation 'androidx.core:core:1.16.0'
+    implementation 'androidx.media:media:1.7.0'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.exifinterface:exifinterface:1.3.6'
+    implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
+    implementation "androidx.sharetarget:sharetarget:1.2.0"
+    implementation 'androidx.interpolator:interpolator:1.0.0'
+    implementation 'androidx.biometric:biometric:1.1.0'
+
+    // zxing core is Apache-2.0 pure Java on Maven Central, not Play Services;
+    // the com.google group id is a naming coincidence. Upstream dropped its
+    // vendored copy of these sources in 12.10.0 in favour of the artifact.
+    implementation 'com.google.zxing:core:3.5.4'
+
+    implementation "androidx.lifecycle:lifecycle-runtime:2.7.0"
+    implementation 'androidx.car.app:app:1.7.0'
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+
+    compileOnly 'org.checkerframework:checker-qual:2.5.2'
+    compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
+
+    implementation 'com.googlecode.mp4parser:isoparser:1.0.6'
+    implementation 'com.stripe:stripe-android:2.0.2'
+    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.google.guava:guava:31.1-android'
+
+    implementation "androidx.credentials:credentials:1.6.0-alpha04"
+
+    implementation "io.noties.markwon:core:4.6.2"
+    implementation "io.noties.markwon:ext-strikethrough:4.6.2"
+    implementation "io.noties.markwon:ext-tables:4.6.2"
+    implementation "io.noties.markwon:html:4.6.2"
+    implementation "io.noties.markwon:inline-parser:4.6.2"
+    implementation("io.noties.markwon:ext-latex:4.6.2") {
+        exclude group: 'ru.noties', module: 'jlatexmath-android'
+    }
+    api project(':jlatexmath')
+
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
+
+    implementation 'org.unifiedpush.android:connector:3.0.10'
+    implementation 'org.unifiedpush.android:embedded-fcm-distributor:3.0.0'
+    implementation 'org.maplibre.gl:android-sdk:13.0.1'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+
+    // Plugin runtime only. Chaquopy Java classes are built from src/plugin/java/com/chaquo
+    // (the upstream artifact lacks fork members such as Reflector.dirAll()).
+    pluginImplementation 'com.linkedin.dexmaker:dexmaker:2.28.3'
+    pluginImplementation 'org.mvel:mvel2:2.5.2.Final'
+    chaquopyAbis.each { abi ->
+        chaquopyTargetJni "com.chaquo.python:target:${chaquopyTargetVersion}:${abi}@zip"
+    }
+    chaquopyStdlibPyc "com.chaquo.python:target:${chaquopyTargetVersion}:stdlib-pyc@zip"
+    chaquopyGradlePlugin "com.chaquo.python:gradle:${chaquopyPluginVersion}@jar"
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+}
+
+def chaquopyTargetJniConfig = configurations.getByName("chaquopyTargetJni")
+def chaquopyStdlibPycConfig = configurations.getByName("chaquopyStdlibPyc")
+def chaquopyGradlePluginConfig = configurations.getByName("chaquopyGradlePlugin")
+
+// The Chaquopy Java bridge is compiled from source (jni/chaquopy). Recipe mirrors upstream
+// Chaquopy 16.1.0 product/runtime: Cython 3.0.11 -> NDK clang at the app's minSdk level.
+// Artifacts per ABI:
+//   chaquopy.so         - Cython bootstrap module (asset chaquopy/bootstrap-native/<abi>/java/)
+//   libchaquopy_java.so - JNI bridge for com.chaquo.python.* (lib/<abi>/)
+def chaqSrcDir = file('jni/chaquopy')
+def chaqGenDir = layout.buildDirectory.dir('chaquopy')
+
+def chaqClangTargets = ['armeabi-v7a': 'armv7a-linux-androideabi27', 'arm64-v8a': 'aarch64-linux-android27']
+
+def cythonizeChaquopy = tasks.register("cythonizeChaquopy", ChaquopyCythonize) {
+    def inDir = new File(chaqSrcDir, 'java')
+    pyxFile.fileValue(new File(inDir, 'chaquopy.pyx'))
+    includes.from(fileTree(inDir) { include('*.pxi', '*.pxd') })
+    outCFile.set(chaqGenDir.map { it.file('cython/chaquopy.c') })
+}
+
+def cythonizeChaquopyJava = tasks.register("cythonizeChaquopyJava", ChaquopyCythonize) {
+    pyxFile.fileValue(new File(chaqSrcDir, 'chaquopy_java.pyx'))
+    includes.from(fileTree(chaqSrcDir) { include('java/*.pxd') })
+    outCFile.set(chaqGenDir.map { it.file('cython/chaquopy_java.c') })
+}
+
+// CPython headers (include/python3.11) and the linkable runtime (jniLibs/<abi>/libpython3.11.so)
+// come from the Chaquopy target artifacts, keeping the bridge ABI-paired with the bundled CPython.
+// include/ is ABI-dependent (pyconfig.h), so each ABI gets its own extraction.
+chaquopyAbis.each { abi ->
+    def extractTarget = tasks.register("extractChaquopyTarget_${abi}", Sync) {
+        def outputDir = file("$buildDir/chaquopy/target/${abi}")
+        inputs.files(chaquopyTargetJniConfig)
+        outputs.dir(outputDir)
+        into(outputDir)
+        from({ chaquopyTargetJniConfig.filter { it.name.endsWith("-${abi}.zip") }.files.collect { zipTree(it) } }) {
+            include('include/**', 'jniLibs/**')
+            includeEmptyDirs = false
+        }
+    }
+
+    def compileBridge = { String taskName, cythonTask, List<String> extraSources, List<String> libs, String soName ->
+        tasks.register(taskName, ChaquopyClangLink) {
+            dependsOn(cythonTask, extractTarget)
+            sources.from(cythonTask.flatMap { it.outCFile })
+            sources.from(extraSources)
+            includeDirs.from(new File(chaqSrcDir, 'c'))
+            includeDirs.from(extractTarget.map { new File(it.destinationDir, 'include/python3.11') })
+            linkDir.fileValue(file("$buildDir/chaquopy/target/${abi}/jniLibs/${abi}"))
+            linkLibs.set(libs)
+            targetTriple.set(chaqClangTargets[abi])
+            if (resolvedNdkDir != null) {
+                ndkDirPath.set(resolvedNdkDir.absolutePath)
+            }
+            outFile.set(chaqGenDir.map { it.file("lib/${abi}/${soName}") })
+        }
+    }
+
+    compileBridge("compileChaquopy_${abi}", cythonizeChaquopy, [], ['python3.11', 'dl', 'android'], 'chaquopy.so')
+    compileBridge("compileChaquopyJava_${abi}", cythonizeChaquopyJava,
+            [new File(chaqSrcDir, 'c/android_platform.c')], ['python3.11', 'log'], 'libchaquopy_java.so')
+}
+
+
+tasks.register("prepareChaquopyJniLibs", Sync) {
+    def outputDir = file("$buildDir/generated/chaquopyJniLibs")
+    inputs.files(chaquopyTargetJniConfig)
+    outputs.dir(outputDir)
+    into(outputDir)
+    from(chaquopyTargetJniConfig.collect { zipTree(it) }) {
+        include('jniLibs/**')
+        eachFile {
+            relativePath = new RelativePath(!file.isDirectory(), *relativePath.segments[1..-1])
+        }
+        includeEmptyDirs = false
+    }
+    chaquopyAbis.each { abi ->
+        from(file("$buildDir/chaquopy/lib/${abi}/libchaquopy_java.so")) {
+            into abi
+        }
+    }
+    dependsOn(chaquopyAbis.collect { "compileChaquopyJava_${it}" })
+    doFirst {
+        if (resolvedNdkDir == null || !resolvedNdkDir.exists()) {
+            throw new GradleException("Android NDK directory is unavailable, cannot package libc++_shared.so for plugin runtime.")
+        }
+    }
+    chaquopyAbis.each { abi ->
+        def triple = abiToNdkTriple[abi]
+        if (triple == null) {
+            throw new GradleException("Unsupported ABI for plugin runtime packaging: ${abi}")
+        }
+        def stlFile = new File(resolvedNdkDir, "toolchains/llvm/prebuilt/${ndkHostTag()}/sysroot/usr/lib/${triple}/libc++_shared.so")
+        from(stlFile) {
+            into abi
+        }
+    }
+}
+
+// bootstrap-native/<abi>/ = CPython extension modules from the target zip's lib-dynload/ plus
+// the java/chaquopy.so Cython module built above.
+tasks.register("prepareChaquopyBootstrapNative", Sync) {
+    def outputDir = file("$buildDir/generated/chaquopyBootstrapNative")
+    inputs.files(chaquopyTargetJniConfig)
+    outputs.dir(outputDir)
+    into(outputDir)
+    from(chaquopyTargetJniConfig.collect { zipTree(it) }) {
+        include('lib-dynload/**')
+        eachFile { fcd ->
+            def segs = fcd.relativePath.segments
+            if (segs.length >= 2 && segs[0] == 'lib-dynload') {
+                fcd.relativePath = new RelativePath(true, 'chaquopy', 'bootstrap-native', *segs[1..-1])
+            } else {
+                fcd.exclude()
+            }
+        }
+        includeEmptyDirs = false
+    }
+    chaquopyAbis.each { abi ->
+        from(file("$buildDir/chaquopy/lib/${abi}/chaquopy.so")) {
+            into "chaquopy/bootstrap-native/${abi}/java"
+        }
+    }
+    dependsOn(chaquopyAbis.collect { "compileChaquopy_${it}" })
+}
+
+// stdlib/app imy assets are rebuilt from the upstream maven artifacts at build time (the
+// stdlib-pyc container and the target zip's lib-dynload); verified content-identical to the
+// previously vendored exteraGram blobs.
+def chaquopyStdlibAbiModules = [
+    '_asyncio.cpython-311.so', '_bisect.cpython-311.so', '_blake2.cpython-311.so',
+    '_codecs_cn.cpython-311.so', '_codecs_hk.cpython-311.so', '_codecs_iso2022.cpython-311.so',
+    '_codecs_jp.cpython-311.so', '_codecs_kr.cpython-311.so', '_codecs_tw.cpython-311.so',
+    '_contextvars.cpython-311.so', '_csv.cpython-311.so', '_decimal.cpython-311.so',
+    '_elementtree.cpython-311.so', '_hashlib.cpython-311.so', '_heapq.cpython-311.so',
+    '_json.cpython-311.so', '_lsprof.cpython-311.so', '_md5.cpython-311.so',
+    '_multibytecodec.cpython-311.so', '_multiprocessing.cpython-311.so', '_opcode.cpython-311.so',
+    '_pickle.cpython-311.so', '_posixsubprocess.cpython-311.so', '_queue.cpython-311.so',
+    '_sha1.cpython-311.so', '_sha256.cpython-311.so', '_sha3.cpython-311.so',
+    '_socket.cpython-311.so', '_sqlite3.cpython-311.so', '_ssl.cpython-311.so',
+    '_statistics.cpython-311.so', '_typing.cpython-311.so', '_xxsubinterpreters.cpython-311.so',
+    '_xxtestfuzz.cpython-311.so', '_zoneinfo.cpython-311.so', 'array.cpython-311.so',
+    'audioop.cpython-311.so', 'cmath.cpython-311.so', 'fcntl.cpython-311.so',
+    'ossaudiodev.cpython-311.so', 'pyexpat.cpython-311.so', 'resource.cpython-311.so',
+    'select.cpython-311.so', 'syslog.cpython-311.so', 'termios.cpython-311.so',
+    'unicodedata.cpython-311.so', 'xxlimited.cpython-311.so', 'xxlimited_35.cpython-311.so',
+]
+
+tasks.register("stageChaquopyStdlibCommon", Copy) {
+    from(chaquopyStdlibPycConfig) { rename { 'stdlib-common.imy' } }
+    into("$buildDir/generated/chaquopyStdlib/chaquopy")
+}
+
+// Freeze bootstrap.imy + cacert.pem from repo python sources + the upstream gradle plugin jar.
+tasks.register("stageChaquopyBootstrap", ChaquopyFreezeBootstrap) {
+    pluginJar.set(layout.file(chaquopyGradlePluginConfig.elements.map { it.iterator().next().getAsFile() }))
+    bootstrapDir.fileValue(file("jni/chaquopy/bootstrap"))
+    outDir.set(layout.buildDirectory.dir("generated/chaquopyBootstrap"))
+}
+
+tasks.register("stageChaquopyAppImy") {
+    def appImy = file("$buildDir/generated/chaquopyStdlib/chaquopy/app.imy")
+    outputs.file(appImy)
+    doLast {
+        appImy.parentFile.mkdirs()
+        new java.util.zip.ZipOutputStream(new FileOutputStream(appImy)).close()
+    }
+}
+
+chaquopyAbis.each { abi ->
+    tasks.register("stageChaquopyStdlibAbi_${abi}", ChaquopyFreezeStdlibAbi) {
+        def abiZip = chaquopyTargetJniConfig.filter { it.name.endsWith("-${abi}.zip") }.elements
+        targetZip.set(layout.file(abiZip.map { files -> files.iterator().next().getAsFile() }))
+        moduleNames.set(chaquopyStdlibAbiModules)
+        outFile.set(layout.buildDirectory.file("generated/chaquopyStdlib/chaquopy/stdlib-${abi}.imy"))
+    }
+}
+
+// build.json hashes gate asset re-extraction on app update; regenerate them for each build.
+tasks.register("generateChaquopyBuildJson", ChaquopyBuildJson) {
+    dependsOn('prepareChaquopyBootstrapNative', 'stageChaquopyStdlibCommon', 'stageChaquopyAppImy',
+              'stageChaquopyBootstrap',
+              *chaquopyAbis.collect { "stageChaquopyStdlibAbi_${it}" })
+    assetDirs.from(
+        file("src/plugin/assets/chaquopy"),
+        file("$buildDir/generated/chaquopyBootstrapNative/chaquopy"),
+        file("$buildDir/generated/chaquopyBootstrap/chaquopy"),
+        file("$buildDir/generated/chaquopyStdlib/chaquopy"))
+    outFile.set(layout.buildDirectory.file('generated/chaquopyBuildJson/chaquopy/build.json'))
+}
+
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        boolean isPluginFlavor = variant.name.startsWith('plugin')
+        if (isPluginFlavor) {
+            // AGP 9 has no per-variant preBuild tasks; wire to the merge tasks instead.
+            tasks.matching {
+                it.name.startsWith("merge${variant.name.capitalize()}") &&
+                        (it.name.endsWith('JniLibFolders') || it.name.endsWith('Assets'))
+            }.configureEach {
+                dependsOn('prepareChaquopyJniLibs', 'prepareChaquopyBootstrapNative',
+                          'stageChaquopyStdlibCommon', 'stageChaquopyAppImy', 'stageChaquopyBootstrap',
+                          *chaquopyAbis.collect { "stageChaquopyStdlibAbi_${it}" },
+                          'generateChaquopyBuildJson')
+            }
+        }
+    }
+}
 
 def getProps(String propName) {
     def propsFile = rootProject.file('local.properties')
@@ -229,15 +529,6 @@ task patchNativeSources {
                 'TMessagesProj/jni/boringssl',
                 'TMessagesProj/jni/td'
         }.result.get()
-        // ffbuild/version.sh bakes FFMPEG_VERSION into libavutil, preferring a
-        // VERSION file in the source root over `git describe`. Left to git the
-        // string depends on whether the clone carries tags and on git's
-        // auto-scaled abbreviation length, so the same pin can produce
-        // "n8.1.2-30-g45f1910444" or "45f1910444" depending on how the
-        // submodule was fetched. Pinning it to the full submodule SHA makes the
-        // archives byte-identical across shallow and full checkouts, which
-        // F-Droid reproducibility needs. Upstream never hit this: it builds
-        // from a checkout that has tags.
         def ffmpegDir = file("${projectDir}/jni/third_party/ffmpeg")
         def ffmpegSha = providers.exec {
             commandLine 'git', '-C', ffmpegDir.toString(), 'rev-parse', 'HEAD'
@@ -257,42 +548,11 @@ task patchNativeSources {
     }
 }
 
-// Upstream's own libvpx + dav1d + ffmpeg builder. It reads the
-// jni/third_party/* submodules and packages into jni/ffmpeg/<abi>/*.a +
-// jni/ffmpeg/include/, i.e. exactly the layout upstream ships prebuilt and
-// CMakeLists.txt expects. Building it here instead of committing the archives
-// is the whole point of the [TF] patch; reusing upstream's script instead of
-// our own keeps the ffmpeg version in lockstep with the JNI code that calls it.
 def mediaBuildScript = 'build_ffmpeg_libvpx_dav1d_android_ndk27_merged.sh'
 
-// libvpx records its full configure command line and compiles it into the
-// archive (vpx_codec_build_config(), which survives --gc-sections into
-// libtmessages.so); ffmpeg does the same in FFMPEG_CONFIGURATION. Those strings
-// are literal text, so upstream's -ffile-prefix-map flags cannot sanitize the
-// absolute paths inside them, and an APK built from /home/you/src would never
-// match one F-Droid built from its own build root. The old build_libvpx_clang.sh
-// dodged this with a relative --prefix; upstream's script is absolute
-// throughout. So run it through fixed literal paths instead: a symlink to jni/
-// and a symlink to the NDK. Every path the configure line records is then the
-// same string on a dev box, in CI, and on the F-Droid buildserver.
-//
-// BUILD_ROOT is deliberately left at its default under jni/ffmpeg, reached
-// through the same symlink: libvpx's out-of-tree build resolves generated
-// headers relative to the source tree and fails ("./vpx_config.h file not
-// found") when the build dir shares no useful ancestor with it. Everything the
-// configure line records derives from SCRIPT_DIR anyway, so routing through the
-// symlink normalizes --prefix, -I, -L, --log and the prefix-maps alike.
-//
-// The names are fixed on purpose, so one machine can only build one checkout at
-// a time. Per-checkout names would put the checkout path back in the string.
 def mediaJniLink   = '/var/tmp/mg-jni'
 def mediaNdkLink   = '/var/tmp/mg-ndk'
 
-// Pinned rustc for jni/prebuild/build_tlottie.sh, installed by jni/setup_rust.sh
-// into fixed literal homes for the same reason the media build runs through
-// /var/tmp/mg-jni: rustc records the crate-registry path in its output, so a
-// per-machine CARGO_HOME would make libtlottie.a differ between our build and
-// F-Droid's.
 def rustToolchain  = '1.97.1'
 def rustupHome     = '/var/tmp/mg-rustup'
 def cargoHome      = '/var/tmp/mg-cargo'
@@ -308,8 +568,6 @@ def pointSymlink = { String linkPath, String target ->
     java.nio.file.Files.createSymbolicLink(link, new File(target).toPath())
 }
 
-// Register one build task per ABI. Each task compiles only for its ABI. All
-// three scripts take Android ABI names.
 ['buildNativeLibsArm64'  : 'arm64-v8a',
  'buildNativeLibsArm32'  : 'armeabi-v7a',
  'buildNativeLibsX86_64' : 'x86_64',
@@ -323,21 +581,6 @@ def pointSymlink = { String linkPath, String target ->
             def ninjaPath = System.getenv('NINJA_PATH') ?: 'ninja'
             def quietBuild = getProps('QUIET_NATIVE_BUILD') ? '1' : '0'
 
-            // The media script has no incremental mode (CLEAN defaults to 1), so
-            // gate it here the way build_boringssl.sh gates itself: the sentinel
-            // ties the packaged archives to the NDK that produced them.
-            // Its packaging step rewrites jni/ffmpeg/include/ from the ABIs of
-            // the current run. That is safe only because ffmpeg's installed
-            // headers are identical across our four ABIs today (upstream ships a
-            // single include/ tree, no per-ABI dispatchers). If the script ever
-            // starts emitting <stem>.<abi>.h shims, packaging has to move to one
-            // all-ABI run instead of these per-ABI tasks.
-            //
-            // The shared include/ tree is part of the same packaging step, and
-            // that step starts by wiping it. Check it too: a run interrupted
-            // after the wipe leaves every other ABI's sentinel intact, and a
-            // per-ABI-only gate would then skip forever while CMake fails on
-            // missing ffmpeg headers.
             def sentinel = file("${projectDir}/jni/ffmpeg/.ndk-${android.ndkVersion}-${abi}")
             if (!(sentinel.exists()
                     && file("${projectDir}/jni/ffmpeg/${abi}/libavcodec.a").exists()
@@ -345,16 +588,6 @@ def pointSymlink = { String linkPath, String target ->
                     && file("${projectDir}/jni/ffmpeg/include/libavcodec/avcodec.h").exists())) {
                 pointSymlink(mediaJniLink, "${projectDir}/jni")
                 pointSymlink(mediaNdkLink, ndkDir)
-                // Since 12.10.0 the media script consumes a prebuilt libopus:
-                // it aborts with "Missing prebuilt opus" unless build_opus.sh
-                // has already produced ffmpeg/build/opus/<abi>/libopus.a, which
-                // it then packages into ffmpeg/<abi>/. build_opus.sh has no ABI
-                // filter and builds all four in one run, so the existence check
-                // below makes it run once per checkout rather than once per ABI
-                // task. It also carries none of the media script's determinism
-                // flags, hence the environment block; the archive member names
-                // it bakes in come from the absolute source and build paths,
-                // which the /var/tmp/mg-jni symlink already normalizes.
                 if (!file("${projectDir}/jni/ffmpeg/build/opus/${abi}/libopus.a").exists()) {
                     providers.exec {
                         workingDir "${mediaJniLink}/ffmpeg"
@@ -376,27 +609,8 @@ def pointSymlink = { String linkPath, String target ->
                 sentinel.text = ndkDir + '\n'
             }
 
-            // tlottie replaced rlottie in 12.10.0. Upstream commits the four
-            // cargo-built archives; F-Droid cannot ship binaries it did not
-            // build, so run upstream's own builder here for the same reason the
-            // media libraries are built above.
-            //
-            // Reproducibility: rustc bakes the source path and the crate
-            // registry path into its output. The source side is already fixed
-            // by the /var/tmp/mg-jni symlink; the registry side is fixed by
-            // pinning CARGO_HOME / RUSTUP_HOME to literals too, which is why
-            // setup_rust.sh installs the toolchain there instead of into the
-            // caller's home directory. Incremental compilation embeds absolute
-            // session paths of its own and is off for the same reason, and the
-            // toolchain version is pinned because a different rustc emits
-            // different code for identical sources.
             if (!file("${projectDir}/jni/prebuild/${abi}/libtlottie.a").exists()) {
                 pointSymlink(mediaJniLink, "${projectDir}/jni")
-                // build_tlottie.sh refuses to run unless the output directory
-                // exists, and it builds ALL FOUR ABIs in one pass, so all four
-                // have to be there, not just this task's. Upstream keeps them
-                // populated by committing the archives; with those gitignored,
-                // git no longer creates them.
                 ['arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'].each {
                     file("${projectDir}/jni/prebuild/${it}").mkdirs()
                 }
@@ -426,14 +640,6 @@ def pointSymlink = { String linkPath, String target ->
                 }.result.get()
             }
 
-            // openh264: 12.10.1 stopped compiling it from source in
-            // voip/CMakeLists.txt and imports a committed prebuild/<abi>/
-            // libopenh264.a instead. Same F-Droid rule as the media libraries,
-            // so run upstream's own builder over the jni/third_party/openh264
-            // submodule. It drives openh264's Makefile, which bakes the object
-            // paths of its build tree into the archive member names, so it goes
-            // through the /var/tmp/mg-jni symlink like everything else here.
-            // x86/x86_64 additionally need nasm on PATH.
             if (!file("${projectDir}/jni/prebuild/${abi}/libopenh264.a").exists()) {
                 pointSymlink(mediaJniLink, "${projectDir}/jni")
                 pointSymlink(mediaNdkLink, ndkDir)
@@ -463,22 +669,15 @@ def pointSymlink = { String linkPath, String target ->
     }
 }
 
-// Ensure sequential execution when all 4 per-ABI tasks run together (fat builds),
-// avoiding races in patch scripts that write shared source files.
 tasks.named('buildNativeLibsArm32').configure  { mustRunAfter 'buildNativeLibsArm64'  }
 tasks.named('buildNativeLibsX86_64').configure { mustRunAfter 'buildNativeLibsArm32'  }
 tasks.named('buildNativeLibsX86').configure    { mustRunAfter 'buildNativeLibsX86_64' }
 
-// Combined task for fat/bundle builds (all 4 ABIs).
 task buildNativeLibs(description: 'Build native libraries for all ABIs.') {
     dependsOn 'buildNativeLibsArm64', 'buildNativeLibsArm32',
               'buildNativeLibsX86_64', 'buildNativeLibsX86'
 }
 
-// Wire each CMake/JniLibFolders task to the matching per-ABI native build task.
-// CMake task names include the ABI in brackets, e.g. configureCMakeRelease[arm64-v8a].
-// merge*JniLibFolders tasks don't include the ABI but snapshot jni/; they depend on
-// the full buildNativeLibs to ensure all .so/.a files are present before snapshotting.
 afterEvaluate {
     def abiToTask = [
         'arm64-v8a'   : 'buildNativeLibsArm64',
@@ -491,10 +690,11 @@ afterEvaluate {
             it.name.matches('buildCMake.*') ||
             it.name.matches('externalNativeBuild.*')
     }.configureEach { task ->
-        def matched = abiToTask.find { abi, _ -> task.name.contains(abi) }
+        def matched = abiToTask.find { abi, nativeTaskName -> task.name.toLowerCase().contains(abi.toLowerCase()) }
         dependsOn tasks.named(matched ? matched.value : 'buildNativeLibs')
     }
-    tasks.matching { it.name.matches('merge.*JniLibFolders') }.configureEach {
-        dependsOn tasks.named('buildNativeLibs')
+    tasks.matching { it.name.matches('merge.*JniLibFolders') }.configureEach { task ->
+        def matched = abiToTask.find { abi, nativeTaskName -> task.name.toLowerCase().contains(abi.toLowerCase()) }
+        dependsOn tasks.named(matched ? matched.value : 'buildNativeLibs')
     }
 }

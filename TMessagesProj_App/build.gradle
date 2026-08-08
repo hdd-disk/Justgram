@@ -4,13 +4,13 @@ apply plugin: 'com.android.application'
 // F-Droid per-ABI flavors only need one ABI compiled; fat flavors need all four.
 afterEvaluate {
     def flavorToNativeTask = [
-        'AfatFdArm64'  : 'buildNativeLibsArm64',
-        'AfatFdArm32'  : 'buildNativeLibsArm32',
-        'AfatFdX86_64' : 'buildNativeLibsX86_64',
-        'AfatFdX86'    : 'buildNativeLibsX86',
+        'arm64-v8a'  : 'buildNativeLibsArm64',
+        'armeabi-v7a': 'buildNativeLibsArm32',
+        'x86_64'     : 'buildNativeLibsX86_64',
+        'x86'        : 'buildNativeLibsX86',
     ]
     tasks.matching { it.name.matches('merge.*JniLibFolders') }.configureEach { task ->
-        def matched = flavorToNativeTask.find { flavor, _ -> task.name.contains(flavor) }
+        def matched = flavorToNativeTask.find { flavor, nativeTaskName -> task.name.toLowerCase().contains(flavor.toLowerCase()) }
         dependsOn project(':TMessagesProj').tasks.named(
             matched ? matched.value : 'buildNativeLibs'
         )
@@ -30,14 +30,8 @@ configurations.all {
     exclude group: 'androidx.recyclerview', module: 'recyclerview'
 }
 
-dependencies {
-    implementation project(':TMessagesProj')
-    implementation 'androidx.multidex:multidex:2.0.1'
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
-}
-
 android {
-    compileSdkVersion 36
+    compileSdk 36
     buildToolsVersion '36.0.0'
 
     Properties localProperties = new Properties()
@@ -96,8 +90,8 @@ android {
             minifyEnabled false
             shrinkResources false
             multiDexEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-rules-beta.pro'
-            ndk.debugSymbolLevel = 'FULL'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-rules-beta.pro', '../TMessagesProj/proguard-plugin-rules.pro'
+            ndk.debugSymbolLevel = 'NONE'
         }
 
         standalone {
@@ -108,7 +102,7 @@ android {
             minifyEnabled true
             shrinkResources false
             multiDexEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-plugin-rules.pro'
             ndk.debugSymbolLevel = 'FULL'
         }
 
@@ -119,7 +113,7 @@ android {
             minifyEnabled true
             shrinkResources false
             multiDexEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-plugin-rules.pro'
             ndk.debugSymbolLevel = 'FULL'
         }
     }
@@ -136,10 +130,11 @@ android {
         manifest.srcFile '../TMessagesProj/config/release/AndroidManifest.xml'
     }
 
-    flavorDimensions "minApi"
+    flavorDimensions "minApi", "runtime"
 
     productFlavors {
         bundle {
+            dimension "minApi"
             ndk {
                 abiFilters "arm64-v8a", "armeabi-v7a"
             }
@@ -150,6 +145,7 @@ android {
         }
 
         "arm64-v8a" {
+            dimension "minApi"
             ndk {
                 abiFilters "arm64-v8a"
             }
@@ -168,6 +164,7 @@ android {
         }
 
         "armeabi-v7a" {
+            dimension "minApi"
             ndk {
                 abiFilters "armeabi-v7a"
             }
@@ -184,6 +181,14 @@ android {
                 abiVersionCode = 9
             }
         }
+
+        normal {
+            dimension "runtime"
+        }
+
+        plugin {
+            dimension "runtime"
+        }
     }
 
     defaultConfig.versionCode = Integer.parseInt(APP_VERSION_CODE)
@@ -192,13 +197,6 @@ android {
         variant.outputs.all { output ->
             outputFileName = "Justgram_${variant.flavorName}.apk"
             output.versionCodeOverride = defaultConfig.versionCode * 10 + variant.productFlavors.get(0).abiVersionCode
-        }
-    }
-
-    variantFilter { variant ->
-        def names = variant.flavors*.name
-        if (variant.buildType.name != "release" && !names.contains("afat")) {
-            setIgnore(true)
         }
     }
 
@@ -214,7 +212,7 @@ android {
 
         externalNativeBuild {
             cmake {
-                version '3.22.1'
+                version '3.31.6'
                 arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21' // , '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
                 targets 'tmessages.49'
             }
@@ -229,5 +227,11 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
+}
+
+dependencies {
+    implementation project(':TMessagesProj')
+    implementation 'androidx.multidex:multidex:2.0.1'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 }
 

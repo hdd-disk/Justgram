@@ -1,15 +1,19 @@
 -keep class it.belloworld.mercurygram.compat.** { *; }
+-keep class com.exteragram.messenger.ExteraConfig { *; }
+-keep class com.exteragram.messenger.utils.** { *; }
+-keep class org.telegram.tgnet.** { *; }
+-keep class org.telegram.ui.** { *; }
 -keep class org.webrtc.* { *; }
 -keep class org.webrtc.audio.* { *; }
 -keep class org.webrtc.voiceengine.* { *; }
--keep class org.telegram.messenger.* { *; }
--keep class org.telegram.messenger.camera.* { *; }
--keep class org.telegram.messenger.secretmedia.* { *; }
--keep class org.telegram.messenger.support.* { *; }
--keep class org.telegram.messenger.support.* { *; }
--keep class org.telegram.messenger.time.* { *; }
--keep class org.telegram.messenger.video.* { *; }
--keep class org.telegram.messenger.voip.* { *; }
+-keep class com.android.dx.** { *; }
+-keep class org.telegram.messenger.BuildVars { *; }
+-keep class org.telegram.messenger.BuildConfig { *; }
+# Subpackages were previously enumerated one by one with a single '*', which left
+# browser/utils/pip/car/audioinfo/chromecast/ringtone/wallpaper unprotected. Plugins
+# reach these reflectively (e.g. find_class("org.telegram.messenger.browser.Browser")),
+# so keep the whole tree like org.telegram.ui.** and org.telegram.tgnet.** above.
+-keep class org.telegram.messenger.** { *; }
 -keep class org.telegram.SQLite.** { *; }
 -keep class org.telegram.tgnet.ConnectionsManager { *; }
 -keep class org.telegram.tgnet.NativeByteBuffer { *; }

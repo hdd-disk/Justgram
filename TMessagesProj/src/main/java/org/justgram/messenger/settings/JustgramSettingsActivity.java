@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.exteragram.messenger.plugins.PluginsController;
+import com.exteragram.messenger.plugins.ui.PluginsActivity;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.LocaleController;
@@ -34,7 +37,8 @@ public class JustgramSettingsActivity extends BaseFragment {
     private final static int ID_GENERAL = 1;
     private final static int ID_APPEARANCE = 2;
     private final static int ID_EXPERIMENTAL = 3;
-    private final static int ID_ABOUT = 4;
+    private final static int ID_PLUGINS = 4;
+    private final static int ID_ABOUT = 5;
 
     private UniversalRecyclerView listView;
     private FrameLayout topView;
@@ -104,6 +108,9 @@ public class JustgramSettingsActivity extends BaseFragment {
         items.add(SettingsActivity.SettingCell.Factory.of(ID_GENERAL, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.settings_account, getString(R.string.JustgramSettingsGeneral)));
         items.add(SettingsActivity.SettingCell.Factory.of(ID_APPEARANCE, IconBackgroundColors.GREEN.top, IconBackgroundColors.GREEN.bottom, R.drawable.settings_chat, getString(R.string.JustgramSettingsAppearance)));
         items.add(SettingsActivity.SettingCell.Factory.of(ID_EXPERIMENTAL, IconBackgroundColors.ORANGE.top, IconBackgroundColors.ORANGE.bottom, R.drawable.settings_features, getString(R.string.JustgramSettingsExperimental)));
+        if (PluginsController.isPluginEngineSupported()) {
+            items.add(SettingsActivity.SettingCell.Factory.of(ID_PLUGINS, IconBackgroundColors.CYAN.top, IconBackgroundColors.CYAN.bottom, R.drawable.msg_plugins_solar_filled, getString(R.string.Plugins)));
+        }
         adapter.whiteSectionEnd();
 
         items.add(UItem.asShadow(null));
@@ -122,6 +129,9 @@ public class JustgramSettingsActivity extends BaseFragment {
                 break;
             case ID_APPEARANCE:
                 presentFragment(new JustgramAppearanceSettingsActivity());
+                break;
+            case ID_PLUGINS:
+                presentFragment(new PluginsActivity());
                 break;
             case ID_ABOUT:
                 presentFragment(new JustgramAboutActivity());

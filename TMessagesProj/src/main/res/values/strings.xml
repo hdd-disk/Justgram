@@ -3730,6 +3730,8 @@
     <string name="BotStart2">Start Bot</string>
     <string name="BotUnblock">RESTART</string>
     <string name="BotUnblockNoCaps">Restart</string>
+    <string name="RestartApp">Restart app</string>
+    <string name="ResetSettings">Reset settings</string>
     <string name="BotRestart">Restart bot</string>
     <string name="BotAddToMenu">Add to Menu</string>
     <string name="BotCantOpenAttachMenuBot">This bot can\'t be opened in chats with bots.</string>

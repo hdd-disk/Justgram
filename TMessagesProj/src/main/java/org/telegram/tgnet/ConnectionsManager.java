@@ -16,6 +16,10 @@ import androidx.annotation.Keep;
 
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 
+import com.exteragram.messenger.plugins.PluginsConstants;
+import com.exteragram.messenger.plugins.PluginsController;
+import com.exteragram.messenger.plugins.hooks.PluginsHooks;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.telegram.messenger.AccountInstance;
@@ -379,6 +383,15 @@ public class ConnectionsManager extends BaseController {
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("send request " + object + " with token = " + requestToken);
         }
+        final String requestName = object.getClass().getSimpleName();
+        TLObject requestObject = object;
+        TLObject hookedRequest = PluginsController.getInstance().executePreRequestHook(requestName, currentAccount, requestObject);
+        if (hookedRequest == null) {
+            FileLog.d("Plugin system cancelled request " + requestName);
+            return;
+        }
+        requestObject = hookedRequest;
+
         try {
             NativeByteBuffer buffer = new NativeByteBuffer(object.getObjectSize());
             object.serializeToStream(buffer);
@@ -438,8 +451,15 @@ public class ConnectionsManager extends BaseController {
                         FileLog.d("java received " + resp + (error != null ? " error = " + error : "") + " messageId = 0x" + Long.toHexString(requestMsgId));
                         FileLog.dumpResponseAndRequest(currentAccount, object, resp, error, requestMsgId, finalStartRequestTime, requestToken);
                     }
-                    final TLObject finalResponse = resp;
-                    final TLRPC.TL_error finalError = error;
+                    PluginsHooks.PostRequestResult hookResult = PluginsController.getInstance().executePostRequestHook(requestName, currentAccount, resp, error);
+                    if (hookResult == null) {
+                        if (resp != null) {
+                            resp.freeResources();
+                        }
+                        return;
+                    }
+                    final TLObject finalResponse = hookResult.response;
+                    final TLRPC.TL_error finalError = hookResult.error;
                     Utilities.stageQueue.postRunnable(() -> {
                         if (onComplete != null) {
                             onComplete.run(finalResponse, finalError);

@@ -51,6 +51,8 @@ import androidx.annotation.UiThread;
 import androidx.collection.LongSparseArray;
 import androidx.core.view.inputmethod.InputContentInfoCompat;
 
+import com.exteragram.messenger.plugins.PluginsController;
+
 import org.json.JSONObject;
 import org.telegram.messenger.audioinfo.AudioInfo;
 import org.telegram.messenger.support.SparseLongArray;
@@ -4257,8 +4259,10 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
     }
 
     public void sendMessage(SendMessageParams sendMessageParams) {
-        final SendMessageChatArguments sendMessageChatArguments = sendMessageParams.sendMessageChatArguments != null ?
-                sendMessageParams.sendMessageChatArguments : SendMessageChatArguments.EMPTY;
+        sendMessageParams = PluginsController.getInstance().executeSendMessageHook(currentAccount, sendMessageParams);
+        if (sendMessageParams == null) {
+            return;
+        }
         String message = sendMessageParams.message;
         String caption = sendMessageParams.caption;
         TLRPC.MessageMedia location = sendMessageParams.location;
@@ -4296,18 +4300,18 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
 
         final String quick_reply_shortcut = sendMessageParams.quick_reply_shortcut != null ?
             sendMessageParams.quick_reply_shortcut :
-            sendMessageChatArguments.quickReplyShortcut ;
+            (sendMessageParams.sendMessageChatArguments != null ? sendMessageParams.sendMessageChatArguments.quickReplyShortcut : null);
         final int quick_reply_shortcut_id = sendMessageParams.quick_reply_shortcut_id != 0 ?
             sendMessageParams.quick_reply_shortcut_id :
-            sendMessageChatArguments.quickReplyShortcutId;
+            (sendMessageParams.sendMessageChatArguments != null ? sendMessageParams.sendMessageChatArguments.quickReplyShortcutId : 0);
 
         long stars = sendMessageParams.stars;
         int pollIndex = sendMessageParams.pollIndex;
         PollSendParams pollSendParams = sendMessageParams.pollSendParams;
         TL_iv.RichMessage richMessage = sendMessageParams.richMessage;
 
-        if (sendMessageChatArguments.welcomeMessageChatId != 0) {
-            peer = -sendMessageChatArguments.welcomeMessageChatId;
+        if (sendMessageParams.sendMessageChatArguments != null && sendMessageParams.sendMessageChatArguments.welcomeMessageChatId != 0) {
+            peer = -sendMessageParams.sendMessageChatArguments.welcomeMessageChatId;
             user = null;
         }
 
@@ -4330,7 +4334,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         }
         final boolean isGroup = params != null && params.containsKey("groupId") && !"0".equalsIgnoreCase(params.get("groupId"));
 
-        final boolean isWelcomeMessageTemplate = sendMessageChatArguments.welcomeMessageChatId != 0;
+        final boolean isWelcomeMessageTemplate = sendMessageParams.sendMessageChatArguments != null && sendMessageParams.sendMessageChatArguments.welcomeMessageChatId != 0;
         final long ephemeralReceiverBotId;
         if (isWelcomeMessageTemplate) {
             ephemeralReceiverBotId = -1; // input user empty;
@@ -4346,9 +4350,10 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
 
         final long payStars = ephemeralReceiverBotId != 0 ? 0 : _payStars;
         if (payStars != sendMessageParams.payStars && !isGroup && ephemeralReceiverBotId == 0) {
+            final SendMessageParams sendMessageParamsFinal = sendMessageParams;
             AlertsCreator.ensurePaidMessageConfirmation(currentAccount, peer, 1, newPayStars -> {
-                sendMessageParams.payStars = newPayStars;
-                sendMessage(sendMessageParams);
+                sendMessageParamsFinal.payStars = newPayStars;
+                sendMessage(sendMessageParamsFinal);
             });
             return;
         }

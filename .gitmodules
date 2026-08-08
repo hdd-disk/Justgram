@@ -56,3 +56,9 @@
 	url = https://github.com/tdlib/td
 	shallow = true
 	ignore = all
+[submodule "TMessagesProj/jni/third_party/lsplant"]
+	path = TMessagesProj/jni/third_party/lsplant
+	url = https://github.com/LSPosed/LSPlant.git
+[submodule "TMessagesProj/jni/third_party/shadowhook"]
+	path = TMessagesProj/jni/third_party/shadowhook
+	url = https://github.com/bytedance/android-inline-hook.git

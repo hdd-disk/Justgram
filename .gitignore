@@ -32,3 +32,8 @@ TMessagesProj/jni/prebuild/*/libtlottie.a
 TMessagesProj/jni/prebuild/*/libopenh264.a
 TMessagesProj/jni/prebuild/build/
 TMessagesProj/jni/prebuild/build_openh264/
+TMessagesProj/jni/ffmpeg/build_android
+.freebuff/
+chaq_inspect/
+__pycache__/
+*.py[cod]

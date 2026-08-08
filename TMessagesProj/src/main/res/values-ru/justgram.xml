@@ -4,9 +4,8 @@
 
     <string name="JustgramSettingsGeneral">Основные</string>
     <string name="JustgramSettingsAppearance">Внешний вид</string>
-    <string name="JustgramSettingsExperimental">Эксперементальные</string>
 
-    <string name="JustgramSettingsAbout">"О проекте"</string>
+    <string name="JustgramSettingsAbout">О проекте</string>
 
     <string name="DisableAds">Отключить рекламу</string>
     <string name="ShowAccountId">Показывать ID аккаунта</string>
@@ -33,5 +32,50 @@
     <string name="HideCallButton">Скрыть кнопку звонка в личных сообщениях</string>
     <string name="KaboomDescription">Это действие УНИЧТОЖИТ ваши данные Justgram. Продолжить?</string>
     <string name="AltSoundIn">Звук сообщения как на десктопе</string>
+
+    <string name="EnablePluginsEngine">Включить систему плагинов</string>
+    <string name="PluginDelete">Удалить плагин</string>
+    <string name="PluginDeleteInfo">Вы уверены, что хотите удалить **%1$s**?</string>
+    <string name="PluginDisableError">Не удалось выключить **%1$s**.</string>
+    <string name="PluginEnableError">Не удалось включить **%1$s**.</string>
+    <string name="PluginEngineNotEnabled">Включите **Систему плагинов**, чтобы открыть настройки **%1$s**.</string>
+    <string name="PluginHasNoSettings">**%1$s** не имеет настроек.</string>
+    <string name="PluginInstallError">Не удалось установить **%1$s**.</string>
+    <string name="PluginInstalled">**%1$s** успешно установлен.</string>
+    <string name="PluginInstalledButFailedToEnable">**%1$s** установлен, но при включении произошла ошибка.</string>
+    <string name="PluginIsNotResponding">Плагин не отвечает.</string>
+    <string name="PluginIsNotRespondingAlert">%1$s не отвечает</string>
+    <string name="PluginNoAuthor">Неизвестный автор</string>
+    <string name="PluginNoDescription">Описание отсутствует.</string>
+    <string name="PluginNotEnabled">Включите **Систему плагинов**, чтобы установить **%1$s**.</string>
+    <string name="PluginNotFound">**%1$s** не найден.</string>
+    <string name="PluginSourceTrusted">Надёжный источник</string>
+    <string name="PluginSourceTrustedInfo">Плагины из этого источника **проверены** и безопасны для использования.</string>
+    <string name="PluginSourceUnknown">Неизвестный источник</string>
+    <string name="PluginSourceUnknownInfo">Плагины из этого источника **не проверены** и могут представлять угрозу безопасности.</string>
+    <string name="PluginUpdated">**%1$s** успешно обновлён.</string>
+    <string name="PluginVersion">Версия</string>
+    <string name="Plugins">Плагины</string>
+    <string name="PluginsCompactView">Компактный вид плагинов</string>
+    <string name="PluginsDevMode">Режим разработчика</string>
+    <string name="PluginsDevServerLaunched">Developer Server запущен.</string>
+    <string name="PluginsDevServerStopped">Developer Server остановлен.</string>
+    <string name="PluginsDisableArt">Режим совместимости</string>
+    <string name="PluginsDisableArtInfo">Отключает ART Profile Saver для предотвращения сбоев хуков плагинов.</string>
+    <string name="PluginsDocumentation">Документация</string>
+    <string name="PluginsEngine">Система плагинов</string>
+    <string name="PluginsInfo">Установка и управление файлами .plugin.</string>
+    <string name="PluginsNotFound">Плагины не найдены.</string>
+    <string name="PluginsPySdkAutoUpdate">Обновлять автоматически</string>
+    <string name="PluginsPySdkCheckUpdates">Проверить наличие обновлений</string>
+    <string name="PluginsPySdkEnableBetaVersion">Устанавливать бета-версии</string>
+    <string name="PluginsSafeMode">Безопасный режим</string>
+    <string name="PluginsSafeModeInfo">Система плагинов отключена из-за сбоя. Отключение безопасного режима может привести к непредсказуемым последствиям.</string>
+    <string name="PluginsSafeModeInfo2">В безопасном режиме все плагины неактивны. Это позволяет безопасно найти и отключить проблемный плагин.</string>
+    <string name="PluginsSafeModeShortcut">Запустить в безопасном режиме</string>
+    <string name="PluginsTrusted">Проверенные плагины</string>
+    <string name="ResetPluginSettings">Настройки **%1$s** были сброшены.</string>
+    <string name="ResetPluginSettingsInfo">Вы уверены, что хотите сбросить настройки **%1$s** до стандартных?</string>
+    <string name="RestartPluginSystemToApplyUpdate">Обновление загружено, перезапустите систему плагинов для применения</string>
 
 </resources>
