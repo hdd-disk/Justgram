@@ -12,6 +12,11 @@
     <string name="ShowAccountId">Показывать ID аккаунта</string>
     <string name="AccountId">ID аккаунта</string>
 
+    <string name="WebSocketTransport">Подключение через WebSocket</string>
+    <string name="WebSocketTransportInfo">Туннелирует трафик Telegram через зашифрованное WebSocket-соединение (WSS). Может помочь, когда обычное соединение замедляют или блокируют. Оставьте домен пустым для авто-обновляемых публичных релеев или укажите свой домен для стабильности. Публичные релеи принадлежат третьим лицам и видят ваш IP-адрес и метаданные соединения, но не содержимое сообщений. Отключите, если соединение перестало работать.</string>
+    <string name="WebSocketDomain">Домен WebSocket</string>
+    <string name="WebSocketDomainAuto">Автоматически</string>
+
     <string name="JustgramComingSoon">Здесь пока ничего нет, но это ненадолго.</string>
 
     <string name="TelegramChannel">Канал</string>
