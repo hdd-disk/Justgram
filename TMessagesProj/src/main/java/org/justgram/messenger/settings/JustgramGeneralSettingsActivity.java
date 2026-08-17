@@ -3,6 +3,8 @@ package org.justgram.messenger.settings;
 import static org.telegram.messenger.LocaleController.getString;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -13,6 +15,8 @@ import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeDescription;
+import org.telegram.ui.Components.AlertsCreator;
+import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
@@ -54,6 +58,11 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
     private void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
         items.add(UItem.asCheck(1, getString(R.string.DisableAds)).setChecked(JustgramConfig.disableAds));
         items.add(UItem.asCheck(2, getString(R.string.ShowAccountId)).setChecked(JustgramConfig.showAccountId));
+        items.add(UItem.asButtonCheck(3, LocaleController.getString(R.string.WebSocketTransport), LocaleController.getString(R.string.WebSocketTransportInfo))
+            .setChecked(JustgramConfig.webSocketTransport).setMultiline(true));
+        if (JustgramConfig.webSocketTransport) {
+            items.add(UItem.asSettingsCell(4, LocaleController.getString(R.string.WebSocketDomain), getWebSocketDomainText()));
+        }
     }
 
     private void onClick(UItem item, View view) {
@@ -65,6 +74,13 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
             JustgramConfig.showAccountId = !JustgramConfig.showAccountId;
             JustgramConfig.saveConfig();
             listView.adapter.update(true);
+        } else if (item.id == 3) {
+            JustgramConfig.webSocketTransport = !JustgramConfig.webSocketTransport;
+            JustgramConfig.saveConfig();
+            org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(JustgramConfig.webSocketTransport, JustgramConfig.webSocketDomain);
+            listView.adapter.update(true);
+        } else if (item.id == 4) {
+            showWebSocketDomainDialog();
         }
     }
 
@@ -82,5 +98,35 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
         themeDescriptions.add(new ThemeDescription(listView, ThemeDescription.FLAG_LISTGLOWCOLOR, null, null, null, null, Theme.key_actionBarDefault));
 
         return themeDescriptions;
+    }
+
+    private static String getWebSocketDomainText() {
+        return TextUtils.isEmpty(JustgramConfig.webSocketDomain) ? LocaleController.getString(R.string.WebSocketDomainAuto) : JustgramConfig.webSocketDomain;
+    }
+
+    private void showWebSocketDomainDialog() {
+        AlertsCreator.createSimpleTextInputAlert(
+            getContext(),
+            this,
+            LocaleController.getString(R.string.WebSocketDomain),
+            null,
+            null,
+            JustgramConfig.webSocketDomain,
+            255,
+            LocaleController.getString(R.string.Save),
+            null,
+            (result) -> {
+                String domain = org.telegram.tgnet.ConnectionsManager.normalizeWebSocketDomain(result);
+                if (domain.isEmpty() && !result.trim().isEmpty()) {
+                    org.telegram.ui.Components.BulletinFactory.of(this).createErrorBulletin(LocaleController.getString(R.string.InvalidFormatError)).show();
+                    return;
+                }
+                JustgramConfig.webSocketDomain = domain;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(false);
+                if (JustgramConfig.webSocketTransport) {
+                    org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(true, domain);
+                }
+            });
     }
 }
