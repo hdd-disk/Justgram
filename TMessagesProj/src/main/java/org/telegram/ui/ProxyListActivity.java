@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.DownloadController;
 import org.telegram.messenger.LocaleController;
@@ -61,6 +62,7 @@ import org.telegram.ui.Cells.ShadowSectionCell;
 import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Cells.TextSettingsCell;
+import org.telegram.ui.Components.AlertsCreator;
 import org.telegram.ui.Components.CheckBox2;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
@@ -88,6 +90,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
     private boolean useProxyForCalls;
 
     private int rowCount;
+    private int webSocketRow;
+    private int webSocketDomainRow;
+    private int webSocketInfoRow;
     @Keep
     private int useProxyRow;
     private int useProxyShadowRow;
@@ -393,7 +398,17 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP | Gravity.LEFT));
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener((view, position) -> {
-            if (position == useProxyRow) {
+            if (position == webSocketRow) {
+                JustgramConfig.webSocketTransport = !JustgramConfig.webSocketTransport;
+                JustgramConfig.saveConfig();
+                ((TextCheckCell) view).setChecked(JustgramConfig.webSocketTransport);
+                ConnectionsManager.setWebSocketEnabled(JustgramConfig.webSocketTransport, JustgramConfig.webSocketDomain);
+                updateRows(true);
+                return;
+            } else if (position == webSocketDomainRow) {
+                showWebSocketDomainDialog();
+                return;
+            } else if (position == useProxyRow) {
                 if (SharedConfig.currentProxy == null) {
                     if (!proxyList.isEmpty()) {
                         SharedConfig.currentProxy = proxyList.get(0);
@@ -625,8 +640,31 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         return super.onBackPressed(invoked);
     }
 
+    private void showWebSocketDomainDialog() {
+        AlertsCreator.createSimpleTextInputAlert(getParentActivity(), this, getString(R.string.WebSocketDomain), null, null, JustgramConfig.webSocketDomain, 255, getString(R.string.Save), null, (result) -> {
+            String domain = ConnectionsManager.normalizeWebSocketDomain(result);
+            if (domain.isEmpty() && !result.trim().isEmpty()) {
+                org.telegram.ui.Components.BulletinFactory.of(this).createErrorBulletin(getString(R.string.InvalidFormatError)).show();
+                return;
+            }
+            JustgramConfig.webSocketDomain = domain;
+            JustgramConfig.saveConfig();
+            updateRows(true);
+            if (JustgramConfig.webSocketTransport) {
+                ConnectionsManager.setWebSocketEnabled(true, domain);
+            }
+        });
+    }
+
     private void updateRows(boolean notify) {
         rowCount = 0;
+        webSocketRow = rowCount++;
+        if (JustgramConfig.webSocketTransport) {
+            webSocketDomainRow = rowCount++;
+        } else {
+            webSocketDomainRow = -1;
+        }
+        webSocketInfoRow = rowCount++;
         useProxyRow = rowCount++;
         if (useProxySettings && SharedConfig.currentProxy != null && SharedConfig.proxyList.size() > 1 && IS_PROXY_ROTATION_AVAILABLE) {
             rotationRow = rowCount++;
@@ -889,7 +927,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
                 case VIEW_TYPE_TEXT_SETTING: {
                     TextSettingsCell textCell = (TextSettingsCell) holder.itemView;
                     textCell.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
-                    if (position == proxyAddRow) {
+                    if (position == webSocketDomainRow) {
+                        textCell.setTextAndValue(getString(R.string.WebSocketDomain), JustgramConfig.webSocketDomain.isEmpty() ? getString(R.string.WebSocketDomainAuto) : JustgramConfig.webSocketDomain, false);
+                    } else if (position == proxyAddRow) {
                         textCell.setText(getString(R.string.AddProxy), deleteAllRow != -1);
                     } else if (position == deleteAllRow) {
                         textCell.setTextColor(Theme.getColor(Theme.key_text_RedRegular));
@@ -906,7 +946,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
                 }
                 case VIEW_TYPE_TEXT_CHECK: {
                     TextCheckCell checkCell = (TextCheckCell) holder.itemView;
-                    if (position == useProxyRow) {
+                    if (position == webSocketRow) {
+                        checkCell.setTextAndCheck(getString(R.string.WebSocketTransport), JustgramConfig.webSocketTransport, webSocketDomainRow != -1);
+                    } else if (position == useProxyRow) {
                         checkCell.setTextAndCheck(getString(R.string.UseProxySettings), useProxySettings, rotationRow != -1);
                     } else if (position == callsRow) {
                         checkCell.setTextAndCheck(getString(R.string.UseProxyForCalls), useProxyForCalls, false);
@@ -917,7 +959,9 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
                 }
                 case VIEW_TYPE_INFO: {
                     TextInfoPrivacyCell cell = (TextInfoPrivacyCell) holder.itemView;
-                    if (position == callsDetailRow) {
+                    if (position == webSocketInfoRow) {
+                        cell.setText(getString(R.string.WebSocketTransportInfo));
+                    } else if (position == callsDetailRow) {
                         cell.setText(getString(R.string.UseProxyForCallsInfo));
                     } else if (position == rotationTimeoutInfoRow) {
                         cell.setText(getString(R.string.ProxyRotationTimeoutInfo));
@@ -996,7 +1040,7 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
             int position = holder.getAdapterPosition();
-            return position == useProxyRow || position == rotationRow || position == callsRow || position == proxyAddRow || position == deleteAllRow || position >= proxyStartRow && position < proxyEndRow;
+            return position == webSocketRow || position == webSocketDomainRow || position == useProxyRow || position == rotationRow || position == callsRow || position == proxyAddRow || position == deleteAllRow || position >= proxyStartRow && position < proxyEndRow;
         }
 
         @Override
@@ -1038,7 +1082,13 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
         @Override
         public long getItemId(int position) {
             // Random stable ids, could be anything non-repeating
-            if (position == useProxyShadowRow) {
+            if (position == webSocketRow) {
+                return -20;
+            } else if (position == webSocketDomainRow) {
+                return -21;
+            } else if (position == webSocketInfoRow) {
+                return -22;
+            } else if (position == useProxyShadowRow) {
                 return -1;
             } else if (position == proxyShadowRow) {
                 return -2;
@@ -1067,7 +1117,13 @@ public class ProxyListActivity extends BaseFragment implements NotificationCente
 
         @Override
         public int getItemViewType(int position) {
-            if (position == useProxyShadowRow || position == proxyShadowRow) {
+            if (position == webSocketRow) {
+                return VIEW_TYPE_TEXT_CHECK;
+            } else if (position == webSocketDomainRow) {
+                return VIEW_TYPE_TEXT_SETTING;
+            } else if (position == webSocketInfoRow) {
+                return VIEW_TYPE_INFO;
+            } else if (position == useProxyShadowRow || position == proxyShadowRow) {
                 return VIEW_TYPE_SHADOW;
             } else if (position == proxyAddRow || position == deleteAllRow) {
                 return VIEW_TYPE_TEXT_SETTING;

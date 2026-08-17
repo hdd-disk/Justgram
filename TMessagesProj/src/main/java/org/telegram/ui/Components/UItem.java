@@ -47,6 +47,7 @@ public class UItem extends AdapterWithDiffUtils.Item {
     public int parentSpanCount;
 
     public boolean include;
+    public boolean multiline;
     public long dialogId;
     public String chatType;
     public int flags;
@@ -651,6 +652,11 @@ public class UItem extends AdapterWithDiffUtils.Item {
         if (viewType == UniversalAdapter.VIEW_TYPE_FILTER_CHAT) {
             viewType = UniversalAdapter.VIEW_TYPE_FILTER_CHAT_CHECK;
         }
+        return this;
+    }
+
+    public UItem setMultiline(boolean multiline) {
+        this.multiline = multiline;
         return this;
     }
 
