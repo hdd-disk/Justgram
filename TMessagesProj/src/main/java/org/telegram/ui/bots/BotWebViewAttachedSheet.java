@@ -1019,6 +1019,9 @@ public class BotWebViewAttachedSheet implements NotificationCenter.NotificationC
         settingsItem = otherItem.addSubItem(R.id.menu_settings, R.drawable.msg_settings, LocaleController.getString(R.string.BotWebViewSettings));
         settingsItem.setVisibility(View.GONE);
         otherItem.addSubItem(R.id.menu_reload_page, R.drawable.msg_retry, LocaleController.getString(R.string.BotWebViewReloadPage));
+        otherItem.addSubItem(R.id.menu_copy_link, R.drawable.msg_copy, LocaleController.getString(R.string.CopyLink));
+        otherItem.addSubItem(R.id.menu_open_in_browser, R.drawable.msg_openin, LocaleController.getString(R.string.OpenInSystemBrowser2));
+        otherItem.addSubItem(R.id.menu_developer_tools, R.drawable.msg_settings, LocaleController.getString(R.string.DevTools));
         if (userbot != null && userbot.bot_has_main_app) {
             otherItem.addSubItem(R.id.menu_add_to_home_screen_bot, R.drawable.msg_home, LocaleController.getString(R.string.AddShortcut));
         }
@@ -1073,6 +1076,21 @@ public class BotWebViewAttachedSheet implements NotificationCenter.NotificationC
                     webViewContainer.reload();
                 } else if (id == R.id.menu_settings) {
                     webViewContainer.onSettingsButtonPressed();
+                } else if (id == R.id.menu_copy_link) {
+                    String url = webViewContainer.getUrlLoaded();
+                    if (url != null) {
+                        AndroidUtilities.addToClipboard(url);
+                        webViewContainer.showLinkCopiedBulletin();
+                    }
+                } else if (id == R.id.menu_open_in_browser) {
+                    String url = webViewContainer.getUrlLoaded();
+                    if (url != null) {
+                        Browser.openUrl(getContext(), url);
+                    }
+                } else if (id == R.id.menu_developer_tools) {
+                    if (webViewContainer.getWebView() != null) {
+                        webViewContainer.getWebView().loadUrl("javascript:(function () { var script = document.createElement('script'); script.src='//cdn.jsdelivr.net/npm/eruda'; document.body.appendChild(script); script.onload = function () { eruda.init() } })();");
+                    }
                 } else if (id == R.id.menu_delete_bot) {
                     deleteBot(currentAccount, botId, () -> dismiss());
                 } else if (id == R.id.menu_add_to_home_screen_bot) {
