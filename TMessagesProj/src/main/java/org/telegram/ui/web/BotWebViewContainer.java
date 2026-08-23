@@ -81,6 +81,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BotWebViewVibrationEffect;
@@ -434,6 +435,11 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setSupportMultipleWindows(true);
+        if (JustgramConfig.fingerprintProtection) {
+            settings.setGeolocationEnabled(false);
+        } else {
+            settings.setGeolocationEnabled(true);
+        }
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setAllowFileAccessFromFileURLs(false);
@@ -458,13 +464,17 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
 
         try {
             String useragent = settings.getUserAgentString();
-            useragent = useragent.replace("; wv)", ")");
-            useragent = useragent.replaceAll("\\(Linux; Android.+;[^)]+\\)", "(Linux; Android " + Build.VERSION.RELEASE + "; K)");
-            useragent = useragent.replaceAll("Version/[\\d\\.]+ ", "");
-            if (bot) {
-                final int perf = SharedConfig.getDevicePerformanceClass();
-                final String perfName = perf == SharedConfig.PERFORMANCE_CLASS_LOW ? "LOW" : perf == SharedConfig.PERFORMANCE_CLASS_AVERAGE ? "AVERAGE" : "HIGH";
-                useragent += " Telegram-Android/" + BuildVars.BUILD_VERSION_STRING + " (" + capitalizeFirst(Build.MANUFACTURER) + " " + Build.MODEL + "; Android " + Build.VERSION.RELEASE + "; SDK " + Build.VERSION.SDK_INT + "; " + perfName + ")";
+            if (JustgramConfig.fingerprintProtection) {
+                useragent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36";
+            } else {
+                useragent = useragent.replace("; wv)", ")");
+                useragent = useragent.replaceAll("\\(Linux; Android.+;[^)]+\\)", "(Linux; Android " + Build.VERSION.RELEASE + "; K)");
+                useragent = useragent.replaceAll("Version/[\\d\\.]+ ", "");
+                if (bot) {
+                    final int perf = SharedConfig.getDevicePerformanceClass();
+                    final String perfName = perf == SharedConfig.PERFORMANCE_CLASS_LOW ? "LOW" : perf == SharedConfig.PERFORMANCE_CLASS_AVERAGE ? "AVERAGE" : "HIGH";
+                    useragent += " Telegram-Android/" + BuildVars.BUILD_VERSION_STRING + " (" + capitalizeFirst(Build.MANUFACTURER) + " " + Build.MODEL + "; Android " + Build.VERSION.RELEASE + "; SDK " + Build.VERSION.SDK_INT + "; " + perfName + ")";
+                }
             }
             settings.setUserAgentString(useragent);
         } catch (Exception e) {
@@ -4002,11 +4012,11 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                     d("onPageCommitVisible " + url);
                     if (!bot) {
                         injectedJS = true;
-                        evaluateJS(readRes(R.raw.webview_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION));
+                        evaluateJS(readRes(R.raw.webview_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION).replace("$FP_PROTECTION$", "" + JustgramConfig.fingerprintProtection));
                         evaluateJS(readRes(R.raw.webview_share));
                     } else {
                         injectedJS = true;
-                        evaluateJS(readRes(R.raw.webview_app_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION));
+                        evaluateJS(readRes(R.raw.webview_app_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION).replace("$FP_PROTECTION$", "" + JustgramConfig.fingerprintProtection));
                     }
                     super.onPageCommitVisible(view, url);
                 }
@@ -4196,11 +4206,11 @@ public abstract class BotWebViewContainer extends FrameLayout implements Notific
                     }
                     if (!bot) {
                         injectedJS = true;
-                        evaluateJS(readRes(R.raw.webview_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION));
+                        evaluateJS(readRes(R.raw.webview_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION).replace("$FP_PROTECTION$", "" + JustgramConfig.fingerprintProtection));
                         evaluateJS(readRes(R.raw.webview_share));
                     } else {
                         injectedJS = true;
-                        evaluateJS(readRes(R.raw.webview_app_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION));
+                        evaluateJS(readRes(R.raw.webview_app_ext).replace("$DEBUG$", "" + BuildVars.DEBUG_VERSION).replace("$FP_PROTECTION$", "" + JustgramConfig.fingerprintProtection));
                     }
                     saveHistory();
                     if (botWebViewContainer != null) {

@@ -22,4 +22,6 @@
     <string name="Github">GitHub</string>
     <string name="TelegramChannel">Channel</string>
     <string name="TelegramChat">Chat</string>
+    <string name="FingerprintProtection">Fingerprint Protection</string>
+    <string name="FingerprintProtectionInfo">Prevents websites from collecting hardware and browser information to identify your device. May break some websites.</string>
 </resources>
