@@ -16,6 +16,51 @@ if (!window.__tg__webview_set) {
     window.__tg__webview_set = true;
     (function () {
         const DEBUG = $DEBUG$;
+        const FP_PROTECTION = $FP_PROTECTION$;
+
+        if (FP_PROTECTION) {
+            try {
+                // Canvas Fingerprinting Protection
+                const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;
+                HTMLCanvasElement.prototype.toDataURL = function (type) {
+                    const ctx = this.getContext('2d');
+                    if (ctx && (type === undefined || type === 'image/png')) {
+                        const style = ctx.fillStyle;
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.01)';
+                        ctx.fillRect(0, 0, 1, 1);
+                        ctx.fillStyle = style;
+                    }
+                    return originalToDataURL.apply(this, arguments);
+                };
+
+                // WebGL Fingerprinting Protection
+                const originalGetParameter = WebGLRenderingContext.prototype.getParameter;
+                WebGLRenderingContext.prototype.getParameter = function (parameter) {
+                    if (parameter === 0x9245) return 'Google Inc. (Intel)';
+                    if (parameter === 0x9246) return 'ANGLE (Intel, Intel(R) UHD Graphics 620 Direct3D11 vs_5_0 ps_5_0)';
+                    if (parameter === 0x1F00) return 'WebKit';
+                    if (parameter === 0x1F01) return 'WebKit WebGL';
+                    return originalGetParameter.apply(this, arguments);
+                };
+
+                // Audio Fingerprinting Protection
+                const originalGetChannelData = AudioBuffer.prototype.getChannelData;
+                AudioBuffer.prototype.getChannelData = function () {
+                    const result = originalGetChannelData.apply(this, arguments);
+                    for (let i = 0; i < result.length; i += 100) {
+                        result[i] += (Math.random() - 0.5) * 1e-7;
+                    }
+                    return result;
+                };
+
+                // Navigator Hardening
+                Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 4 });
+                Object.defineProperty(navigator, 'deviceMemory', { get: () => 8 });
+                Object.defineProperty(navigator, 'platform', { get: () => 'Linux armv8l' });
+            } catch (e) {
+                if (DEBUG) console.error('tgbrowser fp protection error', e);
+            }
+        }
 
         // Touch gestures hacks
         let prevented = false;

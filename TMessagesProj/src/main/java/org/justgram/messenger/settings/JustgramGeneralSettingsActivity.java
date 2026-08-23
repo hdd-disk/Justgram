@@ -63,6 +63,8 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
         if (JustgramConfig.webSocketTransport) {
             items.add(UItem.asSettingsCell(4, LocaleController.getString(R.string.WebSocketDomain), getWebSocketDomainText()));
         }
+        items.add(UItem.asCheck(5, getString(R.string.FingerprintProtection)).setChecked(JustgramConfig.fingerprintProtection));
+        items.add(UItem.asShadow(getString(R.string.FingerprintProtectionInfo)));
     }
 
     private void onClick(UItem item, View view) {
@@ -73,6 +75,9 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
         } else if (item.id == 2) {
             JustgramConfig.showAccountId = !JustgramConfig.showAccountId;
             JustgramConfig.saveConfig();
+            listView.adapter.update(true);
+        } else if (item.id == 6) {
+            JustgramConfig.toggleFingerprintProtection();
             listView.adapter.update(true);
         } else if (item.id == 3) {
             JustgramConfig.webSocketTransport = !JustgramConfig.webSocketTransport;
