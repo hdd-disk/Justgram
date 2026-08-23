@@ -12,10 +12,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.telegram.messenger.BuildVars;
+
 public class RefererReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
-            MessagesController.getInstance(UserConfig.selectedAccount).setReferer(intent.getExtras().getString("referrer"));
+            MessagesController.getInstance(UserConfig.selectedAccount).setReferer(BuildVars.PACKAGE_ORIGINAL);
         } catch (Exception ignore) {
 
         }
