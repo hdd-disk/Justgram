@@ -212,13 +212,7 @@ public class ConnectionsManager extends BaseController {
             systemLangCode = LocaleController.getSystemLocaleStringIso639().toLowerCase();
             langCode = LocaleController.getLocaleStringIso639().toLowerCase();
             deviceModel = Build.MANUFACTURER + Build.MODEL;
-            PackageInfo pInfo = ApplicationLoader.applicationContext.getPackageManager().getPackageInfo(ApplicationLoader.applicationContext.getPackageName(), 0);
-            appVersion = pInfo.versionName + " (" + pInfo.versionCode + ")";
-            if (BuildVars.DEBUG_PRIVATE_VERSION) {
-                appVersion += " pbeta";
-            } else if (BuildVars.DEBUG_VERSION) {
-                appVersion += " beta";
-            }
+            appVersion = BuildVars.BUILD_VERSION_STRING + " (" + BuildVars.BUILD_VERSION_CODE + ")";
             systemVersion = "SDK " + Build.VERSION.SDK_INT;
         } catch (Exception e) {
             systemLangCode = "en";
@@ -633,18 +627,7 @@ public class ConnectionsManager extends BaseController {
         }
         String installer = "";
         try {
-            Context context = ApplicationLoader.applicationContext;
-            if (Build.VERSION.SDK_INT >= 30) {
-                InstallSourceInfo installSourceInfo = context.getPackageManager().getInstallSourceInfo(context.getPackageName());
-                if (installSourceInfo != null) {
-                    installer = installSourceInfo.getInitiatingPackageName();
-                    if (installer == null) {
-                        installer = installSourceInfo.getInstallingPackageName();
-                    }
-                }
-            } else {
-                installer = context.getPackageManager().getInstallerPackageName(context.getPackageName());
-            }
+            installer = BuildVars.PACKAGE_INSTALLER;
         } catch (Throwable ignore) {
 
         }
@@ -653,7 +636,7 @@ public class ConnectionsManager extends BaseController {
         }
         String packageId = "";
         try {
-            packageId = ApplicationLoader.applicationContext.getPackageName();
+            packageId = BuildVars.PACKAGE_ORIGINAL;
         } catch (Throwable ignore) {
 
         }
