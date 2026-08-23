@@ -6,22 +6,21 @@ import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeDescription;
-import org.telegram.ui.Components.IconBackgroundColors;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
 import org.telegram.ui.Components.UniversalRecyclerView;
-import org.telegram.ui.SettingsActivity;
 
 import java.util.ArrayList;
 
-public class JustgramSettingsActivity extends BaseFragment {
+public class JustgramGeneralSettingsActivity extends BaseFragment {
 
     private UniversalRecyclerView listView;
 
@@ -29,7 +28,7 @@ public class JustgramSettingsActivity extends BaseFragment {
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setTitle(LocaleController.getString(R.string.JustgramSettings));
+        actionBar.setTitle(LocaleController.getString(R.string.JustgramSettingsGeneral));
 
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
@@ -44,7 +43,7 @@ public class JustgramSettingsActivity extends BaseFragment {
         frameLayout.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundGray));
         fragmentView = frameLayout;
 
-        listView = new UniversalRecyclerView(this, this::fillItems, (item, view, position, x, y) -> onClick(item), null);
+        listView = new UniversalRecyclerView(this, this::fillItems, (item, view, position, x, y) -> onClick(item, view), null);
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         listView.adapter.update(false);
@@ -53,22 +52,14 @@ public class JustgramSettingsActivity extends BaseFragment {
     }
 
     private void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
-        items.add(SettingsActivity.SettingCell.Factory.of(1, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.settings_account, getString(R.string.JustgramSettingsGeneral)));
-        items.add(SettingsActivity.SettingCell.Factory.of(2, IconBackgroundColors.GREEN.top, IconBackgroundColors.GREEN.bottom, R.drawable.settings_chat, getString(R.string.JustgramSettingsChats)));
-        items.add(SettingsActivity.SettingCell.Factory.of(3, IconBackgroundColors.ORANGE.top, IconBackgroundColors.ORANGE.bottom, R.drawable.settings_features, getString(R.string.JustgramSettingsExperimental)));
-
-        items.add(UItem.asShadow(null));
-
-        items.add(SettingsActivity.SettingCell.Factory.of(4, IconBackgroundColors.PURPLE.top, IconBackgroundColors.PURPLE.bottom, R.drawable.settings_faq, getString(R.string.JustgramSettingsAbout)));
+        items.add(UItem.asCheck(1, getString(R.string.DisableAds)).setChecked(JustgramConfig.disableAds));
     }
 
-    private void onClick(UItem item) {
+    private void onClick(UItem item, View view) {
         if (item.id == 1) {
-            presentFragment(new JustgramGeneralSettingsActivity());
-        } else if (item.id == 4) {
-            presentFragment(new JustgramAboutActivity());
-        } else {
-            presentFragment(new JustgramPlaceholder());
+            JustgramConfig.disableAds = !JustgramConfig.disableAds;
+            JustgramConfig.saveConfig();
+            listView.adapter.update(true);
         }
     }
 

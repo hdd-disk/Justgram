@@ -8,6 +8,8 @@
 
     <string name="JustgramSettingsAbout">"О проекте"</string>
 
+    <string name="DisableAds">Отключить рекламу</string>
+
     <string name="JustgramComingSoon">Здесь пока ничего нет, но это ненадолго.</string>
 
     <string name="TelegramChannel">Канал</string>
