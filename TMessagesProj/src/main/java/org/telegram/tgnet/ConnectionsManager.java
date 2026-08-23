@@ -24,7 +24,6 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BaseController;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.CaptchaController;
-import org.telegram.messenger.EmuDetector;
 import org.telegram.messenger.FileLoadOperation;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
@@ -830,15 +829,7 @@ public class ConnectionsManager extends BaseController {
     }
 
     public static int getInitFlags() {
-        int flags = 0;
-        EmuDetector detector = EmuDetector.with(ApplicationLoader.applicationContext);
-        if (detector.detect()) {
-            if (BuildVars.LOGS_ENABLED) {
-                FileLog.d("detected emu");
-            }
-            flags |= 1024;
-        }
-        return flags;
+        return 0;
     }
 
     public static void onBytesSent(int amount, int networkType, final int currentAccount) {
