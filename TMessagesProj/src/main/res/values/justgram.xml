@@ -19,6 +19,8 @@
     <string name="WebSocketDomain">WebSocket domain</string>
     <string name="WebSocketDomainAuto">Automatic</string>
 
+    <string name="DevTools">Developer tools</string>
+
     <string name="Github">GitHub</string>
     <string name="TelegramChannel">Channel</string>
     <string name="TelegramChat">Chat</string>

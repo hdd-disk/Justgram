@@ -1717,6 +1717,24 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
                 webViewContainer.loadFlickerAndSettingsItem(currentAccount, botId, null);
                 webViewContainer.reload();
             })
+            .add(R.drawable.msg_copy, LocaleController.getString(R.string.CopyLink), () -> {
+                String url = webViewContainer.getUrlLoaded();
+                if (url != null) {
+                    AndroidUtilities.addToClipboard(url);
+                    webViewContainer.showLinkCopiedBulletin();
+                }
+            })
+            .add(R.drawable.msg_openin, LocaleController.getString(R.string.OpenInSystemBrowser2), () -> {
+                String url = webViewContainer.getUrlLoaded();
+                if (url != null) {
+                    Browser.openUrl(getContext(), url);
+                }
+            })
+            .add(R.drawable.msg_settings, LocaleController.getString(R.string.DevTools), () -> {
+                if (webViewContainer.getWebView() != null) {
+                    webViewContainer.getWebView().loadUrl("javascript:(function () { var script = document.createElement('script'); script.src='//cdn.jsdelivr.net/npm/eruda'; document.body.appendChild(script); script.onload = function () { eruda.init() } })();");
+                }
+            })
             .addIf(onVerifiedAge == null && userbot != null && userbot.bot_has_main_app, R.drawable.msg_home, LocaleController.getString(R.string.AddShortcut), () -> {
                 MediaDataController.getInstance(currentAccount).installShortcut(botId, MediaDataController.SHORTCUT_TYPE_ATTACHED_BOT);
             })
