@@ -15,7 +15,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.EmuDetector;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.Components.CubicBezierInterpolator;
@@ -514,56 +513,20 @@ public class GLIconTextureView extends TextureView implements TextureView.Surfac
         int[] configsCount = new int[1];
         EGLConfig[] configs = new EGLConfig[1];
         int[] configSpec;
-        if (EmuDetector.with(getContext()).detect()) {
-            configSpec = new int[] {
-                    EGL10.EGL_RED_SIZE, 8,
-                    EGL10.EGL_GREEN_SIZE, 8,
-                    EGL10.EGL_BLUE_SIZE, 8,
-                    EGL10.EGL_ALPHA_SIZE, 8,
-                    EGL10.EGL_DEPTH_SIZE, 16,  //was 0
-                    EGL10.EGL_NONE
-            };
-        } else {
-            configSpec = new int[] {
-                    EGL10.EGL_RENDERABLE_TYPE,
-                    EGL_OPENGL_ES2_BIT,
-                    EGL10.EGL_RED_SIZE, 8,
-                    EGL10.EGL_GREEN_SIZE, 8,
-                    EGL10.EGL_BLUE_SIZE, 8,
-                    EGL10.EGL_ALPHA_SIZE, 8,
-                    EGL10.EGL_DEPTH_SIZE, 16,  //was 0
-                    EGL10.EGL_STENCIL_SIZE, 0,
-                    EGL10.EGL_SAMPLE_BUFFERS, 1,
-                    EGL10.EGL_SAMPLES, 4,
-                    EGL10.EGL_NONE
-            };
-        }
-        eglConfig = null;
-        if (EmuDetector.with(getContext()).detect()
-                || !mEgl.eglChooseConfig(mEglDisplay, configSpec, configs, 1, configsCount)
-                || configsCount[0] == 0) {
-            int[] fallbackSpec = new int[] {
-                    EGL10.EGL_RENDERABLE_TYPE,
-                    EGL_OPENGL_ES2_BIT,
-                    EGL10.EGL_RED_SIZE, 8,
-                    EGL10.EGL_GREEN_SIZE, 8,
-                    EGL10.EGL_BLUE_SIZE, 8,
-                    EGL10.EGL_ALPHA_SIZE, 8,
-                    EGL10.EGL_DEPTH_SIZE, 16,
-                    EGL10.EGL_STENCIL_SIZE, 0,
-                    EGL10.EGL_NONE
-            };
-            if (!mEgl.eglChooseConfig(mEglDisplay, fallbackSpec, configs, 1, configsCount)) {
-                throw new IllegalArgumentException(
-                        "eglChooseConfig failed "
-                                + GLUtils.getEGLErrorString(mEgl
-                                .eglGetError()));
-            } else if (configsCount[0] > 0) {
-                eglConfig = configs[0];
-            }
-        } else {
-            eglConfig = configs[0];
-        }
+        configSpec = new int[] {
+                EGL10.EGL_RENDERABLE_TYPE,
+                EGL_OPENGL_ES2_BIT,
+                EGL10.EGL_RED_SIZE, 8,
+                EGL10.EGL_GREEN_SIZE, 8,
+                EGL10.EGL_BLUE_SIZE, 8,
+                EGL10.EGL_ALPHA_SIZE, 8,
+                EGL10.EGL_DEPTH_SIZE, 16,  //was 0
+                EGL10.EGL_STENCIL_SIZE, 0,
+                EGL10.EGL_SAMPLE_BUFFERS, 1,
+                EGL10.EGL_SAMPLES, 4,
+                EGL10.EGL_NONE
+        };
+        eglConfig = configs[0];
         if (eglConfig == null) {
             throw new RuntimeException("eglConfig not initialized");
         }

@@ -24,7 +24,6 @@ import com.google.zxing.common.detector.MathUtils;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.DispatchQueue;
-import org.telegram.messenger.EmuDetector;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.ImageReceiver;
 import org.telegram.messenger.MessageObject;
@@ -121,7 +120,6 @@ public class ThanosEffect extends TextureView {
                     drawThread = null;
                 }
                 drawThread = new DrawingThread(surface, ThanosEffect.this::invalidate, ThanosEffect.this::destroy, width, height);
-                drawThread.isEmulator = EmuDetector.with(getContext()).detect();
                 if (!toSet.isEmpty()) {
                     for (int i = 0; i < toSet.size(); ++i) {
                         ToSet toSetObj = toSet.get(i);

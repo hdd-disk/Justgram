@@ -56,7 +56,6 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.DispatchQueue;
-import org.telegram.messenger.EmuDetector;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.GenericProvider;
 import org.telegram.messenger.Intro;
@@ -689,29 +688,18 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
             int[] configsCount = new int[1];
             EGLConfig[] configs = new EGLConfig[1];
             int[] configSpec;
-            if (EmuDetector.with(getParentActivity()).detect()) {
-                configSpec = new int[] {
-                        EGL10.EGL_RED_SIZE, 8,
-                        EGL10.EGL_GREEN_SIZE, 8,
-                        EGL10.EGL_BLUE_SIZE, 8,
-                        EGL10.EGL_ALPHA_SIZE, 8,
-                        EGL10.EGL_DEPTH_SIZE, 24,
-                        EGL10.EGL_NONE
-                };
-            } else {
-                configSpec = new int[] {
-                        EGL10.EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-                        EGL10.EGL_RED_SIZE, 8,
-                        EGL10.EGL_GREEN_SIZE, 8,
-                        EGL10.EGL_BLUE_SIZE, 8,
-                        EGL10.EGL_ALPHA_SIZE, 8,
-                        EGL10.EGL_DEPTH_SIZE, 24,
-                        EGL10.EGL_STENCIL_SIZE, 0,
-                        EGL10.EGL_SAMPLE_BUFFERS, 1,
-                        EGL10.EGL_SAMPLES, 2,
-                        EGL10.EGL_NONE
-                };
-            }
+            configSpec = new int[] {
+                    EGL10.EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+                    EGL10.EGL_RED_SIZE, 8,
+                    EGL10.EGL_GREEN_SIZE, 8,
+                    EGL10.EGL_BLUE_SIZE, 8,
+                    EGL10.EGL_ALPHA_SIZE, 8,
+                    EGL10.EGL_DEPTH_SIZE, 24,
+                    EGL10.EGL_STENCIL_SIZE, 0,
+                    EGL10.EGL_SAMPLE_BUFFERS, 1,
+                    EGL10.EGL_SAMPLES, 2,
+                    EGL10.EGL_NONE
+            };
             if (!egl10.eglChooseConfig(eglDisplay, configSpec, configs, 1, configsCount)) {
                 if (BuildVars.LOGS_ENABLED) {
                     FileLog.e("eglChooseConfig failed " + GLUtils.getEGLErrorString(egl10.eglGetError()));
