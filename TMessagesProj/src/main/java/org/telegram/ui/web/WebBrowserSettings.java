@@ -29,6 +29,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
@@ -222,6 +223,7 @@ public class WebBrowserSettings extends UniversalFragment implements Notificatio
     public static final int BUTTON_ADD_IN_APP_EXCEPTION = 15;
     public static final int BUTTON_ADD_EXTERNAL_EXCEPTION = 16;
     public static final int BUTTON_BROWSER_CLOSE_BUTTON = 17;
+    public static final int BUTTON_FINGERPRINT_PROTECTION = 18;
 
     public int enableRow;
     public int clearCookiesRow;
@@ -307,6 +309,9 @@ public class WebBrowserSettings extends UniversalFragment implements Notificatio
             items.add(UItem.asButton(BUTTON_SEARCH_ENGINE, R.drawable.msg_search, LocaleController.getString(R.string.SearchEngine), SearchEngine.getCurrent().name));
             items.add(UItem.asShadow(LocaleController.getString(R.string.BrowserSettingsSearchEngineInfo)));
 
+            items.add(UItem.asRippleCheck(BUTTON_FINGERPRINT_PROTECTION, LocaleController.getString(R.string.FingerprintProtection)).setChecked(JustgramConfig.fingerprintProtection));
+            items.add(UItem.asShadow(LocaleController.getString(R.string.FingerprintProtectionInfo)));
+
             if (BuildVars.DEBUG_PRIVATE_VERSION) {
                 items.add(UItem.asCheck(12, "adaptable colors").setChecked(SharedConfig.adaptableColorInBrowser));
                 items.add(UItem.asCheck(13, "only local IV").setChecked(SharedConfig.onlyLocalInstantView));
@@ -328,6 +333,9 @@ public class WebBrowserSettings extends UniversalFragment implements Notificatio
             getMessagesController().toggleWebBrowserUseCustomTabs(newUseCustomTabs);
             ((TextCheckCell) view).setChecked(newUseCustomTabs);
             listView.adapter.update(true);
+        } else if (item.id == BUTTON_FINGERPRINT_PROTECTION) {
+            JustgramConfig.toggleFingerprintProtection();
+            ((TextCheckCell) view).setChecked(JustgramConfig.fingerprintProtection);
         } else if (item.id == BUTTON_TOGGLE) {
             getMessagesController().toggleWebBrowserInAppEnabled();
             final boolean inAppBrowserEnabled = getMessagesController().isWebBrowserInAppEnabled();

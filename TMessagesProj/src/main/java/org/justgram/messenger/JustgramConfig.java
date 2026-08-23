@@ -11,6 +11,7 @@ public class JustgramConfig {
 
     public static boolean disableAds = true;
     public static boolean showAccountId = true;
+    public static boolean fingerprintProtection = false;
     public static boolean webSocketTransport = false;
     public static String webSocketDomain = "";
 
@@ -36,6 +37,7 @@ public class JustgramConfig {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("disableAds", disableAds);
             editor.putBoolean("showAccountId", showAccountId);
+            editor.putBoolean("fingerprintProtection", fingerprintProtection);
             editor.putBoolean("webSocketTransport", webSocketTransport);
             editor.putString("webSocketDomain", webSocketDomain);
             editor.apply();
@@ -44,5 +46,10 @@ public class JustgramConfig {
 
     public static SharedPreferences getSettings() {
         return ApplicationLoader.applicationContext.getSharedPreferences("JustgramConfig", Context.MODE_PRIVATE);
+    }
+
+    public static void toggleFingerprintProtection() {
+        fingerprintProtection = !fingerprintProtection;
+        saveConfig();
     }
 }

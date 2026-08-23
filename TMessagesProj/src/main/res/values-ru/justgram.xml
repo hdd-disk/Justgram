@@ -21,4 +21,6 @@
 
     <string name="TelegramChannel">Канал</string>
     <string name="TelegramChat">Чат</string>
+    <string name="FingerprintProtection">Защита от отпечатков</string>
+    <string name="FingerprintProtectionInfo">Мешает веб-сайтам собирать информацию об устройстве для идентификации. Может нарушить работу некоторых сайтов.</string>
 </resources>
