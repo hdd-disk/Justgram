@@ -26,8 +26,10 @@ public class BuildVars {
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= 29;
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
 
-    public static int APP_ID = BuildConfig.APP_ID;
-    public static String APP_HASH = BuildConfig.APP_HASH;
+    public static int BUILD_VERSION_CODE = 69919;
+
+    public static String PACKAGE_INSTALLER = "com.google.android.packageinstaller";
+    public static String PACKAGE_ORIGINAL = "org.telegram.messenger.web";
 
     public static HashSet<String> LOCKED_LOCAL_STRINGS = new HashSet<>(Arrays.asList(
             "AppName",
@@ -35,6 +37,9 @@ public class BuildVars {
             "TelegramVersion",
             "UnsupportedMedia2"
     ));
+
+    public static int APP_ID = 4;
+    public static String APP_HASH = "014b35b6184100b085b0d0572f9b5103";
 
     // SafetyNet key for Google Identity SDK, disabled on FOSS builds
     public static String SAFETYNET_KEY = "";
@@ -46,7 +51,7 @@ public class BuildVars {
     public static boolean IS_BILLING_UNAVAILABLE = false;
 
     // works only on official app ids, disable on your forks
-    public static boolean SUPPORTS_PASSKEYS = false;
+    public static boolean SUPPORTS_PASSKEYS = true;
 
     static {
         if (ApplicationLoader.applicationContext != null) {
@@ -68,20 +73,16 @@ public class BuildVars {
         return true;
     }
 
-    private static Boolean betaApp;
     public static boolean isBetaApp() {
-        if (betaApp == null) {
-            betaApp = ApplicationLoader.applicationContext != null && "org.telegram.messenger.beta".equals(ApplicationLoader.applicationContext.getPackageName());
-        }
-        return betaApp;
+        return false;
     }
 
 
     public static boolean isHuaweiStoreApp() {
-        return ApplicationLoader.isHuaweiStoreBuild();
+        return false;
     }
 
     public static String getSmsHash() {
-        return ApplicationLoader.isStandaloneBuild() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
+        return "w0lkcmTZkKh";
     }
 }
