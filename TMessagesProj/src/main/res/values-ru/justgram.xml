@@ -3,7 +3,7 @@
     <string name="JustgramSettings">Настройки Justgram</string>
 
     <string name="JustgramSettingsGeneral">Основные</string>
-    <string name="JustgramSettingsChats">Чаты</string>
+    <string name="JustgramSettingsAppearance">Внешний вид</string>
     <string name="JustgramSettingsExperimental">Эксперементальные</string>
 
     <string name="JustgramSettingsAbout">"О проекте"</string>
