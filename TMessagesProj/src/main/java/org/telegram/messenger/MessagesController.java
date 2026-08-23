@@ -141,6 +141,8 @@ import java.util.stream.Collectors;
 
 import me.vkryl.core.BitwiseUtils;
 
+import org.justgram.messenger.JustgramConfig;
+
 public class MessagesController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 
     public int lastKnownSessionsCount;
@@ -10878,6 +10880,11 @@ public class MessagesController extends BaseController implements NotificationCe
                 noDialog = true;
             } else if (response instanceof TLRPC.TL_help_promoData) {
                 TLRPC.TL_help_promoData res = (TLRPC.TL_help_promoData) response;
+
+                if (JustgramConfig.disableAds) {
+                    noDialog = true;
+                    return;
+                }
 
                 long did;
                 if (res.peer == null) {

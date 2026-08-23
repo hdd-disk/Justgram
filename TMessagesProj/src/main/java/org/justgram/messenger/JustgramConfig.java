@@ -9,6 +9,8 @@ public class JustgramConfig {
     private static final Object sync = new Object();
     private static boolean loaded = false;
 
+    public static boolean disableAds = true;
+
     static {
         loadConfig();
     }
@@ -19,7 +21,7 @@ public class JustgramConfig {
                 return;
             }
             SharedPreferences preferences = getSettings();
-            
+            disableAds = preferences.getBoolean("disableAds", true);
             loaded = true;
         }
     }
@@ -28,7 +30,7 @@ public class JustgramConfig {
         synchronized (sync) {
             SharedPreferences preferences = getSettings();
             SharedPreferences.Editor editor = preferences.edit();
-            
+            editor.putBoolean("disableAds", disableAds);
             editor.apply();
         }
     }

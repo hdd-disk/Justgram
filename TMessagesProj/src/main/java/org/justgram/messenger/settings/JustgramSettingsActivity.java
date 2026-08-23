@@ -63,7 +63,9 @@ public class JustgramSettingsActivity extends BaseFragment {
     }
 
     private void onClick(UItem item) {
-        if (item.id == 4) {
+        if (item.id == 1) {
+            presentFragment(new JustgramGeneralSettingsActivity());
+        } else if (item.id == 4) {
             presentFragment(new JustgramAboutActivity());
         } else {
             presentFragment(new JustgramPlaceholder());
