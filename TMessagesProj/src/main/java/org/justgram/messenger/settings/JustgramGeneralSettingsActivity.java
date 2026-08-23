@@ -3,7 +3,6 @@ package org.justgram.messenger.settings;
 import static org.telegram.messenger.LocaleController.getString;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -25,6 +24,12 @@ import org.telegram.ui.Components.UniversalRecyclerView;
 import java.util.ArrayList;
 
 public class JustgramGeneralSettingsActivity extends BaseFragment {
+
+    private final static int ID_DISABLE_ADS = 1;
+    private final static int ID_SHOW_ACCOUNT_ID = 2;
+    private final static int ID_WS_TRANSPORT = 3;
+    private final static int ID_WS_DOMAIN = 4;
+    private final static int ID_FINGERPRINT = 5;
 
     private UniversalRecyclerView listView;
 
@@ -48,6 +53,7 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
         fragmentView = frameLayout;
 
         listView = new UniversalRecyclerView(this, this::fillItems, (item, view, position, x, y) -> onClick(item, view), null);
+        listView.setSections();
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         listView.adapter.update(false);
@@ -56,54 +62,55 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
     }
 
     private void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
-        items.add(UItem.asCheck(1, getString(R.string.DisableAds)).setChecked(JustgramConfig.disableAds));
-        items.add(UItem.asCheck(2, getString(R.string.ShowAccountId)).setChecked(JustgramConfig.showAccountId));
-        items.add(UItem.asButtonCheck(3, LocaleController.getString(R.string.WebSocketTransport), LocaleController.getString(R.string.WebSocketTransportInfo))
-            .setChecked(JustgramConfig.webSocketTransport).setMultiline(true));
+        adapter.whiteSectionStart();
+        items.add(UItem.asCheck(ID_DISABLE_ADS, getString(R.string.DisableAds)).setChecked(JustgramConfig.disableAds));
+        items.add(UItem.asCheck(ID_SHOW_ACCOUNT_ID, getString(R.string.ShowAccountId)).setChecked(JustgramConfig.showAccountId));
+        adapter.whiteSectionEnd();
+
+        items.add(UItem.asShadow(null));
+
+        adapter.whiteSectionStart();
+        items.add(UItem.asCheck(ID_WS_TRANSPORT, getString(R.string.WebSocketTransport)).setChecked(JustgramConfig.webSocketTransport));
         if (JustgramConfig.webSocketTransport) {
-            items.add(UItem.asSettingsCell(4, LocaleController.getString(R.string.WebSocketDomain), getWebSocketDomainText()));
+            items.add(UItem.asSettingsCell(ID_WS_DOMAIN, getString(R.string.WebSocketDomain), getWebSocketDomainText()));
         }
-        items.add(UItem.asCheck(5, getString(R.string.FingerprintProtection)).setChecked(JustgramConfig.fingerprintProtection));
+        adapter.whiteSectionEnd();
+        items.add(UItem.asShadow(getString(R.string.WebSocketTransportInfo)));
+
+        adapter.whiteSectionStart();
+        items.add(UItem.asCheck(ID_FINGERPRINT, getString(R.string.FingerprintProtection)).setChecked(JustgramConfig.fingerprintProtection));
+        adapter.whiteSectionEnd();
         items.add(UItem.asShadow(getString(R.string.FingerprintProtectionInfo)));
     }
 
     private void onClick(UItem item, View view) {
-        if (item.id == 1) {
-            JustgramConfig.disableAds = !JustgramConfig.disableAds;
-            JustgramConfig.saveConfig();
-            listView.adapter.update(true);
-        } else if (item.id == 2) {
-            JustgramConfig.showAccountId = !JustgramConfig.showAccountId;
-            JustgramConfig.saveConfig();
-            listView.adapter.update(true);
-        } else if (item.id == 6) {
-            JustgramConfig.toggleFingerprintProtection();
-            listView.adapter.update(true);
-        } else if (item.id == 3) {
-            JustgramConfig.webSocketTransport = !JustgramConfig.webSocketTransport;
-            JustgramConfig.saveConfig();
-            org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(JustgramConfig.webSocketTransport, JustgramConfig.webSocketDomain);
-            listView.adapter.update(true);
-        } else if (item.id == 4) {
-            showWebSocketDomainDialog();
+        switch (item.id) {
+            case ID_DISABLE_ADS:
+                JustgramConfig.disableAds = !JustgramConfig.disableAds;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(true);
+                break;
+            case ID_SHOW_ACCOUNT_ID:
+                JustgramConfig.showAccountId = !JustgramConfig.showAccountId;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(true);
+                break;
+            case ID_FINGERPRINT:
+                JustgramConfig.toggleFingerprintProtection();
+                listView.adapter.update(true);
+                break;
+            case ID_WS_TRANSPORT:
+                JustgramConfig.webSocketTransport = !JustgramConfig.webSocketTransport;
+                JustgramConfig.saveConfig();
+                org.telegram.tgnet.ConnectionsManager.setWebSocketEnabled(JustgramConfig.webSocketTransport, JustgramConfig.webSocketDomain);
+                listView.adapter.update(true);
+                break;
+            case ID_WS_DOMAIN:
+                showWebSocketDomainDialog();
+                break;
         }
     }
 
-    @Override
-    public ArrayList<ThemeDescription> getThemeDescriptions() {
-        ArrayList<ThemeDescription> themeDescriptions = new ArrayList<>();
-
-        themeDescriptions.add(new ThemeDescription(fragmentView, ThemeDescription.FLAG_BACKGROUND, null, null, null, null, Theme.key_windowBackgroundGray));
-
-        themeDescriptions.add(new ThemeDescription(actionBar, ThemeDescription.FLAG_BACKGROUND, null, null, null, null, Theme.key_actionBarDefault));
-        themeDescriptions.add(new ThemeDescription(actionBar, ThemeDescription.FLAG_AB_ITEMSCOLOR, null, null, null, null, Theme.key_actionBarDefaultIcon));
-        themeDescriptions.add(new ThemeDescription(actionBar, ThemeDescription.FLAG_AB_TITLECOLOR, null, null, null, null, Theme.key_actionBarDefaultTitle));
-        themeDescriptions.add(new ThemeDescription(actionBar, ThemeDescription.FLAG_AB_SELECTORCOLOR, null, null, null, null, Theme.key_actionBarDefaultSelector));
-
-        themeDescriptions.add(new ThemeDescription(listView, ThemeDescription.FLAG_LISTGLOWCOLOR, null, null, null, null, Theme.key_actionBarDefault));
-
-        return themeDescriptions;
-    }
 
     private static String getWebSocketDomainText() {
         return TextUtils.isEmpty(JustgramConfig.webSocketDomain) ? LocaleController.getString(R.string.WebSocketDomainAuto) : JustgramConfig.webSocketDomain;
