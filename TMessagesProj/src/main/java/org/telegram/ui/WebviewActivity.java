@@ -50,6 +50,7 @@ import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeDescription;
+import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.ContextProgressView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.ShareAlert;
@@ -75,6 +76,8 @@ public class WebviewActivity extends BaseFragment {
 
     private final static int share = 1;
     private final static int open_in = 2;
+    private final static int copy_link = 3;
+    private final static int developer_tools = 4;
 
     private static final int TYPE_GAME = 0;
     private static final int TYPE_STAT = 1;
@@ -172,6 +175,15 @@ public class WebviewActivity extends BaseFragment {
                     }
                 } else if (id == open_in) {
                     openGameInBrowser(currentUrl, currentMessageObject, getParentActivity(), short_param, currentBot);
+                } else if (id == copy_link) {
+                    if (webView != null) {
+                        AndroidUtilities.addToClipboard(webView.getUrl());
+                        BulletinFactory.of(WebviewActivity.this).createCopyLinkBulletin().show();
+                    }
+                } else if (id == developer_tools) {
+                    if (webView != null) {
+                        webView.loadUrl("javascript:(function () { var script = document.createElement('script'); script.src='//cdn.jsdelivr.net/npm/eruda'; document.body.appendChild(script); script.onload = function () { eruda.init() } })();");
+                    }
                 }
             }
         });
@@ -180,6 +192,8 @@ public class WebviewActivity extends BaseFragment {
         if (type == TYPE_GAME) {
             ActionBarMenuItem menuItem = menu.addItem(0, R.drawable.ic_ab_other);
             menuItem.addSubItem(open_in, R.drawable.msg_openin, LocaleController.getString(R.string.OpenInExternalApp));
+            menuItem.addSubItem(copy_link, R.drawable.msg_copy, LocaleController.getString(R.string.CopyLink));
+            menuItem.addSubItem(developer_tools, R.drawable.msg_settings, LocaleController.getString(R.string.DevTools));
 
             actionBar.setTitle(currentGame);
             actionBar.setSubtitle("@" + currentBot);

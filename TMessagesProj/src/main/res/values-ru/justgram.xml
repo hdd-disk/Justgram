@@ -17,6 +17,8 @@
     <string name="WebSocketDomain">Домен WebSocket</string>
     <string name="WebSocketDomainAuto">Автоматически</string>
 
+    <string name="DevTools">Инструменты разработчика</string>
+
     <string name="JustgramComingSoon">Здесь пока ничего нет, но это ненадолго.</string>
 
     <string name="TelegramChannel">Канал</string>
