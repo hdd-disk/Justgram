@@ -21,6 +21,8 @@
 
     <string name="DevTools">Developer tools</string>
 
+    <string name="AppIconMax">MAX</string>
+
     <string name="Github">GitHub</string>
     <string name="TelegramChannel">Channel</string>
     <string name="TelegramChat">Chat</string>
