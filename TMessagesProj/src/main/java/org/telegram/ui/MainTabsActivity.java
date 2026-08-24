@@ -854,6 +854,15 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         }
     }
 
+    public void updateBottomTabsLayout() {
+        if (tabs == null) return;
+        for (GlassTabView tab : tabs) {
+            if (tab != null) {
+                tab.updateBottomTabsLayout();
+            }
+        }
+    }
+
     public void setGestureSelectedOverride(float animatedPosition, boolean allow) {
         for (int index = 0; index < tabs.length; index++) {
             final int position = indexToPosition(index);

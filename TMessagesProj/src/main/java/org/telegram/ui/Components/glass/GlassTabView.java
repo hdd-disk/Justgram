@@ -26,6 +26,7 @@ import androidx.annotation.StringRes;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.math.MathUtils;
 
+import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ContactsController;
 import org.telegram.messenger.DocumentObject;
@@ -269,6 +270,7 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
         colorSelected = Theme.getColor(Theme.key_glass_tabSelected, resourcesProvider);
         colorSelectedText = Theme.getColor(Theme.key_glass_tabSelectedText, resourcesProvider);
         updateColors();
+        updateBottomTabsLayout();
         invalidate();
     }
 
@@ -404,10 +406,9 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
         tab.textView.setText(LocaleController.getString(stringRes));
         tab.checkPlayAnimation(false);
         tab.imageView.setLayoutParams(LayoutHelper.createFrame(24, 24, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 4, 0, 0));
-        tab.colorDefault = Theme.getColor(Theme.key_glass_tabUnselected, resourcesProvider);
-        tab.colorSelected = Theme.getColor(Theme.key_glass_tabSelected, resourcesProvider);
         tab.colorSelectedText = Theme.getColor(Theme.key_glass_tabSelectedText, resourcesProvider);
         tab.updateColors();
+        tab.updateBottomTabsLayout();
         return tab;
     }
 
@@ -425,10 +426,9 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
         tab.backupImageView = backupImageView;
 
         tab.addView(backupImageView, LayoutHelper.createFrame(22, 22, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 5, 0, 0));
-        tab.colorDefault = Theme.getColor(Theme.key_glass_tabUnselected, resourcesProvider);
-        tab.colorSelected = Theme.getColor(Theme.key_glass_tabSelected, resourcesProvider);
         tab.colorSelectedText = Theme.getColor(Theme.key_glass_tabSelectedText, resourcesProvider);
         tab.updateColors();
+        tab.updateBottomTabsLayout();
         return tab;
     }
 
@@ -436,6 +436,29 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
         TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(UserConfig.getInstance(currentAccount).getClientUserId());
         AvatarDrawable avatarDrawable = new AvatarDrawable(user);
         backupImageView.setForUserOrChat(user, avatarDrawable);
+    }
+
+    public void updateBottomTabsLayout() {
+        if (textView == null) return;
+        textView.setVisibility(JustgramConfig.hideTabsSubtitles ? GONE : VISIBLE);
+        if (imageView != null) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) imageView.getLayoutParams();
+            if (lp != null) {
+                if (JustgramConfig.hideTabsSubtitles) {
+                    lp.topMargin = AndroidUtilities.dp(12);
+                } else {
+                    lp.topMargin = tabAnimation != null ? AndroidUtilities.dp(4) : AndroidUtilities.dp(-6);
+                }
+                imageView.setLayoutParams(lp);
+            }
+        }
+        if (backupImageView != null) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) backupImageView.getLayoutParams();
+            if (lp != null) {
+                lp.topMargin = JustgramConfig.hideTabsSubtitles ? AndroidUtilities.dp(13) : AndroidUtilities.dp(5);
+                backupImageView.setLayoutParams(lp);
+            }
+        }
     }
 
     public static GlassTabView createAttachTab(Context context, Theme.ResourcesProvider resourcesProvider) {
