@@ -14,6 +14,7 @@ public class JustgramConfig {
     public static boolean fingerprintProtection = false;
     public static boolean webSocketTransport = false;
     public static String webSocketDomain = "";
+    public static boolean hideTabsSubtitles = false;
 
     static {
         loadConfig();
@@ -27,6 +28,8 @@ public class JustgramConfig {
             SharedPreferences preferences = getSettings();
             disableAds = preferences.getBoolean("disableAds", true);
             showAccountId = preferences.getBoolean("showAccountId", true);
+            fingerprintProtection = preferences.getBoolean("fingerprintProtection", false);
+            hideTabsSubtitles = preferences.getBoolean("hideTabsSubtitles", false);
             loaded = true;
         }
     }
@@ -40,6 +43,7 @@ public class JustgramConfig {
             editor.putBoolean("fingerprintProtection", fingerprintProtection);
             editor.putBoolean("webSocketTransport", webSocketTransport);
             editor.putString("webSocketDomain", webSocketDomain);
+            editor.putBoolean("hideTabsSubtitles", hideTabsSubtitles);
             editor.apply();
         }
     }

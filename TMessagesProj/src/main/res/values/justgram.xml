@@ -26,4 +26,5 @@
     <string name="TelegramChat">Chat</string>
     <string name="FingerprintProtection">Fingerprint Protection</string>
     <string name="FingerprintProtectionInfo">Prevents websites from collecting hardware and browser information to identify your device. May break some websites.</string>
+    <string name="HideBottomTabsSubtitles">Hide bottom tabs subtitles</string>
 </resources>
