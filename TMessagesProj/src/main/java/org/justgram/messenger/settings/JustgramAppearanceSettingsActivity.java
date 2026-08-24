@@ -27,6 +27,7 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
     private UniversalRecyclerView listView;
 
     private final static int ID_HIDE_BOTTOM_TABS_SUBTITLES = 1;
+    private final static int ID_SECTIONS_SEPARATED_HEADERS = 2;
 
     @Override
     public View createView(Context context) {
@@ -59,6 +60,7 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
     private void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
         adapter.whiteSectionStart();
         items.add(UItem.asCheck(ID_HIDE_BOTTOM_TABS_SUBTITLES, LocaleController.getString(R.string.HideBottomTabsSubtitles)).setChecked(JustgramConfig.hideTabsSubtitles));
+        items.add(UItem.asCheck(ID_SECTIONS_SEPARATED_HEADERS, LocaleController.getString(R.string.SeparateHeaders)).setChecked(JustgramConfig.sectionsSeparatedHeaders));
         adapter.whiteSectionEnd();
 
         adapter.whiteSectionStart();
@@ -96,6 +98,11 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
                         }
                     }
                 }
+                break;
+            case ID_SECTIONS_SEPARATED_HEADERS:
+                JustgramConfig.sectionsSeparatedHeaders = !JustgramConfig.sectionsSeparatedHeaders;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(true);
                 break;
         }
     }
