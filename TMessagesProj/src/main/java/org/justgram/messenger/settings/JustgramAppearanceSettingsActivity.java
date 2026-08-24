@@ -60,6 +60,22 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
         adapter.whiteSectionStart();
         items.add(UItem.asCheck(ID_HIDE_BOTTOM_TABS_SUBTITLES, LocaleController.getString(R.string.HideBottomTabsSubtitles)).setChecked(JustgramConfig.hideTabsSubtitles));
         adapter.whiteSectionEnd();
+
+        adapter.whiteSectionStart();
+        items.add(UItem.asHeader(LocaleController.getString(R.string.LiquidGlassOpacity)));
+        items.add(UItem.asIntSlideView(
+                1,
+                0, (int) ((1f - JustgramConfig.liquidGlassOpacity) * 100), 100,
+                val -> val + "%",
+                val -> JustgramConfig.liquidGlassOpacity = 1f - (val / 100f),
+                val -> {
+                    JustgramConfig.saveConfig();
+                    if (parentLayout != null) {
+                        parentLayout.rebuildAllFragmentViews(true, true);
+                    }
+                }
+        ));
+        adapter.whiteSectionEnd();
     }
 
     private void onClick(UItem item, View view) {

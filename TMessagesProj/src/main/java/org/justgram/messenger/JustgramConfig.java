@@ -15,6 +15,7 @@ public class JustgramConfig {
     public static boolean webSocketTransport = false;
     public static String webSocketDomain = "";
     public static boolean hideTabsSubtitles = false;
+    public static float liquidGlassOpacity = 0.85f;
 
     static {
         loadConfig();
@@ -30,6 +31,7 @@ public class JustgramConfig {
             showAccountId = preferences.getBoolean("showAccountId", true);
             fingerprintProtection = preferences.getBoolean("fingerprintProtection", false);
             hideTabsSubtitles = preferences.getBoolean("hideTabsSubtitles", false);
+            liquidGlassOpacity = preferences.getFloat("liquidGlassOpacity", 0.85f);
             loaded = true;
         }
     }
@@ -44,6 +46,7 @@ public class JustgramConfig {
             editor.putBoolean("webSocketTransport", webSocketTransport);
             editor.putString("webSocketDomain", webSocketDomain);
             editor.putBoolean("hideTabsSubtitles", hideTabsSubtitles);
+            editor.putFloat("liquidGlassOpacity", liquidGlassOpacity);
             editor.apply();
         }
     }
