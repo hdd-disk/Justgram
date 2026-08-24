@@ -57,6 +57,8 @@ import org.telegram.ui.Stories.recorder.StoryPrivacyBottomSheet;
 
 import java.util.ArrayList;
 
+import org.justgram.messenger.JustgramConfig;
+
 import me.vkryl.core.BitwiseUtils;
 
 public class UniversalAdapter extends AdapterWithDiffUtils {
@@ -186,7 +188,18 @@ public class UniversalAdapter extends AdapterWithDiffUtils {
     }
     public void whiteSectionEnd() {
         if (currentWhiteSection != null) {
-            currentWhiteSection.end = Math.max(0, itemsOffset + items.size() - 1);
+            int start = currentWhiteSection.start;
+            int end = Math.max(0, itemsOffset + items.size() - 1);
+            if (JustgramConfig.sectionsSeparatedHeaders) {
+                int localStart = Math.max(0, start - itemsOffset);
+                int localEnd = Math.max(0, items.size() - 1);
+                while (localStart <= localEnd && isHeader(getItemViewType(localStart))) {
+                    localStart++;
+                }
+                start = itemsOffset + localStart;
+            }
+            currentWhiteSection.start = start;
+            currentWhiteSection.end = end;
             if (currentWhiteSection.start == currentWhiteSection.end) {
                 whiteSections.remove(currentWhiteSection);
             }
@@ -201,9 +214,18 @@ public class UniversalAdapter extends AdapterWithDiffUtils {
         reorderSections.add(currentReorderSection);
         return reorderSections.size() - 1;
     }
+
     public void reorderSectionEnd() {
         if (currentReorderSection != null) {
-            currentReorderSection.end = Math.max(0, items.size() - 1);
+            int start = currentReorderSection.start;
+            int end = Math.max(0, items.size() - 1);
+            if (JustgramConfig.sectionsSeparatedHeaders) {
+                while (start <= end && isHeader(getItemViewType(start))) {
+                    start++;
+                }
+            }
+            currentReorderSection.start = start;
+            currentReorderSection.end = end;
         }
     }
 
@@ -333,6 +355,9 @@ public class UniversalAdapter extends AdapterWithDiffUtils {
 
     public boolean shouldApplyBackground(int viewType) {
         if (!applyBackground) return false;
+        if (JustgramConfig.sectionsSeparatedHeaders && isHeader(viewType)) {
+            return false;
+        }
         if (viewType >= UItem.factoryViewTypeStartsWith) {
             return true;
         }
@@ -592,7 +617,14 @@ public class UniversalAdapter extends AdapterWithDiffUtils {
     private boolean hasDivider(int position) {
         UItem item = getItem(position);
         UItem nextItem = getItem(position + 1);
-        return item != null && !item.hideDivider && nextItem != null && isShadow(nextItem.viewType) == isShadow(item.viewType);
+        return item != null && !item.hideDivider && nextItem != null && !(JustgramConfig.sectionsSeparatedHeaders && isHeader(nextItem.viewType)) && isShadow(nextItem.viewType) == isShadow(item.viewType);
+    }
+
+    public static boolean isHeader(int viewType) {
+        return viewType == VIEW_TYPE_HEADER ||
+                viewType == VIEW_TYPE_ANIMATED_HEADER ||
+                viewType == VIEW_TYPE_BLACK_HEADER ||
+                viewType == VIEW_TYPE_LARGE_HEADER;
     }
 
     public static boolean isShadow(int viewType) {
