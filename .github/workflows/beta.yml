@@ -37,7 +37,7 @@ jobs:
       - name: Install Build Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ninja-build meson gperf
+          sudo apt update && sudo apt install -y git curl ninja-build meson nasm cmake pkg-config gperf
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
