@@ -178,6 +178,36 @@ target_compile_options(${NATIVE_LIB} PUBLIC
 target_compile_definitions(${NATIVE_LIB} PUBLIC
         BSD=1 NULL=0 SOCKLEN_T=socklen_t ANDROID_NDK DISABLE_IMPORTGL AVOID_TABLES ANDROID_TILE_BASED_DECODE __STDC_CONSTANT_MACROS ANDROID_ARMV6_IDCT OPUS_BUILD FIXED_POINT USE_ALLOCA restrict= __EMX__ LOCALE_NOT_USED HAVE_LRINT HAVE_LRINTF)
 
+if (ANDROID AND CMAKE_SYSTEM_VERSION LESS 24 AND (ANDROID_ABI STREQUAL "armeabi-v7a" OR ANDROID_ABI STREQUAL "x86"))
+    target_compile_definitions(${NATIVE_LIB} PRIVATE fseeko=fseek ftello=ftell)
+endif()
+
+if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
+    set_target_properties(${NATIVE_LIB} PROPERTIES
+            ANDROID_ARM_NEON FALSE
+            ANDROID_ARM_MODE arm)
+    target_compile_definitions(${NATIVE_LIB} PUBLIC
+            ANDROID_ARM_NEON=false)
+    target_sources(${NATIVE_LIB} PRIVATE
+        third_party/libyuv/source/compare_neon.cc
+        third_party/libyuv/source/rotate_neon.cc
+        third_party/libyuv/source/row_neon.cc
+        third_party/libyuv/source/scale_neon.cc)
+else()
+    set_target_properties(${NATIVE_LIB} PROPERTIES
+            ANDROID_ARM_NEON FALSE
+            ANDROID_ARM_MODE arm)
+endif()
+
+if (${ANDROID_ABI} STREQUAL "armeabi-v7a" OR ${ANDROID_ABI} STREQUAL "arm64-v8a")
+    target_compile_definitions(${NATIVE_LIB} PUBLIC
+            LIBYUV_NEON)
+
+elseif(${ANDROID_ABI} STREQUAL "x86")
+    target_compile_definitions(${NATIVE_LIB} PUBLIC
+            x86fix)
+endif()
+
 target_sources(${NATIVE_LIB} PRIVATE
 
         third_party/xiph/opusfile/src/info.c
