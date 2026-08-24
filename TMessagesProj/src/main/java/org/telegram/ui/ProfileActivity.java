@@ -4490,6 +4490,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     if (user != null) {
                         showDialog(new CommunitySheet(this, user.linked_community_id));
                     }
+                }
             } else if (position == accountIdRow) {
                 String id = String.valueOf(userId != 0 ? userId : -chatId);
                 AndroidUtilities.addToClipboard(id);
