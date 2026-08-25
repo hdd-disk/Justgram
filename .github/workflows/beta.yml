@@ -75,12 +75,14 @@ jobs:
         run: |
           echo "$SIGN_BASE64" | base64 -d > TMessagesProj/config/release.keystore
 
+      - name: Create local.properties
+        run: |
+          echo "RELEASE_STORE_PASSWORD=${{ secrets.SIGN_PASSWORD || 'android' }}" >> local.properties
+          echo "RELEASE_KEY_ALIAS=${{ secrets.SIGN_ALIAS_NAME || 'androidkey' }}" >> local.properties
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.SIGN_ALIAS_PASSWORD || 'android' }}" >> local.properties
+
       - name: Build Beta APKs (arm64 and arm32)
         run: ./gradlew assemblearm64-v8arelease assemblearmeabi-v7arelease
-        env:
-          RELEASE_STORE_PASSWORD: ${{ secrets.SIGN_PASSWORD || 'android' }}
-          RELEASE_KEY_ALIAS: ${{ secrets.SIGN_ALIAS_NAME || 'androidkey' }}
-          RELEASE_KEY_PASSWORD: ${{ secrets.SIGN_ALIAS_PASSWORD || 'android' }}
 
       - name: Generate Changelog
         id: git-cliff
