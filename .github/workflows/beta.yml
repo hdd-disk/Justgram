@@ -89,7 +89,7 @@ jobs:
         uses: orhun/git-cliff-action@v4
         with:
           config: cliff.toml
-          args: $BEFORE_SHA..$AFTER_SHA
+          args: ${{ github.event.before }}..${{ github.event.after }}
         env:
           OUTPUT: changelog.md
 
