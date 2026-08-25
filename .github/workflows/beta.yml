@@ -5,12 +5,20 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      comment:
+        description: 'Optional comment for the release'
+        required: false
+        default: ''
 
 jobs:
   build:
     name: Build Beta APKs
     runs-on: ubuntu-22.04
     timeout-minutes: 120
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Repository
@@ -55,8 +63,17 @@ jobs:
         run: |
           VERSION_NAME=$(grep 'APP_VERSION_NAME' gradle.properties | cut -d'=' -f2)
           VERSION_CODE=$(grep 'APP_VERSION_CODE' gradle.properties | cut -d'=' -f2)
+          COMMIT_HASH=$(git rev-parse --short HEAD)
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "commit_hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
+
+      - name: Decode Keystore
+        if: env.SIGN_BASE64 != ''
+        env:
+          SIGN_BASE64: ${{ secrets.SIGN_BASE64 }}
+        run: |
+          echo "$SIGN_BASE64" | base64 -d > TMessagesProj/config/release.keystore
 
       - name: Build Beta APKs (arm64 and arm32)
         run: ./gradlew assemblearm64-v8arelease assemblearmeabi-v7arelease
@@ -65,8 +82,35 @@ jobs:
           RELEASE_KEY_ALIAS: ${{ secrets.SIGN_ALIAS_NAME || 'androidkey' }}
           RELEASE_KEY_PASSWORD: ${{ secrets.SIGN_ALIAS_PASSWORD || 'android' }}
 
-      - name: Upload Beta APKs
-        uses: actions/upload-artifact@v4
+      - name: Generate Changelog
+        id: git-cliff
+        uses: orhun/git-cliff-action@v4
         with:
-          name: beta-apks-${{ steps.get_version.outputs.version_name }}-${{ steps.get_version.outputs.version_code }}
-          path: TMessagesProj_App/build/outputs/apk/*/release/*.apk
+          config: cliff.toml
+          args: $BEFORE_SHA..$AFTER_SHA
+        env:
+          OUTPUT: changelog.md
+
+      - name: Prepare Release Body
+        run: |
+          COMMENT="${{ github.event.inputs.comment }}"
+          CHANGELOG=$(cat changelog.md)
+          VERSION="${{ steps.get_version.outputs.version_name }}"
+          COMMIT="${{ steps.get_version.outputs.commit_hash }}"
+          
+          if [ -n "$COMMENT" ]; then
+            echo -e "$COMMENT\n" > release_body.md
+          fi
+          cat changelog.md >> release_body.md
+          echo -e "\n---\n**Version:** $VERSION\n**Commit:** $COMMIT" >> release_body.md
+
+      - name: Create Beta Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: beta-${{ steps.get_version.outputs.version_name }}-${{ github.run_number }}
+          name: Beta ${{ steps.get_version.outputs.version_name }} (build ${{ github.run_number }})
+          body_path: release_body.md
+          prerelease: true
+          files: TMessagesProj_App/build/outputs/apk/*/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
