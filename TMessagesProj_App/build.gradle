@@ -40,6 +40,15 @@ android {
     compileSdkVersion 36
     buildToolsVersion '36.0.0'
 
+    Properties localProperties = new Properties()
+    if (project.rootProject.file('local.properties').exists()) {
+        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+    }
+
+    def releaseStorePassword = localProperties.getProperty('RELEASE_STORE_PASSWORD', "")
+    def releaseKeyAlias = localProperties.getProperty('RELEASE_KEY_ALIAS', "")
+    def releaseKeyPassword = localProperties.getProperty('RELEASE_KEY_PASSWORD', "")
+
     defaultConfig.applicationId = APP_PACKAGE
 
     dependenciesInfo {
@@ -65,16 +74,16 @@ android {
     signingConfigs {
         debug {
             storeFile file("../TMessagesProj/config/release.keystore")
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
+            storePassword releaseStorePassword
+            keyAlias releaseKeyAlias
+            keyPassword releaseKeyPassword
         }
 
         release {
             storeFile file("../TMessagesProj/config/release.keystore")
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
+            storePassword releaseStorePassword
+            keyAlias releaseKeyAlias
+            keyPassword releaseKeyPassword
         }
     }
 
