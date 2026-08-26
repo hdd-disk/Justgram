@@ -1,0 +1,92 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      changelog:
+        description: 'Changelog:'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK and Build Dependencies
+        run: |
+          sdkmanager "ndk;27.2.12479018"
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            ninja-build gperf meson libuv1-dev nasm cmake \
+            autoconf automake libtool pkg-config bash git
+
+      - name: Extract Version from gradle.properties
+        id: gradle_version
+        run: |
+          VERSION=$(grep 'APP_VERSION_NAME' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Prepare Changelog
+        run: |
+          if [ -n "${{ github.event.inputs.changelog }}" ]; then
+            echo "${{ github.event.inputs.changelog }}" > changelog.txt
+          elif [ -f "RELEASE_NOTES.md" ]; then
+            cat RELEASE_NOTES.md > changelog.txt
+          else
+            echo "Release version ${{ env.APP_VERSION }}" > changelog.txt
+          fi
+
+      - name: Decode Keystore
+        run: |
+          mkdir -p TMessagesProj/config
+          echo "${{ secrets.SIGN_BASE64 }}" | base64 --decode > TMessagesProj/config/release.keystore
+
+      - name: Create local.properties
+        run: |
+          echo "RELEASE_STORE_PASSWORD=${{ secrets.SIGN_PASSWORD }}" >> local.properties
+          echo "RELEASE_KEY_ALIAS=${{ secrets.SIGN_ALIAS_NAME }}" >> local.properties
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.SIGN_ALIAS_PASSWORD }}" >> local.properties
+
+      - name: Cache Rust
+        uses: actions/cache@v4
+        with:
+          path: |
+            /var/tmp/mg-rustup
+            /var/tmp/mg-cargo
+          key: ${{ runner.os }}-rust-${{ hashFiles('TMessagesProj/jni/setup_rust.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-
+
+      - name: Build APKs (ARM32 and ARM64)
+        run: ./gradlew assembleArmeabi-v7aRelease assembleArm64-v8aRelease --stacktrace
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.APP_VERSION }}
+          name: Release v${{ env.APP_VERSION }}
+          body_path: changelog.txt
+          files: |
+            TMessagesProj_App/build/outputs/apk/**/release/*.apk
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
