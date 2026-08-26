@@ -11,7 +11,7 @@ public class JustgramConfig {
 
     public static boolean disableAds = true;
     public static boolean showAccountId = true;
-    public static boolean fingerprintProtection = false;
+    public static boolean fingerprintProtection = true;
     public static boolean webSocketTransport = false;
     public static String webSocketDomain = "";
     public static boolean hideTabsSubtitles = false;
@@ -30,7 +30,7 @@ public class JustgramConfig {
             SharedPreferences preferences = getSettings();
             disableAds = preferences.getBoolean("disableAds", true);
             showAccountId = preferences.getBoolean("showAccountId", true);
-            fingerprintProtection = preferences.getBoolean("fingerprintProtection", false);
+            fingerprintProtection = preferences.getBoolean("fingerprintProtection", true);
             hideTabsSubtitles = preferences.getBoolean("hideTabsSubtitles", false);
             liquidGlassOpacity = preferences.getFloat("liquidGlassOpacity", 0.85f);
             sectionsSeparatedHeaders = preferences.getBoolean("sectionsSeparatedHeaders", true);
