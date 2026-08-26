@@ -1,0 +1,27 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "package-name": "justgram",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "release-please-manifest.json",
+          "jsonpath": "$.."
+        },
+        {
+          "type": "regex",
+          "path": "gradle.properties",
+          "patterns": [
+            "APP_VERSION_NAME=(\\d+\\.\\d+\\.\\d+)"
+          ]
+        }
+      ]
+    }
+  },
+  "plugins": [
+    {
+      "type": "sentence-case"
+    }
+  ]
+}

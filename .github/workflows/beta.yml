@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -85,25 +85,27 @@ jobs:
         run: ./gradlew assemblearm64-v8arelease assemblearmeabi-v7arelease
 
       - name: Generate Changelog
-        id: git-cliff
-        uses: orhun/git-cliff-action@v4
-        with:
-          config: cliff.toml
-          args: ${{ github.event.before }}..${{ github.event.after }}
-        env:
-          OUTPUT: changelog.md
+        id: changelog
+        run: |
+          git log --oneline $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD > changelog.md
+          echo "Generated changelog:"
+          cat changelog.md
 
       - name: Prepare Release Body
         run: |
           COMMENT="${{ github.event.inputs.comment }}"
-          CHANGELOG=$(cat changelog.md)
           VERSION="${{ steps.get_version.outputs.version_name }}"
           COMMIT="${{ steps.get_version.outputs.commit_hash }}"
           
           if [ -n "$COMMENT" ]; then
             echo -e "$COMMENT\n" > release_body.md
           fi
-          cat changelog.md >> release_body.md
+          
+          if [ -f changelog.md ]; then
+            echo -e "### Changes\n" >> release_body.md
+            cat changelog.md >> release_body.md
+          fi
+          
           echo -e "\n---\n**Version:** $VERSION\n**Commit:** $COMMIT" >> release_body.md
 
       - name: Create Beta Release

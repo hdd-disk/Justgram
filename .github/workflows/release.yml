@@ -1,22 +1,29 @@
 name: Release Build
 
 on:
-  workflow_dispatch:
-    inputs:
-      version_name:
-        description: 'Version Name (e.g. 12.10.0)'
-        required: false
-      version_code:
-        description: 'Version Code (e.g. 7031)'
-        required: false
-      comment:
-        description: 'Optional comment for the release'
-        required: false
-        default: ''
+  push:
+    branches:
+      - main
 
 jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   build:
-    name: Build Release APKs
+    name: Build and Upload Release APKs
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-22.04
     timeout-minutes: 180
     permissions:
@@ -60,17 +67,16 @@ jobs:
           sudo mkdir -p /var/tmp/mg-rustup /var/tmp/mg-cargo
           sudo chmod -R 777 /var/tmp
 
-      - name: Extract Version from gradle.properties
-        id: get_version
+      - name: Increment Version Code
         run: |
-          VERSION_NAME_PROP=$(grep 'APP_VERSION_NAME' gradle.properties | cut -d'=' -f2)
-          VERSION_CODE_PROP=$(grep 'APP_VERSION_CODE' gradle.properties | cut -d'=' -f2)
-          VERSION_NAME="${{ github.event.inputs.version_name }}"
-          VERSION_CODE="${{ github.event.inputs.version_code }}"
-          if [ -z "$VERSION_NAME" ]; then VERSION_NAME=$VERSION_NAME_PROP; fi
-          if [ -z "$VERSION_CODE" ]; then VERSION_CODE=$VERSION_CODE_PROP; fi
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          VERSION_CODE=$(grep 'APP_VERSION_CODE' gradle.properties | cut -d'=' -f2)
+          NEW_VERSION_CODE=$((VERSION_CODE + 1))
+          sed -i "s/APP_VERSION_CODE=$VERSION_CODE/APP_VERSION_CODE=$NEW_VERSION_CODE/" gradle.properties
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add gradle.properties
+          git commit -m "chore: bump version code to $NEW_VERSION_CODE [skip ci]"
+          git push
 
       - name: Decode Keystore
         if: env.SIGN_BASE64 != ''
@@ -88,30 +94,10 @@ jobs:
       - name: Build Release APKs (arm64 and arm32)
         run: ./gradlew assemblearm64-v8arelease assemblearmeabi-v7arelease
 
-      - name: Generate Changelog
-        id: git-cliff
-        uses: orhun/git-cliff-action@v4
-        with:
-          config: cliff.toml
-          args: --latest
-        env:
-          OUTPUT: changelog.md
-
-      - name: Prepare Release Body
-        run: |
-          COMMENT="${{ github.event.inputs.comment }}"
-          if [ -n "$COMMENT" ]; then
-            echo -e "$COMMENT\n" > release_body.md
-          fi
-          cat changelog.md >> release_body.md
-
-      - name: Create Release
+      - name: Upload APKs to Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: release-${{ steps.get_version.outputs.version_name }}_${{ steps.get_version.outputs.version_code }}
-          name: Release ${{ steps.get_version.outputs.version_name }}
-          body_path: release_body.md
-          prerelease: false
+          tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: TMessagesProj_App/build/outputs/apk/*/release/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
