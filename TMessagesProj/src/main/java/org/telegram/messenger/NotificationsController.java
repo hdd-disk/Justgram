@@ -4589,7 +4589,7 @@ public class NotificationsController extends BaseController implements Notificat
                     .setGroupSummary(true)
                     .setShowWhen(true)
                     .setWhen(((long) lastMessageObject.messageOwner.date) * 1000)
-                    .setColor(0xff11acfa);
+                    .setColor(0xffdf7ecf);
 
             long[] vibrationPattern = null;
             Uri sound = null;
