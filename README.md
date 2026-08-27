@@ -1,18 +1,7 @@
-## Telegram messenger for Android
+# Justgram
+Just anоther interesting FOSS Telegram client.
 
-[Telegram](https://telegram.org) is a messaging app with a focus on speed and security. It’s superfast, simple and free.
-This repo contains the official source code for [Telegram App for Android](https://play.google.com/store/apps/details?id=org.telegram.messenger).
-
-## Creating your Telegram Application
-
-We welcome all developers to use our API and source code to create applications on our platform.
-There are several things we require from **all developers** for the moment.
-
-1. [**Obtain your own api_id**](https://core.telegram.org/api/obtaining_api_id) for your application.
-2. Please **do not** use the name Telegram for your app — or make sure your users understand that it is unofficial.
-3. Kindly **do not** use our standard logo (white paper plane in a blue circle) as your app's logo.
-3. Please study our [**security guidelines**](https://core.telegram.org/mtproto/security_guidelines) and take good care of your users' data and privacy.
-4. Please remember to publish **your** code too in order to comply with the licences.
+[![Release Build](https://github.com/hdd-disk/Justgram/actions/workflows/release.yml/badge.svg)](https://github.com/hdd-disk/Justgram/actions/workflows/release.yml) [![Channel](https://img.shields.io/badge/Channel-Telegram-blue.svg)](https://t.me/Justgramm) [![Chat](https://img.shields.io/badge/Chat-Telegram-blue.svg)](https://t.me/justgram_chat)
 
 ### API, Protocol documentation
 
@@ -20,27 +9,45 @@ Telegram API manuals: https://core.telegram.org/api
 
 MTproto protocol manuals: https://core.telegram.org/mtproto
 
-### Compilation Guide
+### Building
 
-**Note**: In order to support [reproducible builds](https://core.telegram.org/reproducible-builds), this repo contains dummy release.keystore,  google-services.json and filled variables inside BuildVars.java. Before publishing your own APKs please make sure to replace all these files with your own.
+> [!CAUTION]
+>
+> **Building on Windows is not supported.**
 
-You will require Android Studio 2025.1.4, Android NDK 27.2.12479018 and Android SDK 36.
 
-1. Clone the Telegram source code with its submodules:
-   ```bash
-   git clone --recursive --shallow-submodules https://github.com/DrKLO/Telegram.git Telegram
-   ```
-   In case you forgot the `--recursive` flag, change to the `Telegram` directory and run:
-   ```bash
-   git submodule init && git submodule update --init --recursive --depth=1
-   ```
-2. Copy your release.keystore into TMessagesProj/config
-3. Fill out RELEASE_KEY_PASSWORD, RELEASE_KEY_ALIAS, RELEASE_STORE_PASSWORD in gradle.properties to access your  release.keystore
-4.  Go to https://console.firebase.google.com/, create two android apps with application IDs org.telegram.messenger and org.telegram.messenger.beta, turn on firebase messaging and download google-services.json, which should be copied to the same folder as TMessagesProj.
-5. Open the project in the Studio (note that it should be opened, NOT imported).
-6. Fill out values in TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java – there’s a link for each of the variables showing where and which data to obtain.
-7. You are ready to compile Telegram.
+#### 1. Install ninja-build, gperf, meson, libuv1-dev, nasm, cmake, autoconf, automake, libtool, pkg-config, git
 
-### Localization
+#### 2. Clone repository:
+```
+git clone --recursive --shallow-submodules https://github.com/hdd-disk/Justgram
+```
+#### 3. Setup Signing Credentials
 
-We moved all translations to https://translations.telegram.org/en/android/. Please use it.
+1) Place your `release.keystore` file into the `TMessagesProj/config` directory. 
+
+2) Open your `local.properties` file in the root directory and add the following properties: 
+```
+RELEASE_KEY_ALIAS=your_key_alias 
+RELEASE_STORE_PASSWORD=your_keystore_password 
+RELEASE_KEY_PASSWORD=your_key_password
+```
+
+
+#### 4. Build
+Build with Android Studio or from the command line:
+``` 
+./gradlew assembleBundleRelease # arm64-v8a and armabi-v7a
+./gradlew assembleArm64-v8aRelease # arm64-v8a
+./gradlew assembleArmeabi-v7aRelease # armeabi-v7a
+```
+
+Native libraries (FFmpeg, BoringSSL, libvpx, dav1d, tde2e) are built from source automatically on the first build and cached for subsequent runs.
+
+### Credits:
+- [Mercurygram](https://github.com/Mercurygram/Mercurygram)
+- [Forkgram](https://github.com/forkgram/TelegramAndroid)
+- [Nekogram](https://github.com/Nekogram/Nekogram)
+- [Telegram Monet](https://github.com/mi-g-alex/Telegram-Monet)
+- [Nagram XF](https://github.com/Keeperorowner/NagramXF)
+
