@@ -28,4 +28,6 @@
     <string name="HideBottomTabsSubtitles">Скрыть подписи иконок в нижней панели</string>
     <string name="LiquidGlassOpacity">Прозрачность Liquid Glass</string>
     <string name="SeparateHeaders">Разделять заголовки разделов</string>
+
+    <string name="AdaptiveChatTitle">Адаптивный заголовок чата</string>
 </resources>

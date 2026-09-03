@@ -29,6 +29,8 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
     private final static int ID_HIDE_BOTTOM_TABS_SUBTITLES = 1;
     private final static int ID_SECTIONS_SEPARATED_HEADERS = 2;
 
+    private final static int ID_ADAPTIVE_CHAT_TITLE = 3;
+
     @Override
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
@@ -78,6 +80,10 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
                 }
         ));
         adapter.whiteSectionEnd();
+
+        adapter.whiteSectionStart();
+        items.add(UItem.asCheck(ID_ADAPTIVE_CHAT_TITLE, LocaleController.getString(R.string.AdaptiveChatTitle)).setChecked(JustgramConfig.adaptiveChatTitle));
+        adapter.whiteSectionEnd();
     }
 
     private void onClick(UItem item, View view) {
@@ -104,6 +110,12 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
                 JustgramConfig.saveConfig();
                 listView.adapter.update(true);
                 break;
+            case ID_ADAPTIVE_CHAT_TITLE:
+                JustgramConfig.adaptiveChatTitle = !JustgramConfig.adaptiveChatTitle;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(true);
+                break;
+
         }
     }
 }
