@@ -30,12 +30,13 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
     private final static int ID_SECTIONS_SEPARATED_HEADERS = 2;
 
     private final static int ID_ADAPTIVE_CHAT_TITLE = 3;
+    private final static int ID_HIDE_CALL_BUTTON = 4;
 
     @Override
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setTitle(LocaleController.getString(R.string.JustgramSettingsAppearance));
+        actionBar.setTitle(getString(R.string.JustgramSettingsAppearance));
 
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
@@ -61,12 +62,12 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
 
     private void fillItems(ArrayList<UItem> items, UniversalAdapter adapter) {
         adapter.whiteSectionStart();
-        items.add(UItem.asCheck(ID_HIDE_BOTTOM_TABS_SUBTITLES, LocaleController.getString(R.string.HideBottomTabsSubtitles)).setChecked(JustgramConfig.hideTabsSubtitles));
-        items.add(UItem.asCheck(ID_SECTIONS_SEPARATED_HEADERS, LocaleController.getString(R.string.SeparateHeaders)).setChecked(JustgramConfig.sectionsSeparatedHeaders));
+        items.add(UItem.asCheck(ID_HIDE_BOTTOM_TABS_SUBTITLES, getString(R.string.HideBottomTabsSubtitles)).setChecked(JustgramConfig.hideTabsSubtitles));
+        items.add(UItem.asCheck(ID_SECTIONS_SEPARATED_HEADERS, getString(R.string.SeparateHeaders)).setChecked(JustgramConfig.sectionsSeparatedHeaders));
         adapter.whiteSectionEnd();
 
         adapter.whiteSectionStart();
-        items.add(UItem.asHeader(LocaleController.getString(R.string.LiquidGlassOpacity)));
+        items.add(UItem.asHeader(getString(R.string.LiquidGlassOpacity)));
         items.add(UItem.asIntSlideView(
                 1,
                 0, (int) ((1f - JustgramConfig.liquidGlassOpacity) * 100), 100,
@@ -82,7 +83,8 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
         adapter.whiteSectionEnd();
 
         adapter.whiteSectionStart();
-        items.add(UItem.asCheck(ID_ADAPTIVE_CHAT_TITLE, LocaleController.getString(R.string.AdaptiveChatTitle)).setChecked(JustgramConfig.adaptiveChatTitle));
+        items.add(UItem.asCheck(ID_ADAPTIVE_CHAT_TITLE, getString(R.string.AdaptiveChatTitle)).setChecked(JustgramConfig.adaptiveChatTitle));
+        items.add(UItem.asCheck(ID_HIDE_CALL_BUTTON, getString(R.string.HideCallButton)).setChecked(JustgramConfig.hideCallButton));
         adapter.whiteSectionEnd();
     }
 
@@ -114,6 +116,14 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
                 JustgramConfig.adaptiveChatTitle = !JustgramConfig.adaptiveChatTitle;
                 JustgramConfig.saveConfig();
                 listView.adapter.update(true);
+                break;
+            case ID_HIDE_CALL_BUTTON:
+                JustgramConfig.hideCallButton = !JustgramConfig.hideCallButton;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(true);
+                if (parentLayout != null) {
+                    parentLayout.rebuildAllFragmentViews(true, true);
+                }
                 break;
 
         }

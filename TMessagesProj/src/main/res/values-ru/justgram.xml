@@ -30,4 +30,5 @@
     <string name="SeparateHeaders">Разделять заголовки разделов</string>
 
     <string name="AdaptiveChatTitle">Адаптивный заголовок чата</string>
+    <string name="HideCallButton">Скрыть кнопку звонка в личных сообщениях</string>
 </resources>
