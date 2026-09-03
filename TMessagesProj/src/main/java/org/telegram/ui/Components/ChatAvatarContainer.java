@@ -71,6 +71,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import me.vkryl.android.animator.BoolAnimator;
 import me.vkryl.android.animator.FactorAnimator;
 
+import org.justgram.messenger.JustgramConfig;
+
 public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.Target, NotificationCenter.NotificationCenterDelegate {
 
     private static final int ANIMATOR_ID_TIME_ITEM_VISIBLE = 0;
@@ -1716,6 +1718,10 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
     }
 
     public int getVisualWidth() {
+        if (!JustgramConfig.adaptiveChatTitle) {
+            return Integer.MAX_VALUE;
+        }
+
         float width = 0;
 
         if (titleTextView != null) {
@@ -1723,6 +1729,8 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
         }
         if (subtitleTextView != null) {
             width = Math.max(width, subtitleTextView.getExactWidthIncludeDrawables());
+        } else if (animatedSubtitleTextView != null) {
+            width = Math.max(width, animatedSubtitleTextView.finalWidth());
         }
         if (hasVisibleAvatar()) {
             width += dp(52 + 18);

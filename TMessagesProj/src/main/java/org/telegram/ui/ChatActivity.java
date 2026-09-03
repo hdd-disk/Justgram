@@ -4579,18 +4579,13 @@ public class ChatActivity extends BaseFragment implements
             BlurredBackgroundProviderImpl.topPanelChatActivity(themeDelegate),
             ChatObject.isForum(currentChat));
 
-        if (chatMode == MODE_PINNED) {
-            actionBar.setChatAvatarContainer(avatarContainer);
-            avatarContainer.setActionBar(actionBar);
-        } else if (chatMode == MODE_WELCOME_MESSAGES) {
-            actionBar.setChatAvatarContainer(avatarContainer);
+        actionBar.setChatAvatarContainer(avatarContainer);
+        avatarContainer.setActionBar(actionBar);
+        if (chatMode == MODE_WELCOME_MESSAGES) {
             actionBar.setForcedMenuWidth(dp(46));
             actionBar.doNotDrawGlassMenu = true;
-            avatarContainer.setActionBar(actionBar);
-        } else if (isComments) {
-            actionBar.setChatAvatarContainer(avatarContainer);
+        } else {
             actionBar.setForcedMenuMinWidth(dp(46));
-            avatarContainer.setActionBar(actionBar);
         }
 
         chatInputViewsContainer = new ChatInputViewsContainer(context);

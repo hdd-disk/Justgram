@@ -17,6 +17,7 @@ public class JustgramConfig {
     public static boolean hideTabsSubtitles = false;
     public static float liquidGlassOpacity = 0.85f;
     public static boolean sectionsSeparatedHeaders = true;
+    public static boolean adaptiveChatTitle = true;
 
     static {
         loadConfig();
@@ -34,6 +35,7 @@ public class JustgramConfig {
             hideTabsSubtitles = preferences.getBoolean("hideTabsSubtitles", false);
             liquidGlassOpacity = preferences.getFloat("liquidGlassOpacity", 0.85f);
             sectionsSeparatedHeaders = preferences.getBoolean("sectionsSeparatedHeaders", true);
+            adaptiveChatTitle = preferences.getBoolean("adaptiveChatTitle", true);
             loaded = true;
         }
     }
@@ -50,6 +52,7 @@ public class JustgramConfig {
             editor.putBoolean("hideTabsSubtitles", hideTabsSubtitles);
             editor.putFloat("liquidGlassOpacity", liquidGlassOpacity);
             editor.putBoolean("sectionsSeparatedHeaders", sectionsSeparatedHeaders);
+            editor.putBoolean("adaptiveChatTitle", adaptiveChatTitle);
             editor.apply();
         }
     }

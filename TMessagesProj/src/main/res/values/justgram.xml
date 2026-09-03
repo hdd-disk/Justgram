@@ -31,4 +31,6 @@
     <string name="HideBottomTabsSubtitles">Hide bottom tabs subtitles</string>
     <string name="LiquidGlassOpacity">Liquid Glass Opacity</string>
     <string name="SeparateHeaders">Separate Headers</string>
+
+    <string name="AdaptiveChatTitle">Adaptive chat title</string>
 </resources>
