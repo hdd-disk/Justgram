@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.Adapters.FiltersView;
@@ -210,6 +211,9 @@ public class ActionBarMenu extends LinearLayout {
         ArrayList<Utilities.Callback<ActionBarMenuItem>> onViews;
 
         public void setVisibility(int visibility) {
+            if (id == 32 && JustgramConfig.hideCallButton) {
+                visibility = GONE;
+            }
             if (this.visibility != visibility) {
                 this.visibility = visibility;
                 if (visibility == VISIBLE) {

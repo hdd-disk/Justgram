@@ -33,4 +33,5 @@
     <string name="SeparateHeaders">Separate Headers</string>
 
     <string name="AdaptiveChatTitle">Adaptive chat title</string>
+    <string name="HideCallButton">Hide call button in direct messages</string>
 </resources>
