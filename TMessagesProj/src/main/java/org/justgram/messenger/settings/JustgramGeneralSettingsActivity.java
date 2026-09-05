@@ -30,6 +30,7 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
     private final static int ID_WS_TRANSPORT = 3;
     private final static int ID_WS_DOMAIN = 4;
     private final static int ID_FINGERPRINT = 5;
+    private final static int ID_ALT_SOUND_IN = 6;
 
     private UniversalRecyclerView listView;
 
@@ -81,6 +82,10 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
         items.add(UItem.asCheck(ID_FINGERPRINT, getString(R.string.FingerprintProtection)).setChecked(JustgramConfig.fingerprintProtection));
         adapter.whiteSectionEnd();
         items.add(UItem.asShadow(getString(R.string.FingerprintProtectionInfo)));
+
+        adapter.whiteSectionStart();
+        items.add(UItem.asCheck(ID_ALT_SOUND_IN,getString(R.string.AltSoundIn)).setChecked(JustgramConfig.altSoundIn));
+        adapter.whiteSectionEnd();
     }
 
     private void onClick(UItem item, View view) {
@@ -107,6 +112,11 @@ public class JustgramGeneralSettingsActivity extends BaseFragment {
                 break;
             case ID_WS_DOMAIN:
                 showWebSocketDomainDialog();
+                break;
+            case ID_ALT_SOUND_IN:
+                JustgramConfig.altSoundIn = !JustgramConfig.altSoundIn;
+                JustgramConfig.saveConfig();
+                listView.adapter.update(true);
                 break;
         }
     }

@@ -20,6 +20,8 @@ public class JustgramConfig {
     public static boolean adaptiveChatTitle = true;
     public static boolean hideCallButton = false;
 
+    public static boolean altSoundIn = false;
+
     static {
         loadConfig();
     }
@@ -38,6 +40,7 @@ public class JustgramConfig {
             sectionsSeparatedHeaders = preferences.getBoolean("sectionsSeparatedHeaders", true);
             adaptiveChatTitle = preferences.getBoolean("adaptiveChatTitle", true);
             hideCallButton = preferences.getBoolean("hideCallButton", false);
+            altSoundIn = preferences.getBoolean("altSoundIn", false);
             loaded = true;
         }
     }
@@ -56,6 +59,7 @@ public class JustgramConfig {
             editor.putBoolean("sectionsSeparatedHeaders", sectionsSeparatedHeaders);
             editor.putBoolean("adaptiveChatTitle", adaptiveChatTitle);
             editor.putBoolean("hideCallButton", hideCallButton);
+            editor.putBoolean("altSoundIn", altSoundIn);
             editor.apply();
         }
     }

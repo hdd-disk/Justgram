@@ -32,4 +32,6 @@
     <string name="AdaptiveChatTitle">Адаптивный заголовок чата</string>
     <string name="HideCallButton">Скрыть кнопку звонка в личных сообщениях</string>
     <string name="KaboomDescription">Это действие УНИЧТОЖИТ ваши данные Justgram. Продолжить?</string>
+    <string name="AltSoundIn">Звук сообщения как на десктопе</string>
+
 </resources>

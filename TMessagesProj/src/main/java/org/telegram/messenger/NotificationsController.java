@@ -99,6 +99,8 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
+import org.justgram.messenger.JustgramConfig;
+
 public class NotificationsController extends BaseController implements NotificationCenter.NotificationCenterDelegate {
 
     public static final String EXTRA_VOICE_REPLY = "extra_voice_reply";
@@ -3355,7 +3357,11 @@ public class NotificationsController extends BaseController implements Notificat
                     }
                     if (soundIn == 0 && !soundInLoaded) {
                         soundInLoaded = true;
-                        soundIn = soundPool.load(ApplicationLoader.applicationContext, R.raw.sound_in, 1);
+                        if (JustgramConfig.altSoundIn) {
+                            soundIn = soundPool.load(ApplicationLoader.applicationContext, R.raw.sound_in_alt, 1);
+                        } else {
+                            soundIn = soundPool.load(ApplicationLoader.applicationContext, R.raw.sound_in, 1);
+                        }
                     }
                     if (soundIn != 0) {
                         try {
