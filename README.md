@@ -50,4 +50,5 @@ Native libraries (FFmpeg, BoringSSL, libvpx, dav1d, tde2e) are built from source
 - [Nekogram](https://github.com/Nekogram/Nekogram)
 - [Telegram Monet](https://github.com/mi-g-alex/Telegram-Monet)
 - [Nagram XF](https://github.com/Keeperorowner/NagramXF)
+- [Cherrygram](https://github.com/arsLan4k1390/Cherrygram)
 

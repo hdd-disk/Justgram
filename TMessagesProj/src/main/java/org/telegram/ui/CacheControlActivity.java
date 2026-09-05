@@ -8,12 +8,15 @@
 
 package org.telegram.ui;
 
+import static android.content.Context.ACTIVITY_SERVICE;
+
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.LocaleController.formatString;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -24,6 +27,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.SpannableString;
@@ -117,6 +121,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CacheControlActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
@@ -202,11 +207,15 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
     private static final int other_id = 2;
     private static final int clear_database_id = 3;
     private static final int reset_database_id = 4;
+    private static final int kaboom_id = 5;
+
     private boolean loadingDialogs;
     private NestedSizeNotifierLayout nestedSizeNotifierLayout;
 
     private ActionBarMenuSubItem clearDatabaseItem;
     private ActionBarMenuSubItem resetDatabaseItem;
+    private ActionBarMenuSubItem kaboomItem;
+
     private void updateDatabaseItemSize() {
         if (clearDatabaseItem != null) {
             SpannableStringBuilder string = new SpannableStringBuilder();
@@ -1213,6 +1222,8 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
                     clearDatabase(false);
                 } else if (id == reset_database_id) {
                     clearDatabase(true);
+                } else if (id == kaboom_id) {
+                    kaboomData(context);
                 }
             }
         });
@@ -1254,6 +1265,11 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
         clearDatabaseItem.setIconColor(Theme.getColor(Theme.key_text_RedRegular));
         clearDatabaseItem.setTextColor(Theme.getColor(Theme.key_text_RedBold));
         clearDatabaseItem.setSelectorColor(Theme.multAlpha(Theme.getColor(Theme.key_text_RedRegular), .12f));
+
+        kaboomItem = otherItem.addSubItem(kaboom_id, R.drawable.msg_delete, "Kaboom");
+        kaboomItem.setIconColor(Theme.getColor(Theme.key_text_RedRegular));
+        kaboomItem.setTextColor(Theme.getColor(Theme.key_text_RedBold));
+        kaboomItem.setSelectorColor(Theme.multAlpha(Theme.getColor(Theme.key_text_RedRegular), .12f));
 
         if (BuildVars.DEBUG_PRIVATE_VERSION) {
             resetDatabaseItem = otherItem.addSubItem(reset_database_id, R.drawable.msg_delete, "Full Reset Database");
@@ -3136,5 +3152,45 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
     public void onInsets(int left, int top, int right, int bottom) {
         listView.setPadding(0, AndroidUtilities.statusBarHeight + ActionBar.getCurrentActionBarHeight() / 2, 0, bottom);
         listView.setClipToPadding(false);
+    }
+
+    private boolean isInKaboomMode;
+    public CacheControlActivity setInKaboomMode() {
+        this.isInKaboomMode = true;
+        return this;
+    }
+
+    private void kaboomData(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle("Kaboom");
+        builder.setMessage(LocaleController.getString(R.string.KaboomDescription));
+        builder.setPositiveButton("Kaboom!", (dialogInterface, i) -> {
+            try {
+                ((ActivityManager) context.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+            } catch (Exception e) {
+                FileLog.e(e);
+            }
+        });
+        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setOnShowListener(dialog1 -> {
+            TextView button = (TextView) alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            button.setTextColor(Theme.getColor(Theme.key_text_RedRegular));
+            button.setEnabled(false);
+            var buttonText = button.getText();
+            new CountDownTimer(isInKaboomMode ? 1000 : 5000, 100) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    button.setText(String.format(Locale.getDefault(), "%s (%d)", buttonText, millisUntilFinished / 1000 + 1));
+                }
+
+                @Override
+                public void onFinish() {
+                    button.setText(buttonText);
+                    button.setEnabled(true);
+                }
+            }.start();
+        });
+        showDialog(alertDialog);
     }
 }

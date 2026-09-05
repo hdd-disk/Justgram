@@ -34,4 +34,6 @@
 
     <string name="AdaptiveChatTitle">Adaptive chat title</string>
     <string name="HideCallButton">Hide call button in direct messages</string>
+    <string name="KaboomDescription">This action will DESTROY your Justgram data. Continue?</string>
+
 </resources>
