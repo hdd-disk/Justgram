@@ -25,7 +25,6 @@ public class JustgramAboutActivity extends BaseFragment {
 
     private final static int ID_GITHUB = 1;
     private final static int ID_CHANNEL = 2;
-    private final static int ID_CHAT = 3;
 
     private UniversalRecyclerView listView;
 
@@ -61,7 +60,6 @@ public class JustgramAboutActivity extends BaseFragment {
         adapter.whiteSectionStart();
         items.add(SettingsActivity.SettingCell.Factory.of(ID_GITHUB, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.menu_website, getString(R.string.Github)));
         items.add(SettingsActivity.SettingCell.Factory.of(ID_CHANNEL, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.settings_channel, getString(R.string.TelegramChannel)));
-        items.add(SettingsActivity.SettingCell.Factory.of(ID_CHAT, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.settings_chat, getString(R.string.TelegramChat)));
         adapter.whiteSectionEnd();
 
         items.add(UItem.asShadow(null));
@@ -73,10 +71,7 @@ public class JustgramAboutActivity extends BaseFragment {
                 Browser.openUrl(getParentActivity(), "https://github.com/hdd-disk/justgram");
                 break;
             case ID_CHANNEL:
-                Browser.openUrl(getParentActivity(), "https://t.me/justgramm");
-                break;
-            case ID_CHAT:
-                Browser.openUrl(getParentActivity(), "https://t.me/justgram_comments");
+                Browser.openUrl(getParentActivity(), "https://t.me/Justgram_client");
                 break;
         }
     }

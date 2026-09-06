@@ -1,7 +1,7 @@
 # Justgram
 Just anоther interesting FOSS Telegram client.
 
-[![Release Build](https://github.com/hdd-disk/Justgram/actions/workflows/release.yml/badge.svg)](https://github.com/hdd-disk/Justgram/actions/workflows/release.yml) [![Channel](https://img.shields.io/badge/Channel-Telegram-blue.svg)](https://t.me/Justgramm) [![Chat](https://img.shields.io/badge/Chat-Telegram-blue.svg)](https://t.me/justgram_chat)
+[![Release Build](https://github.com/hdd-disk/Justgram/actions/workflows/release.yml/badge.svg)](https://github.com/hdd-disk/Justgram/actions/workflows/release.yml) [![Channel](https://img.shields.io/badge/Channel-Telegram-blue.svg)](https://t.me/Justgram_client)
 
 ### API, Protocol documentation
 
