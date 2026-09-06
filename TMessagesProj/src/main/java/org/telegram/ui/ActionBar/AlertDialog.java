@@ -56,6 +56,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 
+import com.google.android.material.loadingindicator.LoadingIndicator;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.FileLog;
@@ -76,7 +78,6 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LineProgressView;
 import org.telegram.ui.Components.RLottieDrawable;
 import org.telegram.ui.Components.RLottieImageView;
-import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.spoilers.SpoilersTextView;
 import org.telegram.ui.LaunchActivity;
@@ -884,10 +885,14 @@ public class AlertDialog extends Dialog implements Drawable.Callback, Notificati
             }
             containerView.addView(progressViewContainer, LayoutHelper.createLinear(86, 86, Gravity.CENTER));
 
-            RadialProgressView progressView = new RadialProgressView(getContext(), resourcesProvider);
-            progressView.setSize(dp(32));
-            progressView.setProgressColor(getThemedColor(Theme.key_dialog_inlineProgress));
-            progressViewContainer.addView(progressView, LayoutHelper.createFrame(86, 86, Gravity.CENTER));
+            LoadingIndicator progressView =
+                    new LoadingIndicator(getContext());
+            progressView.setIndicatorColor(getThemedColor(Theme.key_dialog_inlineProgress));
+            progressView.setIndicatorSize(dp(44));
+            progressView.setContainerWidth(dp(48));
+            progressView.setContainerHeight(dp(48));
+            progressViewContainer.addView(progressView, LayoutHelper.createFrame(48, 48, Gravity.CENTER));
+            progressView.show();
         } else {
             if (aboveMessageView != null) {
                 scrollContainer.addView(aboveMessageView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 22, 4, 22, 12));
