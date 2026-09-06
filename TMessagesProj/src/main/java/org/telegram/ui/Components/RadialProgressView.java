@@ -19,9 +19,10 @@ import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.Keep;
 
+import com.google.android.material.loadingindicator.LoadingIndicator;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.Theme;
-
 public class RadialProgressView extends View {
 
     private long lastUpdateTime;
@@ -51,6 +52,9 @@ public class RadialProgressView extends View {
 
     private boolean noProgress = true;
     private final Theme.ResourcesProvider resourcesProvider;
+
+    private LoadingIndicator m3LoadingIndicator;
+    private boolean useM3Expressive = true;
 
     public RadialProgressView(Context context) {
         this(context, null);
@@ -202,8 +206,18 @@ public class RadialProgressView extends View {
         invalidate();
     }
 
+    public void setUseM3Expressive(boolean value) {
+        useM3Expressive = value;
+        invalidate();
+    }
+
     public void setSize(int value) {
         size = value;
+        if (m3LoadingIndicator != null) {
+            m3LoadingIndicator.setIndicatorSize(size);
+            m3LoadingIndicator.setContainerWidth(size);
+            m3LoadingIndicator.setContainerHeight(size);
+        }
         invalidate();
     }
 
@@ -214,6 +228,9 @@ public class RadialProgressView extends View {
     public void setProgressColor(int color) {
         progressColor = color;
         progressPaint.setColor(progressColor);
+        if (m3LoadingIndicator != null) {
+            m3LoadingIndicator.setIndicatorColor(color);
+        }
     }
 
     public void toCircle(boolean toCircle, boolean animated) {
@@ -225,17 +242,42 @@ public class RadialProgressView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        int x = (getMeasuredWidth() - size) / 2;
-        int y = (getMeasuredHeight() - size) / 2;
-        cicleRect.set(x, y, x + size, y + size);
-        canvas.drawArc(cicleRect, radOffset, drawingCircleLenght = currentCircleLength, false, progressPaint);
-        updateAnimation();
+        if (useM3Expressive) {
+            drawM3Expressive(canvas, (getMeasuredWidth() - size) / 2f, (getMeasuredHeight() - size) / 2f);
+        } else {
+            int x = (getMeasuredWidth() - size) / 2;
+            int y = (getMeasuredHeight() - size) / 2;
+            cicleRect.set(x, y, x + size, y + size);
+            canvas.drawArc(cicleRect, radOffset, drawingCircleLenght = currentCircleLength, false, progressPaint);
+            updateAnimation();
+        }
     }
 
     public void draw(Canvas canvas, float cx, float cy) {
-        cicleRect.set(cx - size / 2f, cy - size / 2f, cx + size / 2f, cy +  size / 2f);
-        canvas.drawArc(cicleRect, radOffset, drawingCircleLenght = currentCircleLength, false, progressPaint);
-        updateAnimation();
+        if (useM3Expressive) {
+            drawM3Expressive(canvas, cx - size / 2f, cy - size / 2f);
+        } else {
+            cicleRect.set(cx - size / 2f, cy - size / 2f, cx + size / 2f, cy +  size / 2f);
+            canvas.drawArc(cicleRect, radOffset, drawingCircleLenght = currentCircleLength, false, progressPaint);
+            updateAnimation();
+        }
+    }
+
+    private void drawM3Expressive(Canvas canvas, float x, float y) {
+        if (m3LoadingIndicator == null) {
+            m3LoadingIndicator = new LoadingIndicator(getContext());
+            m3LoadingIndicator.setIndicatorColor(progressColor);
+            m3LoadingIndicator.setIndicatorSize(size);
+            m3LoadingIndicator.setContainerWidth(size);
+            m3LoadingIndicator.setContainerHeight(size);
+            m3LoadingIndicator.show();
+        }
+        canvas.save();
+        canvas.translate(x, y);
+        m3LoadingIndicator.layout(0, 0, size, size);
+        m3LoadingIndicator.draw(canvas);
+        canvas.restore();
+        invalidate();
     }
 
     public boolean isCircle() {
