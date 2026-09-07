@@ -9,10 +9,10 @@ include ':TMessagesProj_App'
 // project directory.
 def jlatexmathDir = file('TMessagesProj/lib/jlatexmath/jlatexmath')
 if (!jlatexmathDir.exists()) {
-    exec {
+    providers.exec {
         workingDir rootDir
         commandLine 'git', 'submodule', 'update', '--init', 'TMessagesProj/lib/jlatexmath'
-    }
+    }.result.get()
 }
 include ':jlatexmath'
 project(':jlatexmath').projectDir = jlatexmathDir
