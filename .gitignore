@@ -21,6 +21,7 @@ TMessagesProj/jni/ffmpeg/build_android
 TMessagesProj/jni/prebuild/lib/
 TMessagesProj/jni/prebuild/include/
 TMessagesProj/jni/prebuild/pkgconfig/
+TMessagesProj/jni/third_party/dav1d
 TMessagesProj/jni/prebuild/build/
 # Call core wasm module as a C array, built by jni/build_wasm_core.sh.
 TMessagesProj/jni/voip/ReferenceCoreEmbedded.cpp
