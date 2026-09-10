@@ -35,12 +35,22 @@ RELEASE_KEY_PASSWORD=your_key_password
 
 
 #### 4. Build
+
 Build with Android Studio or from the command line:
-``` 
-./gradlew assembleBundleRelease # arm64-v8a and armabi-v7a
-./gradlew assembleArm64-v8aRelease # arm64-v8a
-./gradlew assembleArmeabi-v7aRelease # armeabi-v7a
+
 ```
+./gradlew assemble<architecture><flavor>Release
+```
+
+Flavors:
+
+- Normal — without the plugin system
+- Plugin — with the plugin system
+
+Architectures:
+
+- arm64-v8a
+- armeabi-v7a
 
 Native libraries (FFmpeg, BoringSSL, libvpx, dav1d, tde2e) are built from source automatically on the first build and cached for subsequent runs.
 
@@ -52,4 +62,5 @@ Native libraries (FFmpeg, BoringSSL, libvpx, dav1d, tde2e) are built from source
 - [Nagram XF](https://github.com/Keeperorowner/NagramXF)
 - [Cherrygram](https://github.com/arsLan4k1390/Cherrygram)
 - [exteraGram](https://github.com/exteraSquad/exteraGram)
+
 
