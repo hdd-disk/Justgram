@@ -33,7 +33,7 @@ if [ ! -f "$tlottie_dir/Cargo.toml" ]; then
 fi
 
 echo "Removing previous tlottie archives"
-for abi in arm64-v8a armeabi-v7a x86 x86_64; do
+for abi in arm64-v8a armeabi-v7a; do
   dest="$script_dir/$abi/libtlottie.a"
   if [ -f "$dest" ]; then
     rm -f "$dest"

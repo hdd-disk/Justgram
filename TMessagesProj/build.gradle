@@ -48,7 +48,6 @@ def chaquopyAbis = pluginAbis.findAll { nativeTarget.isBlank() || it == nativeTa
 def abiToNdkTriple = [
     'armeabi-v7a': 'arm-linux-androideabi',
     'arm64-v8a'  : 'aarch64-linux-android',
-    'x86_64'     : 'x86_64-linux-android',
 ]
 
 def ndkHostTag = {
@@ -570,8 +569,6 @@ def pointSymlink = { String linkPath, String target ->
 
 ['buildNativeLibsArm64'  : 'arm64-v8a',
  'buildNativeLibsArm32'  : 'armeabi-v7a',
- 'buildNativeLibsX86_64' : 'x86_64',
- 'buildNativeLibsX86'    : 'x86',
 ].each { taskName, abi ->
     tasks.register(taskName) {
         description = "Build native libraries for ${abi}."
@@ -611,7 +608,7 @@ def pointSymlink = { String linkPath, String target ->
 
             if (!file("${projectDir}/jni/prebuild/${abi}/libtlottie.a").exists()) {
                 pointSymlink(mediaJniLink, "${projectDir}/jni")
-                ['arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'].each {
+                ['arm64-v8a', 'armeabi-v7a'].each {
                     file("${projectDir}/jni/prebuild/${it}").mkdirs()
                 }
                 def rustEnv = [
@@ -669,21 +666,16 @@ def pointSymlink = { String linkPath, String target ->
     }
 }
 
-tasks.named('buildNativeLibsArm32').configure  { mustRunAfter 'buildNativeLibsArm64'  }
-tasks.named('buildNativeLibsX86_64').configure { mustRunAfter 'buildNativeLibsArm32'  }
-tasks.named('buildNativeLibsX86').configure    { mustRunAfter 'buildNativeLibsX86_64' }
+tasks.named('buildNativeLibsArm32').configure { mustRunAfter 'buildNativeLibsArm64' }
 
 task buildNativeLibs(description: 'Build native libraries for all ABIs.') {
-    dependsOn 'buildNativeLibsArm64', 'buildNativeLibsArm32',
-              'buildNativeLibsX86_64', 'buildNativeLibsX86'
+    dependsOn 'buildNativeLibsArm64', 'buildNativeLibsArm32'
 }
 
 afterEvaluate {
     def abiToTask = [
         'arm64-v8a'   : 'buildNativeLibsArm64',
         'armeabi-v7a' : 'buildNativeLibsArm32',
-        'x86_64'      : 'buildNativeLibsX86_64',
-        'x86'         : 'buildNativeLibsX86',
     ]
     tasks.matching {
         it.name.matches('configureCMake.*') ||

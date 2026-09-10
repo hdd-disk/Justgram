@@ -23,7 +23,7 @@ export RUSTUP_HOME="${RUSTUP_HOME:-/var/tmp/mg-rustup}"
 export CARGO_HOME="${CARGO_HOME:-/var/tmp/mg-cargo}"
 export PATH="$CARGO_HOME/bin:$PATH"
 
-TARGETS="aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android"
+TARGETS="aarch64-linux-android armv7-linux-androideabi"
 
 # Probe CARGO_HOME rather than PATH: a rustup that happens to be installed in
 # the caller's home directory would drive our RUSTUP_HOME but leave the proxy

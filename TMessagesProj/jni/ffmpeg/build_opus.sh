@@ -21,7 +21,7 @@ set -Eeuo pipefail
 
 NDK_VERSION="27.2.12479018"
 API=21
-ABIS="arm64-v8a armeabi-v7a x86_64 x86"
+ABIS="arm64-v8a armeabi-v7a"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OPUS_SRC="${OPUS_SOURCE_DIR:-$SCRIPT_DIR/../third_party/xiph/opus}"

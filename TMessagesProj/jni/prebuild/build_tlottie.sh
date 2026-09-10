@@ -39,9 +39,7 @@ if [ -n "$rustup_toolchain" ]; then
   missing_targets=
   for target in \
     aarch64-linux-android \
-    armv7-linux-androideabi \
-    i686-linux-android \
-    x86_64-linux-android
+    armv7-linux-androideabi
   do
     if ! rustup target list --toolchain "$rustup_toolchain" --installed | grep -qx "$target"; then
       missing_targets="$missing_targets $target"
@@ -74,9 +72,7 @@ trap cleanup EXIT HUP INT TERM
 
 for target_spec in \
   arm64-v8a:aarch64-linux-android \
-  armeabi-v7a:armv7-linux-androideabi \
-  x86:i686-linux-android \
-  x86_64:x86_64-linux-android
+  armeabi-v7a:armv7-linux-androideabi
 do
   abi=${target_spec%%:*}
   rust_target=${target_spec#*:}

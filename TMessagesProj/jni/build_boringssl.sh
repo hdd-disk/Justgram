@@ -68,11 +68,6 @@ function build {
 		# Android ABI names are accepted alongside the short names so every
 		# jni/build_*.sh takes the same argument spelling.
 		case "${arg}" in
-			x86_64)
-				API=21
-				CPU=x86_64
-				build_one
-			;;
 			arm64|arm64-v8a)
 				API=21
 				CPU=arm64-v8a
@@ -81,11 +76,6 @@ function build {
 			arm|armeabi-v7a)
 				API=21
 				CPU=armeabi-v7a
-				build_one
-			;;
-			x86)
-				API=21
-				CPU=x86
 				build_one
 			;;
 			*)
@@ -97,7 +87,7 @@ function build {
 }
 
 if (( $# == 0 )); then
-	build x86_64 arm64 arm x86
+	build arm64 arm
 else
 	build $@
 fi

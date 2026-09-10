@@ -19,7 +19,7 @@ if [[ ! -d "$TD_DIR" ]] || [[ -z "$(ls -A "$TD_DIR" 2>/dev/null)" ]]; then
 fi
 
 if [[ $# -eq 0 ]]; then
-    ABIS_TO_BUILD=(arm64-v8a armeabi-v7a x86_64 x86)
+    ABIS_TO_BUILD=(arm64-v8a armeabi-v7a)
 else
     ABIS_TO_BUILD=("$@")
 fi
