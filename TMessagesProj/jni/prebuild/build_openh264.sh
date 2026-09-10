@@ -3,6 +3,12 @@
 
 set -Eeuo pipefail
 
+
+NDK_VERSION="${NDK_VERSION:-27.2.12479018}"
+API="${API:-21}"
+ABIS="${ABIS:-arm64-v8a armeabi-v7a}"
+JOBS="${JOBS:-$(nproc)}"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 

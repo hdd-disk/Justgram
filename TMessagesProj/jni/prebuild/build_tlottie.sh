@@ -51,9 +51,7 @@ if [ -n "$rustup_toolchain" ]; then
   missing_targets=
   for target in \
     aarch64-linux-android \
-    armv7-linux-androideabi \
-    i686-linux-android \
-    x86_64-linux-android
+    armv7-linux-androideabi
   do
     if ! rustup target list --toolchain "$rustup_toolchain" --installed | grep -qx "$target"; then
       missing_targets="$missing_targets $target"
@@ -127,16 +125,13 @@ cleanup() {
 }
 trap cleanup EXIT HUP INT TERM
 
-for abi in $ABIS; do
-  case "$abi" in
-    arm64-v8a) rust_target=aarch64-linux-android ;;
-    armeabi-v7a) rust_target=armv7-linux-androideabi ;;
-    x86) rust_target=i686-linux-android ;;
-    x86_64) rust_target=x86_64-linux-android ;;
-    *) echo "error: unsupported ABI: $abi" >&2; exit 1 ;;
-  esac
-
-  destination="$(abi_output_dir "$abi")/libtlottie.a"
+for target_spec in \
+  arm64-v8a:aarch64-linux-android \
+  armeabi-v7a:armv7-linux-androideabi
+do
+  abi=${target_spec%%:*}
+  rust_target=${target_spec#*:}
+  destination="$script_dir/$abi/libtlottie.a"
 
   echo "Building $abi ($rust_target)"
   run_cargo rustc \
