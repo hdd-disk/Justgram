@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
@@ -27,6 +29,21 @@ subprojects {
             androidResources {
                 ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~:!optional:!licences:!*stmary*:!*eufb*'
             }
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.incremental = true
+        options.fork = true
+        options.forkOptions.jvmArgs += [
+            '-Xmx3g',
+            '-Dfile.encoding=UTF-8'
+        ]
+    }
+
+    tasks.withType(KotlinCompile).configureEach {
+        compilerOptions {
+            freeCompilerArgs.add("-Xbackend-threads=0")
         }
     }
 }

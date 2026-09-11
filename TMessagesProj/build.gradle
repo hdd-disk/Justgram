@@ -172,6 +172,7 @@ android {
             minifyEnabled false
             shrinkResources false
             multiDexEnabled true
+            crunchPngs false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-rules-beta.pro'
             ndk.debugSymbolLevel = 'FULL'
             buildConfigField "String", "BUILD_VERSION_STRING", "\"" + APP_VERSION_NAME + "\""
@@ -673,20 +674,25 @@ task buildNativeLibs(description: 'Build native libraries for all ABIs.') {
 }
 
 afterEvaluate {
-    def abiToTask = [
-        'arm64-v8a'   : 'buildNativeLibsArm64',
-        'armeabi-v7a' : 'buildNativeLibsArm32',
-    ]
+    def resolveNativeTask = { String taskName ->
+        def lower = taskName.toLowerCase()
+        if (lower.contains('arm64')) {
+            return 'buildNativeLibsArm64'
+        }
+        if (lower.contains('v7a') || lower.contains('armeabi')) {
+            return 'buildNativeLibsArm32'
+        }
+        return 'buildNativeLibs'
+    }
+
     tasks.matching {
         it.name.matches('configureCMake.*') ||
             it.name.matches('buildCMake.*') ||
             it.name.matches('externalNativeBuild.*')
     }.configureEach { task ->
-        def matched = abiToTask.find { abi, nativeTaskName -> task.name.toLowerCase().contains(abi.toLowerCase()) }
-        dependsOn tasks.named(matched ? matched.value : 'buildNativeLibs')
+        dependsOn tasks.named(resolveNativeTask(task.name))
     }
     tasks.matching { it.name.matches('merge.*JniLibFolders') }.configureEach { task ->
-        def matched = abiToTask.find { abi, nativeTaskName -> task.name.toLowerCase().contains(abi.toLowerCase()) }
-        dependsOn tasks.named(matched ? matched.value : 'buildNativeLibs')
+        dependsOn tasks.named(resolveNativeTask(task.name))
     }
 }

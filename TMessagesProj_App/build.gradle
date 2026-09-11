@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 
+evaluationDependsOn(':TMessagesProj')
+
 // Wire each variant's merge*JniLibFolders task to the matching per-ABI native build task.
 // F-Droid per-ABI flavors only need one ABI compiled; fat flavors need all four.
 afterEvaluate {
-    def flavorToNativeTask = [
-        'arm64-v8a'  : 'buildNativeLibsArm64',
-        'armeabi-v7a': 'buildNativeLibsArm32',
-        'x86_64'     : 'buildNativeLibsX86_64',
-        'x86'        : 'buildNativeLibsX86',
-    ]
     tasks.matching { it.name.matches('merge.*JniLibFolders') }.configureEach { task ->
-        def matched = flavorToNativeTask.find { flavor, nativeTaskName -> task.name.toLowerCase().contains(flavor.toLowerCase()) }
-        dependsOn project(':TMessagesProj').tasks.named(
-            matched ? matched.value : 'buildNativeLibs'
-        )
+        def nameLower = task.name.toLowerCase()
+        def nativeTask = 'buildNativeLibs'
+        if (nameLower.contains('arm64')) {
+            nativeTask = 'buildNativeLibsArm64'
+        } else if (nameLower.contains('v7a') || nameLower.contains('armeabi')) {
+            nativeTask = 'buildNativeLibsArm32'
+        }
+        dependsOn project(':TMessagesProj').tasks.named(nativeTask)
     }
 }
 
@@ -90,6 +90,7 @@ android {
             minifyEnabled false
             shrinkResources false
             multiDexEnabled true
+            crunchPngs false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), '../TMessagesProj/proguard-rules.pro', '../TMessagesProj/proguard-rules-beta.pro', '../TMessagesProj/proguard-plugin-rules.pro'
             ndk.debugSymbolLevel = 'NONE'
         }
