@@ -45,6 +45,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.DocumentObject;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
@@ -1019,6 +1020,13 @@ public class EmojiPacksAlert extends BottomSheet implements NotificationCenter.N
             }
             return;
         }
+        if (set.emojis) {
+            MediaDataController.getInstance(currentAccount).toggleStickerSet(fragmentView != null ? fragmentView.getContext() : ApplicationLoader.applicationContext, obj, 2, fragment, true, showBulletIn, null, false);
+            if (onDone != null) {
+                onDone.run(true);
+            }
+            return;
+        }
         TLRPC.TL_messages_installStickerSet req = new TLRPC.TL_messages_installStickerSet();
         req.stickerset = new TLRPC.TL_inputStickerSetID();
         req.stickerset.id = set.id;
@@ -1033,7 +1041,7 @@ public class EmojiPacksAlert extends BottomSheet implements NotificationCenter.N
             try {
                 if (error == null) {
                     if (showBulletIn && fragmentView != null) {
-                        Bulletin.make(fragment, new StickerSetBulletinLayout(fragment.getFragmentView().getContext(), stickerSet == null ? set : stickerSet, StickerSetBulletinLayout.TYPE_ADDED, null, fragment.getResourceProvider()), Bulletin.DURATION_SHORT).show();
+                        Bulletin.make(fragment, new StickerSetBulletinLayout(fragment.getFragmentView().getContext(), obj, StickerSetBulletinLayout.TYPE_ADDED, null, fragment.getResourceProvider()), Bulletin.DURATION_SHORT).show();
                     }
                     if (response instanceof TLRPC.TL_messages_stickerSetInstallResultArchive) {
                         MediaDataController.getInstance(currentAccount).processStickerSetInstallResultArchive(fragment, true, type, (TLRPC.TL_messages_stickerSetInstallResultArchive) response);

@@ -1559,6 +1559,10 @@ public class StickersAlert extends BottomSheet implements NotificationCenter.Not
                     if (inputStickerSet == null || MediaDataController.getInstance(currentAccount).cancelRemovingStickerSet(inputStickerSet.id)) {
                         return;
                     }
+                    if (stickerSet != null && stickerSet.set != null && stickerSet.set.emojis) {
+                        MediaDataController.getInstance(currentAccount).toggleStickerSet(getContext(), stickerSet, 2, parentFragment, true, showTooltipWhenToggle);
+                        return;
+                    }
                     TLRPC.TL_messages_installStickerSet req = new TLRPC.TL_messages_installStickerSet();
                     req.stickerset = inputStickerSet;
                     ConnectionsManager.getInstance(currentAccount).sendRequest(req, (response, error) -> AndroidUtilities.runOnUIThread(() -> {

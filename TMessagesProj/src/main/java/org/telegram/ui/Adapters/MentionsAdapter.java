@@ -1619,7 +1619,7 @@ public class MentionsAdapter extends RecyclerListView.SelectionAdapter implement
                 searchResultCommandsUsers = null;
                 notifyDataSetChanged();
                 delegate.needChangePanelVisibility(searchResultSuggestions != null && !searchResultSuggestions.isEmpty());
-            }, SharedConfig.suggestAnimatedEmoji && UserConfig.getInstance(currentAccount).isPremium());
+            }, SharedConfig.suggestAnimatedEmoji);
         } else if (foundType == 4) {
             searchResultHashtags = null;
             searchResultUsernames = null;
