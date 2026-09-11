@@ -67,6 +67,8 @@ import android.media.MediaCodecList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -130,6 +132,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.exteragram.messenger.api.dto.NowPlayingDTO;
+import com.exteragram.messenger.badges.BadgesController;
+import com.exteragram.messenger.nowplaying.NowPlayingController;
+import com.exteragram.messenger.nowplaying.ui.components.NowPlayingCard;
+import com.exteragram.messenger.nowplaying.ui.components.NowPlayingCardData;
 import com.exteragram.messenger.plugins.PluginsConstants;
 import com.exteragram.messenger.plugins.PluginsController;
 import com.exteragram.messenger.plugins.hooks.MenuItemRecord;
@@ -623,6 +630,15 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private Rect rect = new Rect();
 
     private TextCell setAvatarCell;
+
+    private NowPlayingCardData nowPlayingCardData;
+    private Handler nowPlayingHandler;
+    private NowPlayingController.Job nowPlayingJob;
+    private boolean nowPlayingLoading;
+    private int nowPlayingRow = -1;
+    private int nowPlayingSectionRow = -1;
+    private Runnable nowPlayingRunnable;
+    private static final long NOW_PLAYING_UPDATE_INTERVAL = 15000L;
 
     private int rowCount;
 
@@ -2319,6 +2335,18 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         additionNavigationBarHeight = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
         additionFloatingButtonOffset = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
 
+        this.nowPlayingHandler = new Handler(Looper.getMainLooper());
+        this.nowPlayingRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (fragmentView == null || !fragmentView.isAttachedToWindow()) {
+                    return;
+                }
+                checkNowPlaying(false);
+                nowPlayingHandler.postDelayed(this, NOW_PLAYING_UPDATE_INTERVAL);
+            }
+        };
+
         return true;
     }
 
@@ -2373,9 +2401,108 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         return !isPulledDown;
     }
 
+    private void checkNowPlaying(boolean z) {
+        TLRPC.Document document;
+        if ((this.userId != getUserConfig().getClientUserId() || this.myProfile) && this.userId != 0) {
+            if (!this.nowPlayingLoading || z) {
+                NowPlayingController.Job job = this.nowPlayingJob;
+                final TLRPC.Document document2;
+                if (job != null && job.isActive()) {
+                    this.nowPlayingJob.cancel(null);
+                }
+                final TLRPC.User user = getMessagesController().getUser(this.userId);
+                if (user != null) {
+                    if (!UserObject.isUserSelf(user) || this.myProfile) {
+                        TLRPC.UserFull userFull = this.userInfo;
+                        if (userFull != null && (document = userFull.saved_music) != null) {
+                            document2 = document;
+                        } else {
+                            document2 = null;
+                        }
+                        this.nowPlayingLoading = true;
+                        this.nowPlayingJob = NowPlayingController.getCurrentPlayingTrack(this.userId, document2, BadgesController.INSTANCE.hasBadge(user), (nowPlayingDTO, elapsedTime) -> {
+                            if (getParentActivity() == null) {
+                                this.nowPlayingLoading = false;
+                                return;
+                            }
+                            if (nowPlayingDTO == null || !nowPlayingDTO.isPlaying()) {
+                                this.nowPlayingLoading = false;
+                                if (this.nowPlayingCardData != null) {
+                                    AndroidUtilities.runOnUIThread(() -> {
+                                        if (getParentActivity() == null) {
+                                            return;
+                                        }
+                                        this.nowPlayingCardData = null;
+                                        updateListAnimated(false);
+                                    });
+                                }
+                                return;
+                            }
+                            NowPlayingCardData cardData = this.nowPlayingCardData;
+                            if (cardData != null && Objects.equals(cardData.getNowPlayingDTO().getTrackName(), nowPlayingDTO.getTrackName()) && Objects.equals(cardData.getNowPlayingDTO().getArtists(), nowPlayingDTO.getArtists())) {
+                                this.nowPlayingLoading = false;
+                            } else {
+                                NowPlayingCardData.create(nowPlayingDTO, document2, nowPlayingCardData2 -> {
+                                    long delay = elapsedTime < 325 ? 325 - elapsedTime : 0L;
+                                    AndroidUtilities.runOnUIThread(() -> {
+                                        if (getParentActivity() == null) {
+                                            this.nowPlayingLoading = false;
+                                            return;
+                                        }
+                                        this.nowPlayingLoading = false;
+                                        TLRPC.PeerColor peerColor = user != null ? user.profile_color : null;
+                                        if (peerColor != null) {
+                                            nowPlayingCardData2.setUserEmoji(peerColor.background_emoji_id);
+                                        }
+                                        this.nowPlayingCardData = nowPlayingCardData2;
+                                        updateListAnimated(false);
+                                    }, delay);
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    public void onSavedMusicClick() {
+        if (savedMusicList == null) {
+            if (MediaController.getInstance().currentSavedMusicList != null &&
+                MediaController.getInstance().currentSavedMusicList.currentAccount == currentAccount &&
+                MediaController.getInstance().currentSavedMusicList.dialogId == getDialogId()) {
+                savedMusicList = MediaController.getInstance().currentSavedMusicList;
+            } else {
+                savedMusicList = new MessagesController.SavedMusicList(currentAccount, getDialogId());
+                if (userInfo != null && userInfo.saved_music != null) {
+                    savedMusicList.setup(userInfo.saved_music);
+                }
+            }
+        }
+        if (savedMusicList != null && !savedMusicList.list.isEmpty()) {
+            boolean sameList = false;
+            if (MediaController.getInstance().currentSavedMusicList != savedMusicList ||
+                !MediaController.getInstance().isPlayingMessage(savedMusicList.list.get(0))) {
+                MediaController.getInstance().cleanup();
+            } else {
+                sameList = true;
+            }
+            MediaController.getInstance().currentSavedMusicList = savedMusicList;
+            MediaController.getInstance().getPlaylist().clear();
+            MediaController.getInstance().getPlaylist().addAll(savedMusicList.list);
+            if (!sameList) {
+                MediaController.getInstance().playMessage(savedMusicList.list.get(0));
+            }
+            showDialog(new AudioPlayerAlert(getContext(), getResourceProvider()));
+        }
+    }
+
     @Override
     public void onFragmentDestroy() {
         super.onFragmentDestroy();
+        if (nowPlayingJob != null) {
+            nowPlayingJob.cancel(null);
+        }
         if (sharedMediaLayout != null) {
             sharedMediaLayout.onDestroy();
         }
@@ -9625,12 +9752,19 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             flagSecure.attach();
         }
         updateItemsUsername();
+        checkNowPlaying(true);
+        if (nowPlayingHandler != null && nowPlayingRunnable != null) {
+            nowPlayingHandler.postDelayed(nowPlayingRunnable, 325L);
+        }
         needLayout(false);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if (nowPlayingHandler != null && nowPlayingRunnable != null) {
+            nowPlayingHandler.removeCallbacks(nowPlayingRunnable);
+        }
         if (undoView != null) {
             undoView.hide(true, 0);
         }
@@ -10484,6 +10618,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         setAvatarRow = -1;
         setAvatarSectionRow = -1;
+        nowPlayingRow = -1;
+        nowPlayingSectionRow = -1;
         numberSectionRow = -1;
         numberRow = -1;
         birthdayRow = -1;
@@ -10634,9 +10770,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         if (userId != 0) {
             TLRPC.User user = getMessagesController().getUser(userId);
-            if (userInfo != null && userInfo.saved_music != null && (imageUpdater == null || myProfile)) {
-                hasMusic = true;
-            }
+            hasMusic = false;
 
             if (emptyRow < 0 && emptyRow2 < 0) {
                 if (hasMusic || peerColor != null || actionsView == null) {
@@ -10727,6 +10861,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 boolean hasInfo = userInfo != null && !TextUtils.isEmpty(userInfo.about) || user != null && !TextUtils.isEmpty(username);
                 boolean hasPhone = user != null && (!TextUtils.isEmpty(user.phone) || !TextUtils.isEmpty(vcardPhone));
 
+                if (NowPlayingController.shouldShowCard(this.nowPlayingCardData)) {
+                    nowPlayingRow = rowCount++;
+                    nowPlayingSectionRow = rowCount++;
+                }
+
                 if (!isBot && userInfo != null && userInfo.unofficial_security_risk) {
                     unofficialSecurityRiskRow = rowCount++;
                     unofficialSecurityRiskDividerRow = rowCount++;
@@ -10739,6 +10878,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         channelDividerRow = rowCount++;
                     }
                 }
+
                 infoStartRow = rowCount;
                 if (!isBot && (hasPhone || !hasInfo)) {
                     phoneRow = rowCount++;
@@ -13264,6 +13404,15 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
             switch (viewType) {
+                case 100: {
+                    view = new NowPlayingCard(mContext, resourcesProvider) {
+                        @Override
+                        public void onSavedMusicClick() {
+                            ProfileActivity.this.onSavedMusicClick();
+                        }
+                    };
+                    break;
+                }
                 case VIEW_TYPE_HEADER: {
                     view = new HeaderCell(mContext, 18, resourcesProvider);
                     break;
@@ -13565,6 +13714,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             switch (holder.getItemViewType()) {
+                case 100:
+                    NowPlayingCard card = (NowPlayingCard) holder.itemView;
+                    if (nowPlayingCardData != null) {
+                        card.set(nowPlayingCardData);
+                    }
+                    break;
                 case VIEW_TYPE_HEADER:
                     HeaderCell headerCell = (HeaderCell) holder.itemView;
                     if (position == infoHeaderRow) {
@@ -14475,6 +14630,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     position == botPermissionBiometry || position == botPermissionEmojiStatus || position == tonRow
             ) {
                 return VIEW_TYPE_TEXT;
+            } else if (position == nowPlayingRow) {
+                return 100;
             } else if (position == notificationsDividerRow) {
                 return VIEW_TYPE_DIVIDER;
             } else if (position == notificationsRow) {
@@ -14486,7 +14643,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     position == helpSectionCell || position == setAvatarSectionRow || position == passwordSuggestionSectionRow ||
                     position == phoneSuggestionSectionRow || position == premiumSectionsRow || position == reportDividerRow ||
                     position == channelDividerRow || position == graceSuggestionSectionRow || position == balanceDividerRow ||
-                    position == botPermissionsDivider || position == channelBalanceSectionRow || position == unofficialSecurityRiskDividerRow
+                    position == botPermissionsDivider || position == channelBalanceSectionRow || position == unofficialSecurityRiskDividerRow || position == nowPlayingSectionRow
             ) {
                 return VIEW_TYPE_SHADOW;
             } else if (position >= membersStartRow && position < membersEndRow) {

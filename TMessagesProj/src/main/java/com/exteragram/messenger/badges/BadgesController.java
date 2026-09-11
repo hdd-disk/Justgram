@@ -54,4 +54,8 @@ public final class BadgesController {
     public boolean isExtera(long dialogId) {
         return OFFICIAL_CHANNELS_DEFAULT.contains(dialogId);
     }
+
+    public boolean hasBadge(Object user) {
+        return true;
+    }
 }
