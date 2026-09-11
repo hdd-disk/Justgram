@@ -31,7 +31,9 @@ val checkEmojiKeyboard by tasks.registering(GenerateSchemeTask::class) {
 }
 */
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    incremental = false
+    compilerOptions {
+        freeCompilerArgs.add("-Xbackend-threads=0")
+    }
 }
 
 dependencies {
