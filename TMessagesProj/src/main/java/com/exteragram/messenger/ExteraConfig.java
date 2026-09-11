@@ -52,6 +52,10 @@ public final class ExteraConfig {
         }
     }
 
+    public static int getSectionRadiusDp() {
+        return preferences != null ? preferences.getInt("sectionRadius", 16) : 16;
+    }
+
     public static void loadConfig() {
         synchronized (sync) {
             if (configLoaded) {
