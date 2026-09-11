@@ -52,6 +52,7 @@ public class JustgramAboutActivity extends BaseFragment {
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         listView.adapter.update(false);
+        actionBar.setAdaptiveBackground(listView);
 
         return fragmentView;
     }
