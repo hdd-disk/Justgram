@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
+import android.util.LruCache;
 import android.util.Pair;
 import android.util.SparseArray;
 import android.widget.FrameLayout;
@@ -3211,6 +3212,23 @@ public class MediaDataController extends BaseController {
             }
             if (res != null) {
                 try {
+                    if (type == TYPE_EMOJIPACKS && stickerSets[TYPE_EMOJIPACKS] != null) {
+                        for (int i = 0; i < stickerSets[TYPE_EMOJIPACKS].size(); i++) {
+                            TLRPC.TL_messages_stickerSet localSet = stickerSets[TYPE_EMOJIPACKS].get(i);
+                            if (localSet != null && localSet.set != null && removingStickerSetsUndos.indexOfKey(localSet.set.id) < 0) {
+                                boolean found = false;
+                                for (int a = 0; a < res.size(); a++) {
+                                    if (res.get(a) != null && res.get(a).set != null && res.get(a).set.id == localSet.set.id) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    res.add(0, localSet);
+                                }
+                            }
+                        }
+                    }
                     ArrayList<TLRPC.TL_messages_stickerSet> stickerSetsNew = new ArrayList<>();
                     LongSparseArray<TLRPC.TL_messages_stickerSet> stickerSetsByIdNew = new LongSparseArray<>();
                     HashMap<String, TLRPC.TL_messages_stickerSet> stickerSetsByNameNew = new HashMap<>();
@@ -3580,9 +3598,9 @@ public class MediaDataController extends BaseController {
                 loadStickers(type, false, false, true, p -> {
                     markSetInstalling(stickerSet.id, false);
                 });
-                if (error == null && showTooltip) {
+                if ((error == null || type == TYPE_EMOJIPACKS) && showTooltip) {
                     if (bulletinContainer != null) {
-                        Bulletin.make(bulletinContainer, new StickerSetBulletinLayout(context, stickerSetObject, StickerSetBulletinLayout.TYPE_ADDED, sticker, baseFragment.getResourceProvider()), Bulletin.DURATION_SHORT).show();
+                        Bulletin.make(bulletinContainer, new StickerSetBulletinLayout(context, stickerSetObject, StickerSetBulletinLayout.TYPE_ADDED, sticker, baseFragment == null ? null : baseFragment.getResourceProvider()), Bulletin.DURATION_SHORT).show();
                     } else if (baseFragment != null) {
                         Bulletin.make(baseFragment, new StickerSetBulletinLayout(context, stickerSetObject, StickerSetBulletinLayout.TYPE_ADDED, sticker, baseFragment.getResourceProvider()), Bulletin.DURATION_SHORT).show();
                     }
@@ -7039,6 +7057,27 @@ public class MediaDataController extends BaseController {
     public static final int MAX_STYLE_RUNS_COUNT = 1000;
     public static final int MAX_LINKS_COUNT = 250;
 
+    public static ArrayList<TLRPC.MessageEntity> cleanCustomEmojiEntitiesForNonPremium(int currentAccount, ArrayList<TLRPC.MessageEntity> entities) {
+        if (entities == null || UserConfig.getInstance(currentAccount).isPremium()) {
+            return entities;
+        }
+        for (int i = 0; i < entities.size(); i++) {
+            TLRPC.MessageEntity entity = entities.get(i);
+            if (entity instanceof TLRPC.TL_messageEntityCustomEmoji) {
+                TLRPC.TL_messageEntityCustomEmoji customEmoji = (TLRPC.TL_messageEntityCustomEmoji) entity;
+                if (customEmoji.document != null && MessageObject.isFreeEmoji(customEmoji.document)) {
+                    continue;
+                }
+                TLRPC.TL_messageEntityTextUrl textUrl = new TLRPC.TL_messageEntityTextUrl();
+                textUrl.offset = customEmoji.offset;
+                textUrl.length = customEmoji.length;
+                textUrl.url = "tg://emoji?id=" + customEmoji.document_id;
+                entities.set(i, textUrl);
+            }
+        }
+        return entities;
+    }
+
     public static void addAnimatedEmojiSpans(ArrayList<TLRPC.MessageEntity> entities, CharSequence messageText, Paint.FontMetricsInt fontMetricsInt) {
         if (!(messageText instanceof Spannable) || entities == null) {
             return;
@@ -7053,17 +7092,25 @@ public class MediaDataController extends BaseController {
         }
         for (int i = 0; i < entities.size(); ++i) {
             TLRPC.MessageEntity messageEntity = entities.get(i);
+            long documentId = 0;
+            TLRPC.Document document = null;
             if (messageEntity instanceof TLRPC.TL_messageEntityCustomEmoji) {
                 TLRPC.TL_messageEntityCustomEmoji entity = (TLRPC.TL_messageEntityCustomEmoji) messageEntity;
+                documentId = entity.document_id;
+                document = entity.document;
+            } else if (messageEntity instanceof TLRPC.TL_messageEntityTextUrl && messageEntity.url != null && messageEntity.url.startsWith("tg://emoji?id=")) {
+                documentId = Utilities.parseLong(messageEntity.url.substring(14));
+            }
 
+            if (documentId != 0) {
                 int start = messageEntity.offset;
                 int end = messageEntity.offset + messageEntity.length;
                 if (start < end && end <= spannable.length()) {
                     AnimatedEmojiSpan span;
-                    if (entity.document != null) {
-                        span = new AnimatedEmojiSpan(entity.document, fontMetricsInt);
+                    if (document != null) {
+                        span = new AnimatedEmojiSpan(document, fontMetricsInt);
                     } else {
-                        span = new AnimatedEmojiSpan(entity.document_id, fontMetricsInt);
+                        span = new AnimatedEmojiSpan(documentId, fontMetricsInt);
                     }
                     spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
@@ -7091,7 +7138,7 @@ public class MediaDataController extends BaseController {
                 entity.length = text.length() - entity.offset;
             }
 
-            if (entity instanceof TLRPC.TL_messageEntityCustomEmoji) {
+            if (entity instanceof TLRPC.TL_messageEntityCustomEmoji || (entity instanceof TLRPC.TL_messageEntityTextUrl && entity.url != null && entity.url.startsWith("tg://emoji?id="))) {
                 continue;
             }
 
@@ -7380,12 +7427,20 @@ public class MediaDataController extends BaseController {
                     AnimatedEmojiSpan span = animatedEmojiSpans[b];
                     if (span != null) {
                         try {
-                            TLRPC.TL_messageEntityCustomEmoji entity = new TLRPC.TL_messageEntityCustomEmoji();
-                            entity.offset = spannable.getSpanStart(span);
-                            entity.length = Math.min(spannable.getSpanEnd(span), message[0].length()) - entity.offset;
-                            entity.document_id = span.getDocumentId();
-                            entity.document = span.document;
-                            entities.add(entity);
+                            if (!UserConfig.getInstance(UserConfig.selectedAccount).isPremium() && (span.document == null || !MessageObject.isFreeEmoji(span.document))) {
+                                TLRPC.TL_messageEntityTextUrl entity = new TLRPC.TL_messageEntityTextUrl();
+                                entity.offset = spannable.getSpanStart(span);
+                                entity.length = Math.min(spannable.getSpanEnd(span), message[0].length()) - entity.offset;
+                                entity.url = "tg://emoji?id=" + span.getDocumentId();
+                                entities.add(entity);
+                            } else {
+                                TLRPC.TL_messageEntityCustomEmoji entity = new TLRPC.TL_messageEntityCustomEmoji();
+                                entity.offset = spannable.getSpanStart(span);
+                                entity.length = Math.min(spannable.getSpanEnd(span), message[0].length()) - entity.offset;
+                                entity.document_id = span.getDocumentId();
+                                entity.document = span.document;
+                                entities.add(entity);
+                            }
                         } catch (Exception e) {
                             FileLog.e(e);
                         }
@@ -10032,7 +10087,7 @@ public class MediaDataController extends BaseController {
     }
 
     private final HashMap<SearchStickersKey, Integer> loadingSearchStickersKeys = new HashMap<>();
-    private final android.util.LruCache<SearchStickersKey, SearchStickersResult> searchStickerResults = new android.util.LruCache<>(25);
+    private final LruCache<SearchStickersKey, SearchStickersResult> searchStickerResults = new LruCache<>(25);
     public SearchStickersKey searchStickers(boolean emojis, String lang_code, String q, Utilities.Callback<ArrayList<TLRPC.Document>> whenDone) {
         return searchStickers(emojis, lang_code, q, whenDone, false);
     }

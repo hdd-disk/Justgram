@@ -7589,109 +7589,6 @@ public class ChatActivityEnterView extends FrameLayout implements
     }
 
     public static boolean checkPremiumAnimatedEmoji(int currentAccount, long dialogId, BaseFragment parentFragment, FrameLayout container, CharSequence message) {
-        if (message == null || parentFragment == null) {
-            return false;
-        }
-        final boolean isPremium = UserConfig.getInstance(currentAccount).isPremium();
-        if (!isPremium && UserConfig.getInstance(currentAccount).getClientUserId() != dialogId && message instanceof Spanned) {
-            AnimatedEmojiSpan[] animatedEmojis = ((Spanned) message).getSpans(0, message.length(), AnimatedEmojiSpan.class);
-            if (animatedEmojis != null) {
-                for (int i = 0; i < animatedEmojis.length; ++i) {
-                    if (animatedEmojis[i] != null) {
-                        TLRPC.Document emoji = animatedEmojis[i].document;
-                        if (emoji == null) {
-                            emoji = AnimatedEmojiDrawable.findDocument(currentAccount, animatedEmojis[i].getDocumentId());
-                        }
-                        long documentId = animatedEmojis[i].getDocumentId();
-                        if (emoji == null) {
-                            ArrayList<TLRPC.TL_messages_stickerSet> sets1 = MediaDataController.getInstance(currentAccount).getStickerSets(MediaDataController.TYPE_EMOJIPACKS);
-                            for (TLRPC.TL_messages_stickerSet set : sets1) {
-                                if (set != null && set.documents != null && !set.documents.isEmpty()) {
-                                    for (TLRPC.Document document : set.documents) {
-                                        if (document.id == documentId) {
-                                            emoji = document;
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (emoji != null) {
-                                    break;
-                                }
-                            }
-                        }
-                        if (emoji == null) {
-                            ArrayList<TLRPC.StickerSetCovered> sets2 = MediaDataController.getInstance(currentAccount).getFeaturedEmojiSets();
-                            for (TLRPC.StickerSetCovered set : sets2) {
-                                if (set != null && set.covers != null && !set.covers.isEmpty()) {
-                                    for (TLRPC.Document document : set.covers) {
-                                        if (document.id == documentId) {
-                                            emoji = document;
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (emoji != null) {
-                                    break;
-                                }
-                                ArrayList<TLRPC.Document> documents = null;
-                                if (set instanceof TLRPC.TL_stickerSetFullCovered) {
-                                    documents = ((TLRPC.TL_stickerSetFullCovered) set).documents;
-                                } else if (set instanceof TLRPC.TL_stickerSetNoCovered && set.set != null) {
-                                    TLRPC.TL_inputStickerSetID inputStickerSetID = new TLRPC.TL_inputStickerSetID();
-                                    inputStickerSetID.id = set.set.id;
-                                    TLRPC.TL_messages_stickerSet fullSet = MediaDataController.getInstance(currentAccount).getStickerSet(inputStickerSetID, true);
-                                    if (fullSet != null && fullSet.documents != null) {
-                                        documents = fullSet.documents;
-                                    }
-                                }
-                                if (documents != null && !documents.isEmpty()) {
-                                    for (TLRPC.Document document : documents) {
-                                        if (document.id == documentId) {
-                                            emoji = document;
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (emoji != null) {
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (emoji != null) {
-                            TLRPC.ChatFull chatFull = MessagesController.getInstance(currentAccount).getChatFull(-dialogId);
-                            if (chatFull != null && chatFull.emojiset != null) {
-                                TLRPC.TL_messages_stickerSet stickerSet = MediaDataController.getInstance(currentAccount).getGroupStickerSetById(chatFull.emojiset);
-                                if (stickerSet != null) {
-                                    for (TLRPC.Document document : stickerSet.documents) {
-                                        if (document.id == documentId) {
-                                            return false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (emoji == null || !MessageObject.isFreeEmoji(emoji)) {
-                            BulletinFactory.of(parentFragment)
-                                .createEmojiBulletin(
-                                    emoji,
-                                    AndroidUtilities.replaceTags(getString("UnlockPremiumEmojiHint", R.string.UnlockPremiumEmojiHint)),
-                                    getString("PremiumMore", R.string.PremiumMore),
-                                    () -> {
-                                        if (parentFragment != null) {
-                                            new PremiumFeatureBottomSheet(parentFragment, PremiumPreviewFragment.PREMIUM_FEATURE_ANIMATED_EMOJI, false).show();
-                                        } else if (parentFragment.getContext() instanceof LaunchActivity) {
-                                            ((LaunchActivity) parentFragment.getContext()).presentFragment(new PremiumPreviewFragment(null));
-                                        }
-                                    }
-                                ).show();
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
         return false;
     }
 
@@ -12055,6 +11952,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 }
             }
         };
+        emojiView.allowEmojisForNonPremium(true);
         emojiView.shouldDrawStickerSettings = true;
         if (!shouldDrawBackground) {
             emojiView.updateColors();

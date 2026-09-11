@@ -452,7 +452,7 @@ public class EditTextEmoji extends FrameLayout implements NotificationCenter.Not
         }
     }
 
-    private boolean allowEmojisForNonPremium;
+    private boolean allowEmojisForNonPremium = true;
     public void allowEmojisForNonPremium(boolean allow) {
         allowEmojisForNonPremium = allow;
     }
@@ -681,7 +681,7 @@ public class EditTextEmoji extends FrameLayout implements NotificationCenter.Not
                 currentHeight = Math.min(currentHeight + dp(200), AndroidUtilities.displaySize.y);
             }
 
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) currentView.getLayoutParams();
+            LayoutParams layoutParams = (LayoutParams) currentView.getLayoutParams();
             layoutParams.height = currentHeight;
             currentView.setLayoutParams(layoutParams);
             if (!AndroidUtilities.isInMultiwindow && !AndroidUtilities.isTablet()) {
@@ -996,7 +996,7 @@ public class EditTextEmoji extends FrameLayout implements NotificationCenter.Not
                 newHeight = Math.min(newHeight + dp(200), AndroidUtilities.displaySize.y);
             }
 
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) emojiView.getLayoutParams();
+            LayoutParams layoutParams = (LayoutParams) emojiView.getLayoutParams();
             if (layoutParams.width != AndroidUtilities.displaySize.x || layoutParams.height != newHeight) {
                 layoutParams.width = AndroidUtilities.displaySize.x;
                 layoutParams.height = newHeight;

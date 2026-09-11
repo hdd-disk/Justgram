@@ -4283,6 +4283,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         boolean searchLinks = sendMessageParams.searchLinks;
         MessageObject retryMessageObject = sendMessageParams.retryMessageObject;
         ArrayList<TLRPC.MessageEntity> entities = sendMessageParams.entities;
+        if (entities != null && !getUserConfig().isPremium()) {
+            MediaDataController.cleanCustomEmojiEntitiesForNonPremium(currentAccount, entities);
+        }
         TLRPC.ReplyMarkup replyMarkup = sendMessageParams.replyMarkup;
         HashMap<String, String> params = sendMessageParams.params;
         boolean notify = sendMessageParams.notify;
