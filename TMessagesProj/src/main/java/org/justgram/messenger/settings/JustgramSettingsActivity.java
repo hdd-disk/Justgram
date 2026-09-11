@@ -94,6 +94,7 @@ public class JustgramSettingsActivity extends BaseFragment {
         topView.addView(subtitleView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 168 - 12, 0, 24));
 
         listView.adapter.update(false);
+        actionBar.setAdaptiveBackground(listView);
 
         return fragmentView;
     }
