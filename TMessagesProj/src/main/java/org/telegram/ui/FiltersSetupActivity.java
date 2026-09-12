@@ -65,7 +65,7 @@ import org.telegram.ui.Components.LoadingDrawable;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.ProgressButton;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.UndoView;
 
@@ -225,13 +225,13 @@ public class FiltersSetupActivity extends BaseFragment implements NotificationCe
     @SuppressWarnings("FieldCanBeLocal")
     public static class HintInnerCell extends FrameLayout {
 
-        private RLottieImageView imageView;
+        private TLottieImageView imageView;
         private TextView messageTextView;
 
         public HintInnerCell(Context context, int resId, CharSequence text) {
             super(context);
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setAnimation(resId, 90, 90);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.playAnimation();

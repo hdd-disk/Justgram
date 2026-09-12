@@ -103,7 +103,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LoadingSpan;
 import org.telegram.ui.Components.PermissionRequest;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Reactions.ReactionImageHolder;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.RecyclerAnimationScrollHelper;
@@ -2317,9 +2317,9 @@ public class EmojiBottomSheet extends BottomSheet implements NotificationCenter.
                 if (imageReceiver == null) {
                     return 1f;
                 }
-                RLottieDrawable rLottieDrawable = imageReceiver.getLottieAnimation();
-                if (rLottieDrawable != null && rLottieDrawable.getIntrinsicHeight() != 0) {
-                    return (float) rLottieDrawable.getIntrinsicWidth() / rLottieDrawable.getIntrinsicHeight();
+                TLottieDrawable tLottieDrawable = imageReceiver.getLottieAnimation();
+                if (tLottieDrawable != null && tLottieDrawable.getIntrinsicHeight() != 0) {
+                    return (float) tLottieDrawable.getIntrinsicWidth() / tLottieDrawable.getIntrinsicHeight();
                 }
                 AnimatedFileDrawable animatedDrawable = imageReceiver.getAnimation();
                 if (animatedDrawable != null && animatedDrawable.getIntrinsicHeight() != 0) {

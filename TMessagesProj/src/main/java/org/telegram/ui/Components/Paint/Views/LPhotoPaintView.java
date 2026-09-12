@@ -94,7 +94,7 @@ import org.telegram.ui.Components.Paint.PhotoFace;
 import org.telegram.ui.Components.Paint.RenderView;
 import org.telegram.ui.Components.Paint.Swatch;
 import org.telegram.ui.Components.Paint.UndoStore;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Size;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.SizeNotifierFrameLayoutPhoto;
@@ -2931,7 +2931,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         StickerPosition position = calculateStickerPosition(sticker);
         StickerView view = new StickerView(getContext(), position.position, position.angle, position.scale, baseStickerSize(), sticker, parentObject) {
             @Override
-            protected void didSetAnimatedSticker(RLottieDrawable drawable) {
+            protected void didSetAnimatedSticker(TLottieDrawable drawable) {
                 LPhotoPaintView.this.didSetAnimatedSticker(drawable);
             }
         };
@@ -2984,7 +2984,7 @@ public class LPhotoPaintView extends SizeNotifierFrameLayoutPhoto implements IPh
         undoStore.registerUndo(entityView.getUUID(), () -> removeEntity(entityView));
     }
 
-    protected void didSetAnimatedSticker(RLottieDrawable drawable) {}
+    protected void didSetAnimatedSticker(TLottieDrawable drawable) {}
 
     @Override
     public boolean onEntitySelected(EntityView entityView) {

@@ -114,7 +114,7 @@ import org.telegram.ui.Components.PhotoBubbleClip;
 import org.telegram.ui.Components.Premium.PremiumGradient;
 import org.telegram.ui.Components.PullForegroundDrawable;
 import org.telegram.ui.Components.QuoteSpan;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.StaticLayoutEx;
 import org.telegram.ui.Components.StatusDrawable;
@@ -155,7 +155,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
     public boolean drawArchive = true;
     public float rightFragmentOffset;
     boolean moving;
-    private RLottieDrawable lastDrawTranslationDrawable;
+    private TLottieDrawable lastDrawTranslationDrawable;
     private int lastDrawSwipeMessageStringId;
     public boolean swipeCanceled;
     public static final int SENT_STATE_NOTHING = -1;
@@ -447,7 +447,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
     private int bottomClip;
     protected float translationX;
     private boolean isSliding;
-    private RLottieDrawable translationDrawable;
+    private TLottieDrawable translationDrawable;
     private boolean translationAnimationStarted;
     private boolean drawRevealBackground;
     private float currentRevealProgress;
@@ -480,7 +480,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
     protected int overrideSwipeActionRevealBackgroundColorKey;
     protected String overrideSwipeActionStringKey;
     protected int overrideSwipeActionStringId;
-    protected RLottieDrawable overrideSwipeActionDrawable;
+    protected TLottieDrawable overrideSwipeActionDrawable;
 
     private int thumbsCount;
     private boolean hasVideoThumb;

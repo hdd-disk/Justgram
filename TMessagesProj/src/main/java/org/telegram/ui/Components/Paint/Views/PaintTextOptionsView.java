@@ -27,8 +27,8 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.ChatActivityEnterViewAnimatedIconView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Paint.PaintTypeface;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +48,7 @@ public class PaintTextOptionsView extends FrameLayout implements NotificationCen
     );
     private int currentAlign = ALIGN_LEFT;
     private ChatActivityEnterViewAnimatedIconView emojiButton;
-    private RLottieImageView alignView;
+    private TLottieImageView alignView;
     private ImageView outlineView;
     private ImageView plusView;
     private View colorClickableView;
@@ -69,9 +69,9 @@ public class PaintTextOptionsView extends FrameLayout implements NotificationCen
         colorClickableView.setOnClickListener(v -> delegate.onColorPickerSelected());
         addView(colorClickableView, LayoutHelper.createFrame(24, 24, Gravity.TOP, 0, 0, 16, 0));
 
-        alignView = new RLottieImageView(context);
+        alignView = new TLottieImageView(context);
         alignView.setAnimation(R.raw.photo_text_allign, 24, 24);
-        RLottieDrawable drawable = alignView.getAnimatedDrawable();
+        TLottieDrawable drawable = alignView.getAnimatedDrawable();
         drawable.setPlayInDirectionOfCustomEndFrame(true);
         drawable.setCustomEndFrame(20);
         drawable.setCurrentFrame(20);
@@ -236,7 +236,7 @@ public class PaintTextOptionsView extends FrameLayout implements NotificationCen
         currentAlign = align;
 
         if (prevAlign == currentAlign) {
-            RLottieDrawable drawable = alignView.getAnimatedDrawable();
+            TLottieDrawable drawable = alignView.getAnimatedDrawable();
             AlignFramePair alignPair = ALIGN_PAIRS.get(0);
             for (AlignFramePair pair : ALIGN_PAIRS) {
                 if (currentAlign == pair.toAlign) {
@@ -260,7 +260,7 @@ public class PaintTextOptionsView extends FrameLayout implements NotificationCen
                 break;
             }
         }
-        RLottieDrawable drawable = alignView.getAnimatedDrawable();
+        TLottieDrawable drawable = alignView.getAnimatedDrawable();
         drawable.setCurrentFrame(alignPair.fromFrame);
         drawable.setCustomEndFrame(alignPair.toFrame);
         drawable.start();

@@ -55,7 +55,7 @@ import org.telegram.ui.Components.EditTextBoldCursor;
 import org.telegram.ui.Components.FlickerLoadingView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
@@ -185,7 +185,7 @@ public class SelectChatUserSheet extends BottomSheetWithRecyclerListView {
             }
         };
         final BackupImageView emptyImageView = new BackupImageView(context);
-        emptyImageView.setImageDrawable(new RLottieDrawable(R.raw.utyan_empty, dp(130), dp(130)));
+        emptyImageView.setImageDrawable(new TLottieDrawable(R.raw.utyan_empty, "utyan_empty", dp(130), dp(130)));
         emptySearchView.addView(emptyImageView, LayoutHelper.createFrame(130, 130, Gravity.CENTER));
 
         admins = new ParticipantsList(currentAccount, chat.id, new TLRPC.TL_channelParticipantsAdmins()).listen(this::update);

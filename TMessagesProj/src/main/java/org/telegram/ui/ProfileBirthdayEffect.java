@@ -23,7 +23,7 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.TextDetailCell;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 
 import java.time.LocalDate;
@@ -405,7 +405,7 @@ public class ProfileBirthdayEffect extends View {
                 @Override
                 public void didSetImage(ImageReceiver imageReceiver, boolean set, boolean thumb, boolean memCache) {
                     if (imageReceiver.hasBitmapImage() && callback[0] != null) {
-                        RLottieDrawable lottieDrawable = imageReceiver.getLottieAnimation();
+                        TLottieDrawable lottieDrawable = imageReceiver.getLottieAnimation();
                         if (lottieDrawable == null) {
                             callback[0].run();
                             callback[0] = null;

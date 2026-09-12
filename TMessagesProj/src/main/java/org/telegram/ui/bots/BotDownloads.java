@@ -54,7 +54,8 @@ import org.telegram.ui.Components.CircularProgressDrawable;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LoadingSpan;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.GradientClip;
 import org.telegram.ui.LaunchActivity;
 
 import java.io.File;
@@ -661,7 +662,7 @@ public class BotDownloads {
             private AnimatedFloat animatedProgress = new AnimatedFloat(this::invalidateSelf, 0, 320, CubicBezierInterpolator.EASE_OUT_QUINT);
             private AnimatedFloat animatedDone = new AnimatedFloat(this::invalidateSelf, 0, 320, CubicBezierInterpolator.EASE_OUT_QUINT);
 
-            private RLottieDrawable doneDrawable;
+            private TLottieDrawable doneDrawable;
 
             public StatusDrawable(Context context, View view) {
                 this.view = view;
@@ -695,7 +696,7 @@ public class BotDownloads {
                 if (this.done) return;
                 this.done = true;
                 this.cancelled = cancelled;
-                doneDrawable = new RLottieDrawable(cancelled ? R.raw.error : R.raw.contact_check, dp(40), dp(40));
+                doneDrawable = new TLottieDrawable(cancelled ? R.raw.error : R.raw.contact_check, cancelled ? "error" : "contact_check", dp(40), dp(40));
                 doneDrawable.setMasterParent(view);
                 doneDrawable.setAllowDecodeSingleFrame(true);
                 doneDrawable.start();

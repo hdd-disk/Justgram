@@ -27,13 +27,13 @@ import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.CheckBox2;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 
 public class ActionBarMenuSubItem extends FrameLayout {
 
     public AnimatedEmojiSpan.TextViewEmojis textView;
     public TextView subtextView;
-    public RLottieImageView imageView;
+    public TLottieImageView imageView;
     public boolean checkViewLeft;
     public CheckBox2 checkView;
     private ImageView rightIcon;
@@ -83,7 +83,7 @@ public class ActionBarMenuSubItem extends FrameLayout {
         updateBackground();
         setPadding(dp(18), 0, dp(18), 0);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setColorFilter(new PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_IN));
         addView(imageView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 40, Gravity.CENTER_VERTICAL | (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT)));

@@ -28,7 +28,7 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.tgnet.tl.TL_stars;
 import org.telegram.ui.ActionBar.theme.ITheme;
 import org.telegram.ui.ActionBar.theme.ThemeKey;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 import java.io.File;
 import java.io.FileOutputStream;

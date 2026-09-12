@@ -39,7 +39,7 @@ import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.CheckBox2;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Stories.recorder.ButtonWithCounterView;
 import org.telegram.ui.Stories.recorder.HintView2;
@@ -77,7 +77,7 @@ public class InstallPluginBottomSheet extends BottomSheet {
             content.addView(imageView, LayoutHelper.createLinear(78, 78, Gravity.CENTER_HORIZONTAL, 0, 28, 0, 0));
             MediaDataController.getInstance(UserConfig.selectedAccount).setPlaceholderImageByIndex(imageView, validationResult.plugin.getPack(), validationResult.plugin.getIndex(), "150_150");
         } else {
-            RLottieImageView imageView = new RLottieImageView(activity);
+            TLottieImageView imageView = new TLottieImageView(activity);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.setImageResource(R.drawable.msg_settings);
             imageView.setColorFilter(Theme.getColor(Theme.key_featuredStickers_buttonText, resourcesProvider));

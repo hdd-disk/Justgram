@@ -80,7 +80,7 @@ import org.telegram.ui.Components.ChatAvatarContainer;
 import org.telegram.ui.Components.CombinedDrawable;
 import org.telegram.ui.Components.EmptyTextProgressView;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Stories.StoriesListPlaceProvider;
 import org.telegram.ui.Stories.StoriesUtilities;
@@ -122,7 +122,7 @@ public class MessageStatisticActivity extends BaseFragment implements Notificati
 
     ArraySet<Integer> shadowDivideCells = new ArraySet<>();
 
-    private RLottieImageView imageView;
+    private TLottieImageView imageView;
     private LinearLayout progressLayout;
 
     private int publicChats;
@@ -285,7 +285,7 @@ public class MessageStatisticActivity extends BaseFragment implements Notificati
         progressLayout = new LinearLayout(context);
         progressLayout.setOrientation(LinearLayout.VERTICAL);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setAutoRepeat(true);
         imageView.setAnimation(R.raw.statistic_preload, 120, 120);
         imageView.playAnimation();

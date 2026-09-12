@@ -45,7 +45,7 @@ import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.ButtonBounce;
 import org.telegram.ui.Components.CircularProgressDrawable;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 import java.io.File;
 
@@ -371,7 +371,7 @@ public class DownloadButton extends ImageView {
 
         private final ButtonBounce cancelButton = new ButtonBounce(this);
 
-        private RLottieDrawable lottieDrawable;
+        private TLottieDrawable lottieDrawable;
 
         private final StaticLayout preparingLayout;
         private final float preparingLayoutWidth, preparingLayoutLeft;
@@ -551,7 +551,7 @@ public class DownloadButton extends ImageView {
                 lottieDrawable.recycle(true);
             }
 
-            lottieDrawable = new RLottieDrawable(resId, dp(36), dp(36));
+            lottieDrawable = new TLottieDrawable(resId, "" + resId, dp(36), dp(36));
             lottieDrawable.setCallback(this);
             lottieDrawable.start();
 

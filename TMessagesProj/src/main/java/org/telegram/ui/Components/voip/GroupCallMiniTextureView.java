@@ -65,7 +65,7 @@ import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.GroupCallFullscreenAdapter;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.GroupCallActivity;
 import org.webrtc.GlGenericDrawer;
@@ -120,7 +120,7 @@ public class GroupCallMiniTextureView extends FrameLayout implements GroupCallSt
     float progressToSpeaking;
 
     Paint speakingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final RLottieImageView micIconView;
+    private final TLottieImageView micIconView;
     private final ImageView screencastIcon;
 
     public boolean hasVideo;
@@ -526,7 +526,7 @@ public class GroupCallMiniTextureView extends FrameLayout implements GroupCallSt
         speakingPaint.setColor(Theme.getColor(Theme.key_voipgroup_speakingText));
         infoContainer.setClipChildren(false);
 
-        micIconView = new RLottieImageView(parentContainer.getContext());
+        micIconView = new TLottieImageView(parentContainer.getContext());
         addView(micIconView, LayoutHelper.createFrame(24, 24, 0, 4, 6, 4, 0));
 
         screencastIcon = new ImageView(parentContainer.getContext());

@@ -115,7 +115,7 @@ public class ChatGreetingsView extends LinearLayout {
         stickerToSendView.setContentDescription(descriptionView.getText());
     }
 
-    private RLottieImageView premiumIconView;
+    private TLottieImageView premiumIconView;
     private TextView premiumTextView;
     private TextView premiumButtonView;
 
@@ -136,7 +136,7 @@ public class ChatGreetingsView extends LinearLayout {
         isSuggest = isSuggestion;
         if (premiumLock) {
             if (premiumIconView == null) {
-                premiumIconView = new RLottieImageView(getContext());
+                premiumIconView = new TLottieImageView(getContext());
                 premiumIconView.setScaleType(ImageView.ScaleType.CENTER);
                 premiumIconView.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
                 premiumIconView.setBackground(Theme.createCircleDrawable(dp(78), 0x1c000000));
@@ -285,8 +285,8 @@ public class ChatGreetingsView extends LinearLayout {
                 }
                 if ((type == ImageReceiver.TYPE_IMAGE || type == ImageReceiver.TYPE_MEDIA) && drawable != null) {
                     waited = true;
-                    if (drawable instanceof RLottieDrawable && ((RLottieDrawable) drawable).bitmapsCache != null && ((RLottieDrawable) drawable).bitmapsCache.needGenCache()) {
-                        ((RLottieDrawable) drawable).whenCacheDone = () -> {
+                    if (drawable instanceof TLottieDrawable && ((TLottieDrawable) drawable).bitmapsCache != null && ((TLottieDrawable) drawable).bitmapsCache.needGenCache()) {
+                        ((TLottieDrawable) drawable).whenCacheDone = () -> {
                             toggleToNextSticker();
                             if (whenDone != null) {
                                 whenDone.run();
@@ -530,7 +530,7 @@ public class ChatGreetingsView extends LinearLayout {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(dp(16), 0, dp(16), 0);
 
-        RLottieImageView imageView = new RLottieImageView(context);
+        TLottieImageView imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setAnimation(R.raw.large_message_lock, 80, 80);
         imageView.playAnimation();

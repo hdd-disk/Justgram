@@ -26,7 +26,7 @@ import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 
 @SuppressLint("ViewConstructor")
 public class RateCallLayout extends FrameLayout {
@@ -56,7 +56,7 @@ public class RateCallLayout extends FrameLayout {
             startsViews[i].setAllStarsProvider(() -> startsViews);
             startsViews[i].setOnSelectedStar((x, y, starsCount) -> {
                 if (starsCount >= 4) {
-                    final RLottieImageView img = new RLottieImageView(context);
+                    final TLottieImageView img = new TLottieImageView(context);
                     final int rateAnimationSize = 133;
                     final int rateAnimationSizeDp = AndroidUtilities.dp(rateAnimationSize);
                     img.setAnimation(R.raw.rate, rateAnimationSize, rateAnimationSize);
@@ -124,8 +124,8 @@ public class RateCallLayout extends FrameLayout {
             StarContainer[] getAllStartsViews();
         }
 
-        public RLottieImageView defaultStar;
-        public RLottieImageView selectedStar;
+        public TLottieImageView defaultStar;
+        public TLottieImageView selectedStar;
         private final Drawable rippleDrawable;
         private OnSelectedStar onSelectedStar;
         private AllStarsProvider allStarsProvider;
@@ -143,8 +143,8 @@ public class RateCallLayout extends FrameLayout {
         public StarContainer(@NonNull Context context) {
             super(context);
             setWillNotDraw(false);
-            defaultStar = new RLottieImageView(context);
-            selectedStar = new RLottieImageView(context);
+            defaultStar = new TLottieImageView(context);
+            selectedStar = new TLottieImageView(context);
 
             defaultStar.setAnimation(R.raw.star_stroke, starSize, starSize);
             selectedStar.setAnimation(R.raw.star_fill, starSize, starSize);
@@ -187,15 +187,15 @@ public class RateCallLayout extends FrameLayout {
                     if (allStarsProvider != null) {
                         RateCallLayout.StarContainer[] starsViews = allStarsProvider.getAllStartsViews();
                         for (int i = 0; i <= pos; i++) {
-                            RLottieImageView defaultStar = starsViews[i].defaultStar;
-                            RLottieImageView selectedStar = starsViews[i].selectedStar;
+                            TLottieImageView defaultStar = starsViews[i].defaultStar;
+                            TLottieImageView selectedStar = starsViews[i].selectedStar;
                             defaultStar.animate().alpha(0f).scaleX(0.8f).scaleY(0.8f).setDuration(250).start();
                             selectedStar.animate().alpha(1f).scaleX(0.8f).scaleY(0.8f).setDuration(250).start();
                         }
 
                         for (int i = pos + 1; i < starsViews.length; i++) {
-                            RLottieImageView defaultStar = starsViews[i].defaultStar;
-                            RLottieImageView selectedStar = starsViews[i].selectedStar;
+                            TLottieImageView defaultStar = starsViews[i].defaultStar;
+                            TLottieImageView selectedStar = starsViews[i].selectedStar;
                             defaultStar.animate().alpha(1f).scaleX(1.0f).scaleY(1.0f).setDuration(250).start();
                             selectedStar.animate().alpha(0f).scaleX(1.0f).scaleY(1.0f).setDuration(250).start();
                         }
@@ -205,8 +205,8 @@ public class RateCallLayout extends FrameLayout {
                     if (allStarsProvider != null) {
                         RateCallLayout.StarContainer[] starsViews = allStarsProvider.getAllStartsViews();
                         for (int i = 0; i <= pos; i++) {
-                            RLottieImageView defaultStar = starsViews[i].defaultStar;
-                            RLottieImageView selectedStar = starsViews[i].selectedStar;
+                            TLottieImageView defaultStar = starsViews[i].defaultStar;
+                            TLottieImageView selectedStar = starsViews[i].selectedStar;
                             defaultStar.animate().scaleX(1.0f).scaleY(1.0f).setDuration(250).start();
                             selectedStar.animate().scaleX(1.0f).scaleY(1.0f).setDuration(250).start();
                         }
@@ -223,8 +223,8 @@ public class RateCallLayout extends FrameLayout {
                     if (allStarsProvider != null) {
                         RateCallLayout.StarContainer[] starsViews = allStarsProvider.getAllStartsViews();
                         for (StarContainer starsView : starsViews) {
-                            RLottieImageView defaultStar = starsView.defaultStar;
-                            RLottieImageView selectedStar = starsView.selectedStar;
+                            TLottieImageView defaultStar = starsView.defaultStar;
+                            TLottieImageView selectedStar = starsView.selectedStar;
                             defaultStar.animate().alpha(1f).scaleX(1.0f).scaleY(1.0f).setDuration(250).start();
                             selectedStar.animate().alpha(0f).scaleX(1.0f).scaleY(1.0f).setDuration(250).start();
                         }

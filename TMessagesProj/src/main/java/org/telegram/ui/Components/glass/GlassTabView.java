@@ -44,8 +44,8 @@ import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.PremiumGradient;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.MainTabsLayout;
 
@@ -55,7 +55,7 @@ import me.vkryl.android.animator.FactorAnimator;
 
 public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, FactorAnimator.Target {
     private final TextView textView;
-    private final RLottieImageView imageView;
+    private final TLottieImageView imageView;
     private BackupImageView backupImageView;
     private Theme.ResourcesProvider resourcesProvider;
     private final Paint paintCounterBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -80,7 +80,7 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
 
     public GlassTabView(@NonNull Context context) {
         super(context);
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         addView(imageView, LayoutHelper.createFrame(44, 44, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, -6, 0, 0));
 
         imageView.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN));
@@ -330,7 +330,7 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
             }
 
             if (update) {
-                final RLottieDrawable drawable = imageView.getAnimatedDrawable();
+                final TLottieDrawable drawable = imageView.getAnimatedDrawable();
                 if (drawable == null) {
                     return;
                 }
@@ -379,7 +379,7 @@ public class GlassTabView extends FrameLayout implements MainTabsLayout.Tab, Fac
             imageView.setAnimation(tabAnimation.iconToFilled, 24, 24);
         }
 
-        final RLottieDrawable drawable = imageView.getAnimatedDrawable();
+        final TLottieDrawable drawable = imageView.getAnimatedDrawable();
         if (drawable == null) {
             return;
         }

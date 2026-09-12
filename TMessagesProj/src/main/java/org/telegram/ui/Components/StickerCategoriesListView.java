@@ -625,7 +625,7 @@ public class StickerCategoriesListView extends RecyclerListView {
                 (int) (255 * alpha));
     }
 
-    private class CategoryButton extends RLottieImageView {
+    private class CategoryButton extends TLottieImageView {
 
         private int imageColor;
         private float selectedT;
@@ -792,7 +792,7 @@ public class StickerCategoriesListView extends RecyclerListView {
         public void play(boolean force) {
             if (System.currentTimeMillis() - lastPlayed > 250 || force) {
                 lastPlayed = System.currentTimeMillis();
-                RLottieDrawable drawable = getAnimatedDrawable();
+                TLottieDrawable drawable = getAnimatedDrawable();
                 if (drawable == null && getImageReceiver() != null) {
                     drawable = getImageReceiver().getLottieAnimation();
                 }

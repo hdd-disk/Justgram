@@ -42,7 +42,7 @@ public class FragmentFloatingButton extends FrameLayout implements FactorAnimato
         CubicBezierInterpolator.EASE_OUT_QUINT, 380);
 
 
-    public final RLottieImageView imageView;
+    public final TLottieImageView imageView;
     public final RadialProgressView progressView;
     private final Theme.ResourcesProvider resourcesProvider;
     private ArrayList<View> additionalContentViews;
@@ -58,7 +58,7 @@ public class FragmentFloatingButton extends FrameLayout implements FactorAnimato
         this.resourcesProvider = resourcesProvider;
         this.isSubButton = isSubButton;
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         addView(imageView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 

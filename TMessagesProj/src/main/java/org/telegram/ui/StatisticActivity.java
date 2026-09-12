@@ -97,7 +97,7 @@ import org.telegram.ui.Components.FlatCheckBox;
 import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.boosts.BoostDialogs;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
@@ -181,7 +181,7 @@ public class StatisticActivity extends BaseFragment implements NotificationCente
     private IBlur3Capture listBlur3Capture;
     private LinearLayoutManager layoutManager;
     private final LruCache<ChartData> childDataCache = new LruCache<>(50);
-    private RLottieImageView imageView;
+    private TLottieImageView imageView;
 
     private Adapter adapter;
     private RecyclerView.ItemAnimator animator;
@@ -878,7 +878,7 @@ public class StatisticActivity extends BaseFragment implements NotificationCente
         progressLayout = new LinearLayout(context);
         progressLayout.setOrientation(LinearLayout.VERTICAL);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setAutoRepeat(true);
         imageView.setAnimation(R.raw.statistic_preload, 120, 120);
         imageView.playAnimation();

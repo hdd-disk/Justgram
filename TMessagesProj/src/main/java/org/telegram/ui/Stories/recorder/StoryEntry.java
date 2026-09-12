@@ -51,7 +51,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ChatActivity;
 import org.telegram.ui.Components.AnimatedFileNative;
 import org.telegram.ui.Components.PhotoFilterView;
-import org.telegram.ui.Components.RLottieNative;
+import org.telegram.ui.Components.TLottieNative;
 import org.telegram.ui.Components.voip.AnimatedFileInfo;
 
 import java.io.File;
@@ -238,7 +238,7 @@ public class StoryEntry {
     public static boolean isAnimated(TLRPC.Document document, String path) {
         return document != null && (
             "video/webm".equals(document.mime_type) || "video/mp4".equals(document.mime_type) ||
-            MessageObject.isAnimatedStickerDocument(document, true) && RLottieNative.getFramesCount(path, null) > 1
+            MessageObject.isAnimatedStickerDocument(document, true) && TLottieNative.getFramesCount(path, null) > 1
         );
     }
 

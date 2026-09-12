@@ -68,7 +68,7 @@ import org.telegram.ui.Components.EmptyTextProgressView;
 import org.telegram.ui.Components.FragmentFloatingButton;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.OutlineTextContainerView;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.TransformableLoginButtonView;
@@ -81,7 +81,7 @@ public class TwoStepVerificationActivity extends BaseFragment implements Notific
 
     private ListAdapter listAdapter;
     private RecyclerListView listView;
-    private RLottieImageView lockImageView;
+    private TLottieImageView lockImageView;
     private TextView titleTextView, subtitleTextView;
     private TextView bottomTextView;
     private TextView resetWaitView;
@@ -240,7 +240,7 @@ public class TwoStepVerificationActivity extends BaseFragment implements Notific
         linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearLayout, LayoutHelper.createScroll(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP));
 
-        lockImageView = new RLottieImageView(context);
+        lockImageView = new TLottieImageView(context);
         lockImageView.setAnimation(R.raw.tsv_setup_intro, 100, 100);
         lockImageView.playAnimation();
         lockImageView.setVisibility(AndroidUtilities.isSmallScreen() || (AndroidUtilities.displaySize.x > AndroidUtilities.displaySize.y && !AndroidUtilities.isTablet()) ? View.GONE : View.VISIBLE);

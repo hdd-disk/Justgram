@@ -37,7 +37,7 @@ import org.telegram.ui.AvatarSpan;
 import org.telegram.ui.Components.AnimationProperties;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.Switch;
 
 import java.util.ArrayList;
@@ -445,7 +445,7 @@ public class TextCheckCell extends FrameLayout {
 
     public void setColorfullIcon(int color, int resId) {
         if (imageView == null) {
-            imageView = new RLottieImageView(getContext());
+            imageView = new TLottieImageView(getContext());
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             addView(imageView, LayoutHelper.createFrame(29, 29, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.CENTER_VERTICAL, 19, 0, 19, 0));
             padding = AndroidUtilities.dp(65);
@@ -461,7 +461,7 @@ public class TextCheckCell extends FrameLayout {
 
     public void setIcon(int resId) {
         if (imageView == null) {
-            imageView = new RLottieImageView(getContext());
+            imageView = new TLottieImageView(getContext());
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             addView(imageView, LayoutHelper.createFrame(24, 24, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.CENTER_VERTICAL, 21, 0, 21, 0));
         } else {

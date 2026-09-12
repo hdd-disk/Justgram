@@ -87,7 +87,7 @@ import org.telegram.ui.Components.FolderBottomSheet;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.QRCodeBottomSheet;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.TextStyleSpan;
 import org.telegram.ui.Components.spoilers.SpoilersTextView;
@@ -798,13 +798,13 @@ public class FilterChatlistActivity extends BaseFragment {
     @SuppressWarnings("FieldCanBeLocal")
     public static class HintInnerCell extends FrameLayout {
 
-        private RLottieImageView imageView;
+        private TLottieImageView imageView;
         private SpoilersTextView subtitleTextView;
 
         public HintInnerCell(Context context, int resId) {
             super(context);
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setAnimation(resId, 90, 90);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.playAnimation();

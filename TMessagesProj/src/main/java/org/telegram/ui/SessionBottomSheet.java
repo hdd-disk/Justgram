@@ -34,14 +34,14 @@ import org.telegram.ui.ActionBar.BottomSheet;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.Switch;
 
 public class SessionBottomSheet extends BottomSheet {
 
     TLRPC.TL_authorization session;
     BaseFragment parentFragment;
-    RLottieImageView imageView;
+    TLottieImageView imageView;
 
     public SessionBottomSheet(BaseFragment fragment, TLRPC.TL_authorization session, boolean isCurrentSession, Callback callback) {
         super(fragment.getParentActivity(), false);
@@ -55,7 +55,7 @@ public class SessionBottomSheet extends BottomSheet {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(dp(4), 0, dp(4), 0);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -307,7 +307,7 @@ public class SessionBottomSheet extends BottomSheet {
 
     }
 
-    private void setAnimation(TLRPC.TL_authorization session, RLottieImageView imageView) {
+    private void setAnimation(TLRPC.TL_authorization session, TLottieImageView imageView) {
         String platform = session.platform.toLowerCase();
         if (platform.isEmpty()) {
             platform = session.system_version.toLowerCase();

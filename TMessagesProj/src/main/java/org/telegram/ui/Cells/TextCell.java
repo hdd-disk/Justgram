@@ -41,8 +41,8 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AnimatedEmojiDrawable;
 import org.telegram.ui.Components.AnimatedTextView;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.Switch;
 import org.telegram.ui.FilterCreateActivity;
 import org.telegram.ui.PeerColorActivity;
@@ -55,7 +55,7 @@ public class TextCell extends FrameLayout {
     private final SimpleTextView subtitleView;
     public final AnimatedTextView valueTextView;
     public final SimpleTextView valueSpoilersTextView;
-    public final RLottieImageView imageView;
+    public final TLottieImageView imageView;
     private Switch checkBox;
     private ImageView valueImageView;
     public int leftPadding;
@@ -127,7 +127,7 @@ public class TextCell extends FrameLayout {
         valueSpoilersTextView.setVisibility(GONE);
         addView(valueSpoilersTextView);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(dialog ? Theme.key_dialogIcon : Theme.key_windowBackgroundWhiteGrayIcon, resourcesProvider), PorterDuff.Mode.SRC_IN));
         addView(imageView);
@@ -161,7 +161,7 @@ public class TextCell extends FrameLayout {
         return textView;
     }
 
-    public RLottieImageView getImageView() {
+    public TLottieImageView getImageView() {
         return imageView;
     }
 
@@ -411,8 +411,8 @@ public class TextCell extends FrameLayout {
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = null, false);
         imageView.setColorFilter(null);
-        if (drawable instanceof RLottieDrawable) {
-            imageView.setAnimation((RLottieDrawable) drawable);
+        if (drawable instanceof TLottieDrawable) {
+            imageView.setAnimation((TLottieDrawable) drawable);
         } else {
             imageView.setImageDrawable(drawable);
         }
@@ -435,8 +435,8 @@ public class TextCell extends FrameLayout {
         textView.setRightDrawable(null);
         valueTextView.setText(valueText = value, false);
         imageView.setColorFilter(null);
-        if (drawable instanceof RLottieDrawable) {
-            imageView.setAnimation((RLottieDrawable) drawable);
+        if (drawable instanceof TLottieDrawable) {
+            imageView.setAnimation((TLottieDrawable) drawable);
         } else {
             imageView.setImageDrawable(drawable);
         }

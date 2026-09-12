@@ -53,7 +53,7 @@ import org.telegram.ui.Components.Premium.boosts.BoostPagerBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.GiftInfoBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.cells.statistics.GiftedUserCell;
 import org.telegram.ui.Components.Premium.boosts.cells.statistics.GiveawayCell;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScrollSlidingTextTabStrip;
 import org.telegram.ui.Components.blur3.capture.IBlur3Capture;
@@ -635,7 +635,7 @@ public class ChannelBoostLayout extends FrameLayout {
         progressLayout = new LinearLayout(context);
         progressLayout.setOrientation(LinearLayout.VERTICAL);
 
-        RLottieImageView imageView = new RLottieImageView(context);
+        TLottieImageView imageView = new TLottieImageView(context);
         imageView.setAutoRepeat(true);
         imageView.setAnimation(R.raw.statistic_preload, 120, 120);
         imageView.playAnimation();

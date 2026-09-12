@@ -306,7 +306,7 @@ public class ClearHistoryAlert extends BottomSheet {
             headerCell.setText(LocaleController.getString(R.string.AutoDeleteHeader));
             linearLayout.addView(headerCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 1, autoDeleteOnly ? 20 : 0, 1, 0));
         } else {
-            RLottieImageView lottieImageView = new RLottieImageView(context);
+            TLottieImageView lottieImageView = new TLottieImageView(context);
             lottieImageView.setAutoRepeat(false);
             lottieImageView.setAnimation(R.raw.utyan_private, 120, 120);
             lottieImageView.setPadding(0, AndroidUtilities.dp(20), 0, 0);

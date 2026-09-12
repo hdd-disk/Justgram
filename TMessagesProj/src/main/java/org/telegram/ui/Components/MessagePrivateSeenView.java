@@ -198,7 +198,7 @@ public class MessagePrivateSeenView extends FrameLayout {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(dp(16), 0, dp(16), 0);
 
-        RLottieImageView imageView = new RLottieImageView(context);
+        TLottieImageView imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setAnimation(lastSeen ? R.raw.large_lastseen : R.raw.large_readtime, 70, 70);
         imageView.playAnimation();

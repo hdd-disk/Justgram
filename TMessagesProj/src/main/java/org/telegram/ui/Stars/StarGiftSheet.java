@@ -150,8 +150,8 @@ import org.telegram.ui.Components.Premium.LimitPreviewView;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.ShareAlert;
@@ -1579,7 +1579,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
         topView.setBackground(Theme.createCircleDrawable(dp(64), Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider)));
         layout.addView(topView, LayoutHelper.createLinear(64, 64, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 6, 0, 0));
 
-        final RLottieImageView imageView = new RLottieImageView(context);
+        final TLottieImageView imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setAnimation(R.raw.timer_3, 42, 42);
         topView.addView(imageView, LayoutHelper.createLinear(64, 64, Gravity.CENTER));
@@ -2383,8 +2383,8 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
 
         public void prepareSwitchPage(final PageTransition t) {
             if (t.from != t.to) {
-                final RLottieDrawable fromAnimation = imageView[t.from].getImageReceiver().getLottieAnimation();
-                final RLottieDrawable toAnimation = imageView[t.to].getImageReceiver().getLottieAnimation();
+                final TLottieDrawable fromAnimation = imageView[t.from].getImageReceiver().getLottieAnimation();
+                final TLottieDrawable toAnimation = imageView[t.to].getImageReceiver().getLottieAnimation();
                 if (toAnimation != null && fromAnimation != null) {
                     toAnimation.setProgress(fromAnimation.getProgress(), false);
                 }
@@ -2667,8 +2667,8 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
 
             toggled = 1 - toggled;
 
-            final RLottieDrawable fromAnimation = imageView[1 + (1 - toggled)].getImageReceiver().getLottieAnimation();
-            final RLottieDrawable toAnimation = imageView[1 + toggled].getImageReceiver().getLottieAnimation();
+            final TLottieDrawable fromAnimation = imageView[1 + (1 - toggled)].getImageReceiver().getLottieAnimation();
+            final TLottieDrawable toAnimation = imageView[1 + toggled].getImageReceiver().getLottieAnimation();
             if (toAnimation != null && fromAnimation != null) {
                 toAnimation.setProgress(fromAnimation.getProgress(), false);
             }
@@ -2709,8 +2709,8 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
 
             toggled = 1 - toggled;
 
-            final RLottieDrawable fromAnimation = imageView[1 + (1 - toggled)].getImageReceiver().getLottieAnimation();
-            final RLottieDrawable toAnimation = imageView[1 + toggled].getImageReceiver().getLottieAnimation();
+            final TLottieDrawable fromAnimation = imageView[1 + (1 - toggled)].getImageReceiver().getLottieAnimation();
+            final TLottieDrawable toAnimation = imageView[1 + toggled].getImageReceiver().getLottieAnimation();
             if (toAnimation != null && fromAnimation != null) {
                 toAnimation.setProgress(fromAnimation.getProgress(), false);
             }
@@ -4393,8 +4393,8 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
                 final ImageReceiver fromImageView = roller.modelRoller != null && roller.modelRoller.current != null ? roller.modelRoller.current.imageReceiver : null;
                 final BackupImageView toImageView = topView.imageView[0];
                 if (fromImageView != null && toImageView != null && toImageView.getImageReceiver() != null) {
-                    final RLottieDrawable fromAnimation = fromImageView.getLottieAnimation();
-                    final RLottieDrawable toAnimation = toImageView.getImageReceiver().getLottieAnimation();
+                    final TLottieDrawable fromAnimation = fromImageView.getLottieAnimation();
+                    final TLottieDrawable toAnimation = toImageView.getImageReceiver().getLottieAnimation();
                     if (toAnimation != null && fromAnimation != null) {
                         toAnimation.setProgress(fromAnimation.getProgress(), false);
                     } else if (toAnimation == null && fromAnimation != null) {
@@ -8602,7 +8602,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
         private final AnimatedTextView buttonTitle;
         private final AnimatedTextView buttonSubtitle;
 
-        private final RLottieImageView craftingIconView;
+        private final TLottieImageView craftingIconView;
         private final TextView craftingTitleView;
         private final TextView craftingSubtitleView;
         private final TextView craftingChanceView;
@@ -8815,7 +8815,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
             titleLayout.setOrientation(LinearLayout.HORIZONTAL);
             titleLayout.setGravity(Gravity.CENTER);
 
-            craftingIconView = new RLottieImageView(context);
+            craftingIconView = new TLottieImageView(context);
             craftingIconView.setAutoRepeat(true);
             craftingIconView.setAnimation(R.raw.gift_crafting, 30, 30);
             titleLayout.addView(craftingIconView, LayoutHelper.createLinear(30, 30, Gravity.CENTER, 0, 0, 4, 0));
@@ -9224,7 +9224,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
             });
         }
 
-        private RLottieImageView brokenGiftImage;
+        private TLottieImageView brokenGiftImage;
         private void setupFinishFace(int face, TL_stars.StarGift gift) {
             if (gift != null) {
                 final SelectGiftView giftView = new SelectGiftView(getContext());
@@ -9249,7 +9249,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
             } else {
                 final FrameLayout view = new FrameLayout(getContext());
 
-                final RLottieImageView imageView = new RLottieImageView(getContext());
+                final TLottieImageView imageView = new TLottieImageView(getContext());
                 imageView.setAnimation(R.raw.gift_broken, 32, 32);
                 view.addView(imageView, LayoutHelper.createFrame(32, 32, Gravity.CENTER));
                 imageView.setScaleX(0.5f);

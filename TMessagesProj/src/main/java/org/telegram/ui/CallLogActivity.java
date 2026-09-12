@@ -85,7 +85,7 @@ import org.telegram.ui.Components.LinkSpanDrawable;
 import org.telegram.ui.Components.NumberTextView;
 import org.telegram.ui.Components.ProgressButton;
 import org.telegram.ui.Components.QRCodeBottomSheet;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerAnimationScrollHelper;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
@@ -204,7 +204,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 		private final TextView emptyTextView1;
 		private final TextView emptyTextView2;
 		private final View progressView;
-		private final RLottieImageView imageView;
+		private final TLottieImageView imageView;
 
 		public EmptyTextProgressView(Context context) {
 			this(context, null);
@@ -216,7 +216,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 			addView(progressView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 			this.progressView = progressView;
 
-			imageView = new RLottieImageView(context);
+			imageView = new TLottieImageView(context);
 			imageView.setAnimation(R.raw.utyan_call, 110, 110);
 			imageView.setAutoRepeat(false);
 			addView(imageView, LayoutHelper.createFrame(110, 110, Gravity.CENTER, 52, 17, 52, 60));

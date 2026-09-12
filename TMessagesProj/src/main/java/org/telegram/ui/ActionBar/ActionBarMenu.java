@@ -26,7 +26,7 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.Utilities;
 import org.telegram.ui.Adapters.FiltersView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -130,8 +130,8 @@ public class ActionBarMenu extends LinearLayout {
             addView(menuItem, index, layoutParams);
         } else {
             if (drawable != null) {
-                if (drawable instanceof RLottieDrawable) {
-                    menuItem.iconView.setAnimation((RLottieDrawable) drawable);
+                if (drawable instanceof TLottieDrawable) {
+                    menuItem.iconView.setAnimation((TLottieDrawable) drawable);
                 } else {
                     menuItem.iconView.setImageDrawable(drawable);
                 }

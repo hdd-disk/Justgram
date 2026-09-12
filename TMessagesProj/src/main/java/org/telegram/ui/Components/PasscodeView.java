@@ -470,7 +470,7 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
 
     private int imageY;
 
-    private RLottieImageView imageView;
+    private TLottieImageView imageView;
 
     private Rect rect = new Rect();
 
@@ -559,7 +559,7 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
         backgroundFrameLayout.setWillNotDraw(false);
         addView(backgroundFrameLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setAnimation(R.raw.passcode_lock, 58, 58);
         imageView.setAutoRepeat(false);
         addView(imageView, LayoutHelper.createFrame(58, 58, Gravity.LEFT | Gravity.TOP));

@@ -107,7 +107,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.ListView.AdapterWithDiffUtils;
 import org.telegram.ui.Components.LoadingDrawable;
 import org.telegram.ui.Components.NestedSizeNotifierLayout;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.SlideChooseView;
@@ -1863,7 +1863,7 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
 
     private class ClearingCacheView extends FrameLayout {
 
-        RLottieImageView imageView;
+        TLottieImageView imageView;
         AnimatedTextView percentsTextView;
         ProgressView progressView;
         TextView title, subtitle;
@@ -1871,7 +1871,7 @@ public class CacheControlActivity extends BaseFragment implements NotificationCe
         public ClearingCacheView(Context context) {
             super(context);
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setAutoRepeat(true);
             imageView.setAnimation(R.raw.utyan_cache, 150, 150);
             addView(imageView, LayoutHelper.createFrame(150, 150, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 16, 0, 0));

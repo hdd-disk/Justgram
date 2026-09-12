@@ -43,7 +43,7 @@ import org.telegram.ui.Components.ChatThemeBottomSheet;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.Easings;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 
 public class ChannelWallpaperActivity extends BaseFragment {
@@ -105,7 +105,7 @@ public class ChannelWallpaperActivity extends BaseFragment {
         return resourceProvider != null ? resourceProvider.isDark() : Theme.isCurrentThemeDark();
     }
 
-    private RLottieDrawable sunDrawable;
+    private TLottieDrawable sunDrawable;
     private ActionBarMenuItem dayNightItem;
 
     @Override
@@ -123,7 +123,7 @@ public class ChannelWallpaperActivity extends BaseFragment {
             }
         });
 
-        sunDrawable = new RLottieDrawable(R.raw.sun, dp(28), dp(28), true, null);
+        sunDrawable = new TLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
         sunDrawable.setPlayInDirectionOfCustomEndFrame(true);
         if (!isDark()) {
             sunDrawable.setCustomEndFrame(0);

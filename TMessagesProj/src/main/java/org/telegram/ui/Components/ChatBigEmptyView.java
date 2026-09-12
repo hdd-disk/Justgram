@@ -62,7 +62,7 @@ public class ChatBigEmptyView extends LinearLayout {
             textViews.add(statusTextView);
             addView(statusTextView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.TOP));
         } else {
-            RLottieImageView imageView = new RLottieImageView(context);
+            TLottieImageView imageView = new TLottieImageView(context);
             imageView.setAutoRepeat(true);
             imageView.setAnimation(R.raw.utyan_saved_messages, 120, 120);
             imageView.playAnimation();

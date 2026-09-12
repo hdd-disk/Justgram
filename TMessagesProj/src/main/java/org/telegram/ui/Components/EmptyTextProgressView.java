@@ -31,7 +31,7 @@ public class EmptyTextProgressView extends FrameLayout {
     private TextView textView;
     private LinearLayout textViewLayout;
     private View progressView;
-    private RLottieImageView lottieImageView;
+    private TLottieImageView lottieImageView;
     private boolean inLayout;
     private int showAtPos;
 
@@ -62,7 +62,7 @@ public class EmptyTextProgressView extends FrameLayout {
         textViewLayout.setClipToPadding(false);
         textViewLayout.setOrientation(LinearLayout.VERTICAL);
 
-        lottieImageView = new RLottieImageView(context);
+        lottieImageView = new TLottieImageView(context);
         lottieImageView.setScaleType(ImageView.ScaleType.FIT_XY);
         lottieImageView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         lottieImageView.setVisibility(GONE);

@@ -20,7 +20,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.AnimatedEmojiDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 import java.util.Objects;
 
@@ -120,9 +120,9 @@ public class ReactionImageHolder {
         if (imageReceiver == null) return false;
         if (!imageReceiver.hasImageSet()) return false;
         if (!imageReceiver.hasImageLoaded()) return false;
-        RLottieDrawable rLottieDrawable = imageReceiver.getLottieAnimation();
-        if (rLottieDrawable != null) {
-            if (rLottieDrawable.isGeneratingCache()) {
+        TLottieDrawable tLottieDrawable = imageReceiver.getLottieAnimation();
+        if (tLottieDrawable != null) {
+            if (tLottieDrawable.isGeneratingCache()) {
                 return false;
             }
         }

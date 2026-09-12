@@ -34,7 +34,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.BlurredRecyclerView;
 import org.telegram.ui.Components.Easings;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.TextViewSwitcher;
 
 import java.lang.annotation.Retention;
@@ -66,7 +66,7 @@ public class DialogsEmptyCell extends LinearLayout {
     private boolean utyanAnimationTriggered;
     private ValueAnimator utyanAnimator;
 
-    private final RLottieImageView imageView;
+    private final TLottieImageView imageView;
     private final TextView titleView;
     private final TextViewSwitcher subtitleView;
 
@@ -85,7 +85,7 @@ public class DialogsEmptyCell extends LinearLayout {
         setOrientation(VERTICAL);
         setOnTouchListener((v, event) -> true);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         addView(imageView, LayoutHelper.createFrame(100, 100, Gravity.CENTER, 52, 4, 52, 0));
         imageView.setOnClickListener(v -> {

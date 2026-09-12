@@ -95,7 +95,7 @@ import org.telegram.ui.Components.ListView.AdapterWithDiffUtils;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.QRCodeBottomSheet;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
@@ -155,12 +155,12 @@ public class FilterCreateActivity extends BaseFragment {
     @SuppressWarnings("FieldCanBeLocal")
     public static class HintInnerCell extends FrameLayout {
 
-        private RLottieImageView imageView;
+        private TLottieImageView imageView;
 
         public HintInnerCell(Context context) {
             super(context);
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setAnimation(R.raw.filter_new, 100, 100);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.playAnimation();

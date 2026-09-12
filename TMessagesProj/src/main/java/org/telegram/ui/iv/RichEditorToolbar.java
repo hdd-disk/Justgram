@@ -25,8 +25,8 @@ import org.telegram.ui.Components.ChatActivityEnterView;
 import org.telegram.ui.Components.ChatActivityEnterViewAnimatedIconView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class RichEditorToolbar extends FrameLayout {
 
     private final LinearLayout formattingPanel;
     private final FrameLayout trashPanel;
-    private final RLottieImageView trashPanelIcon;
+    private final TLottieImageView trashPanelIcon;
     private final LinearLayout formattingPanelLayout;
     private HorizontalScrollView formattingScrollView;
     private int formattingScrollMaxWidth = Integer.MAX_VALUE;
@@ -289,9 +289,9 @@ public class RichEditorToolbar extends FrameLayout {
         trashPanel.setPadding(dp(8), dp(8), dp(8), dp(8));
         bottomContainer.addView(trashPanel, LayoutHelper.createFrame(8 + 64 + 8, 8 + 44 + 8, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
 
-        trashPanelIcon = new RLottieImageView(context);
+        trashPanelIcon = new TLottieImageView(context);
         trashPanelIcon.setAnimation(R.raw.group_pip_delete_icon, dp(16), dp(16));
-        final RLottieDrawable trashDrawable = trashPanelIcon.getAnimatedDrawable();
+        final TLottieDrawable trashDrawable = trashPanelIcon.getAnimatedDrawable();
         if (trashDrawable != null) {
             trashDrawable.setPlayInDirectionOfCustomEndFrame(true);
             trashDrawable.setAutoRepeat(0);
@@ -647,7 +647,7 @@ public class RichEditorToolbar extends FrameLayout {
         trashPanelIcon.setColorFilter(new PorterDuffColorFilter(color(hovered ? Theme.key_text_RedBold : Theme.key_windowBackgroundWhiteBlackText), PorterDuff.Mode.SRC_IN));
         // Play the lid-open part of the lottie on hover (frames 0..33), reverse back to 0 otherwise,
         // matching StoryRecorder.TrashView.
-        final RLottieDrawable d = trashPanelIcon.getAnimatedDrawable();
+        final TLottieDrawable d = trashPanelIcon.getAnimatedDrawable();
         if (d != null) {
             if (hovered) {
                 if (d.getCurrentFrame() > 34) d.setCurrentFrame(0, false);

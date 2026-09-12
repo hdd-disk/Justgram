@@ -35,7 +35,7 @@ import org.telegram.ui.Components.AnimatedEmojiDrawable;
 import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.ReactionsContainerLayout;
 import org.telegram.ui.Components.conference.message.GroupCallMessageCell;
 import org.telegram.ui.SelectAnimatedEmojiDialog;
@@ -527,7 +527,7 @@ public class ReactionsEffectOverlay {
 
 
                 if (!avatars.isEmpty() && effectImageView.wasPlaying) {
-                    RLottieDrawable animation = effectImageView.getImageReceiver().getLottieAnimation();
+                    TLottieDrawable animation = effectImageView.getImageReceiver().getLottieAnimation();
 
                     for (int i = 0; i < avatars.size(); i++) {
                         AvatarParticle particle = avatars.get(i);

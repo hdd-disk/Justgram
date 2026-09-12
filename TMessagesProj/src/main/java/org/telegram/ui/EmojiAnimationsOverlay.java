@@ -1114,7 +1114,7 @@ public class EmojiAnimationsOverlay implements NotificationCenter.NotificationCe
             }
             float cachingProgress = 1f;
 //            if (imageReceiver.getLottieAnimation() != null) {
-//                RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+//                TLottieDrawable drawable = imageReceiver.getLottieAnimation();
 //                cachingProgress = drawable.getGeneratingCacheProgress();
 //                if (cachingProgress < 0) {
 //                    return -2;

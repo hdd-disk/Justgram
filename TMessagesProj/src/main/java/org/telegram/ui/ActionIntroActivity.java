@@ -51,7 +51,7 @@ import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ActionBar.ThemeDescription;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.URLSpanNoUnderline;
 import org.telegram.ui.Components.voip.CellFlickerDrawable;
@@ -62,7 +62,7 @@ import java.util.ArrayList;
 
 public class ActionIntroActivity extends BaseFragment implements LocationController.LocationFetchCallback {
 
-    private RLottieImageView imageView;
+    private TLottieImageView imageView;
     private GradientDrawable startMessagingButtonBackground;
     private TextView buttonTextView;
     private TextView subtitleTextView;
@@ -384,7 +384,7 @@ public class ActionIntroActivity extends BaseFragment implements LocationControl
             viewGroup.addView(actionBar);
         }
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         viewGroup.addView(imageView);
 
         titleTextView = new TextView(context);
