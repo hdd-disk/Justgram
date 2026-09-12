@@ -56,7 +56,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 
-import com.google.android.material.loadingindicator.LoadingIndicator;
+import org.telegram.ui.Components.M3ExpressiveLoadingView;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -885,14 +885,9 @@ public class AlertDialog extends Dialog implements Drawable.Callback, Notificati
             }
             containerView.addView(progressViewContainer, LayoutHelper.createLinear(86, 86, Gravity.CENTER));
 
-            LoadingIndicator progressView =
-                    new LoadingIndicator(getContext());
-            progressView.setIndicatorColor(getThemedColor(Theme.key_dialog_inlineProgress));
-            progressView.setIndicatorSize(dp(44));
-            progressView.setContainerWidth(dp(48));
-            progressView.setContainerHeight(dp(48));
+            M3ExpressiveLoadingView progressView = new M3ExpressiveLoadingView(getContext(), 48);
+            progressView.setProgressColor(getThemedColor(Theme.key_dialog_inlineProgress));
             progressViewContainer.addView(progressView, LayoutHelper.createFrame(48, 48, Gravity.CENTER));
-            progressView.show();
         } else {
             if (aboveMessageView != null) {
                 scrollContainer.addView(aboveMessageView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 22, 4, 22, 12));

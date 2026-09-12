@@ -3,6 +3,7 @@ package org.telegram.ui.Components;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.google.android.material.loadingindicator.LoadingIndicator;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.Theme;
+
 public class M3ExpressiveLoadingView extends FrameLayout {
 
     private final LoadingIndicator loadingIndicator;
@@ -40,6 +42,40 @@ public class M3ExpressiveLoadingView extends FrameLayout {
         loadingIndicator.show();
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (loadingIndicator != null) {
+            loadingIndicator.getDrawable().setVisible(getVisibility() == VISIBLE, true);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (loadingIndicator != null) {
+            loadingIndicator.getDrawable().setVisible(false, false);
+        }
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (loadingIndicator != null) {
+            boolean visible = visibility == VISIBLE && getVisibility() == VISIBLE;
+            loadingIndicator.getDrawable().setVisible(visible, false);
+        }
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        if (loadingIndicator != null) {
+            boolean visible = visibility == VISIBLE && getVisibility() == VISIBLE;
+            loadingIndicator.getDrawable().setVisible(visible, false);
+        }
+    }
+
     public void setProgressColor(int color) {
         if (loadingIndicator != null) {
             loadingIndicator.setIndicatorColor(color);
@@ -57,14 +93,18 @@ public class M3ExpressiveLoadingView extends FrameLayout {
     }
 
     public void show() {
+        setVisibility(VISIBLE);
         if (loadingIndicator != null) {
             loadingIndicator.show();
+            loadingIndicator.getDrawable().setVisible(true, true);
         }
     }
 
     public void hide() {
         if (loadingIndicator != null) {
             loadingIndicator.hide();
+            loadingIndicator.getDrawable().setVisible(false, false);
         }
+        setVisibility(GONE);
     }
 }
