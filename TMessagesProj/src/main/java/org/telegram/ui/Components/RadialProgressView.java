@@ -18,11 +18,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 
 import com.google.android.material.loadingindicator.LoadingIndicator;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.Theme;
+
 public class RadialProgressView extends View {
 
     private long lastUpdateTime;
@@ -91,6 +93,10 @@ public class RadialProgressView extends View {
                 background.setAlpha(a);
             }
             progressPaint.setAlpha(a);
+        }
+        if (m3LoadingIndicator != null) {
+            m3LoadingIndicator.setAlpha(alpha);
+            m3LoadingIndicator.getDrawable().setAlpha((int) (alpha * 255));
         }
     }
 
@@ -206,9 +212,55 @@ public class RadialProgressView extends View {
         invalidate();
     }
 
+    @Override
+    protected boolean verifyDrawable(@NonNull Drawable who) {
+        return (useM3Expressive && m3LoadingIndicator != null && who == m3LoadingIndicator.getDrawable()) || super.verifyDrawable(who);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (useM3Expressive && m3LoadingIndicator != null) {
+            m3LoadingIndicator.getDrawable().setVisible(getVisibility() == VISIBLE, true);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (useM3Expressive && m3LoadingIndicator != null) {
+            m3LoadingIndicator.getDrawable().setVisible(false, false);
+        }
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (useM3Expressive && m3LoadingIndicator != null) {
+            boolean visible = visibility == VISIBLE && getVisibility() == VISIBLE;
+            m3LoadingIndicator.getDrawable().setVisible(visible, false);
+        }
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        if (useM3Expressive && m3LoadingIndicator != null) {
+            boolean visible = visibility == VISIBLE && getVisibility() == VISIBLE;
+            m3LoadingIndicator.getDrawable().setVisible(visible, false);
+        }
+    }
+
     public void setUseM3Expressive(boolean value) {
-        useM3Expressive = value;
-        invalidate();
+        if (useM3Expressive != value) {
+            useM3Expressive = value;
+            if (!useM3Expressive && m3LoadingIndicator != null) {
+                m3LoadingIndicator.getDrawable().setVisible(false, false);
+            } else if (useM3Expressive && m3LoadingIndicator != null) {
+                m3LoadingIndicator.getDrawable().setVisible(getVisibility() == VISIBLE, true);
+            }
+            invalidate();
+        }
     }
 
     public void setSize(int value) {
@@ -270,14 +322,17 @@ public class RadialProgressView extends View {
             m3LoadingIndicator.setIndicatorSize(size);
             m3LoadingIndicator.setContainerWidth(size);
             m3LoadingIndicator.setContainerHeight(size);
-            m3LoadingIndicator.show();
+            m3LoadingIndicator.getDrawable().setCallback(this);
+            m3LoadingIndicator.getDrawable().setVisible(true, true);
+        }
+        if (!m3LoadingIndicator.getDrawable().isVisible()) {
+            m3LoadingIndicator.getDrawable().setVisible(true, false);
         }
         canvas.save();
         canvas.translate(x, y);
         m3LoadingIndicator.layout(0, 0, size, size);
         m3LoadingIndicator.draw(canvas);
         canvas.restore();
-        invalidate();
     }
 
     public boolean isCircle() {
