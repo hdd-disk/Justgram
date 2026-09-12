@@ -74,8 +74,8 @@ import org.telegram.ui.Components.EditTextBoldCursor;
 import org.telegram.ui.Components.FragmentFloatingButton;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.OutlineTextContainerView;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.TextStyleSpan;
@@ -87,7 +87,7 @@ import java.util.ArrayList;
 
 public class TwoStepVerificationSetupActivity extends BaseFragment {
 
-    private RLottieImageView imageView;
+    private TLottieImageView imageView;
     private TextView buttonTextView;
     private TextView titleTextView;
     private TextView descriptionText;
@@ -137,7 +137,7 @@ public class TwoStepVerificationSetupActivity extends BaseFragment {
 
     private CustomPhoneKeyboardView keyboardView;
 
-    private RLottieDrawable[] animationDrawables;
+    private TLottieDrawable[] animationDrawables;
     private Runnable setAnimationRunnable;
 
     private boolean postedErrorColorTimeout;
@@ -374,7 +374,7 @@ public class TwoStepVerificationSetupActivity extends BaseFragment {
             }
         });
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         if (currentType == TYPE_ENTER_HINT && AndroidUtilities.isSmallScreen()) {
             imageView.setVisibility(View.GONE);
@@ -1023,14 +1023,14 @@ public class TwoStepVerificationSetupActivity extends BaseFragment {
                 needPasswordButton = currentType == TYPE_CREATE_PASSWORD_STEP_1;
                 AndroidUtilities.updateViewVisibilityAnimated(showPasswordButton, false, 0.1f, false);
 
-                animationDrawables = new RLottieDrawable[7];
-                animationDrawables[0] = new RLottieDrawable(R.raw.tsv_setup_monkey_idle1, "" + R.raw.tsv_setup_monkey_idle1, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
-                animationDrawables[1] = new RLottieDrawable(R.raw.tsv_setup_monkey_idle2, "" + R.raw.tsv_setup_monkey_idle2, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
-                animationDrawables[2] = new RLottieDrawable(R.raw.tsv_monkey_close, "" + R.raw.tsv_monkey_close, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
-                animationDrawables[3] = new RLottieDrawable(R.raw.tsv_setup_monkey_peek, "" + R.raw.tsv_setup_monkey_peek, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
-                animationDrawables[4] = new RLottieDrawable(R.raw.tsv_setup_monkey_close_and_peek_to_idle, "" + R.raw.tsv_setup_monkey_close_and_peek_to_idle, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
-                animationDrawables[5] = new RLottieDrawable(R.raw.tsv_setup_monkey_close_and_peek, "" + R.raw.tsv_setup_monkey_close_and_peek, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
-                animationDrawables[6] = new RLottieDrawable(R.raw.tsv_setup_monkey_tracking, "" + R.raw.tsv_setup_monkey_tracking, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
+                animationDrawables = new TLottieDrawable[7];
+                animationDrawables[0] = new TLottieDrawable(R.raw.tsv_setup_monkey_idle1, "" + R.raw.tsv_setup_monkey_idle1, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
+                animationDrawables[1] = new TLottieDrawable(R.raw.tsv_setup_monkey_idle2, "" + R.raw.tsv_setup_monkey_idle2, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
+                animationDrawables[2] = new TLottieDrawable(R.raw.tsv_monkey_close, "" + R.raw.tsv_monkey_close, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
+                animationDrawables[3] = new TLottieDrawable(R.raw.tsv_setup_monkey_peek, "" + R.raw.tsv_setup_monkey_peek, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
+                animationDrawables[4] = new TLottieDrawable(R.raw.tsv_setup_monkey_close_and_peek_to_idle, "" + R.raw.tsv_setup_monkey_close_and_peek_to_idle, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
+                animationDrawables[5] = new TLottieDrawable(R.raw.tsv_setup_monkey_close_and_peek, "" + R.raw.tsv_setup_monkey_close_and_peek, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
+                animationDrawables[6] = new TLottieDrawable(R.raw.tsv_setup_monkey_tracking, "" + R.raw.tsv_setup_monkey_tracking, AndroidUtilities.dp(120), AndroidUtilities.dp(120), true, null);
                 animationDrawables[6].setPlayInDirectionOfCustomEndFrame(true);
                 animationDrawables[6].setCustomEndFrame(19);
                 animationDrawables[2].setOnFinishCallback(finishCallback, 97);
@@ -1156,7 +1156,7 @@ public class TwoStepVerificationSetupActivity extends BaseFragment {
                         return;
                     }
                     if (currentType == TYPE_CREATE_PASSWORD_STEP_1) {
-                        RLottieDrawable currentDrawable = imageView.getAnimatedDrawable();
+                        TLottieDrawable currentDrawable = imageView.getAnimatedDrawable();
                         if (editTextFirstRow.length() > 0) {
                             if (editTextFirstRow.getTransformationMethod() == null) {
                                 if (currentDrawable != animationDrawables[3] && currentDrawable != animationDrawables[5]) {
@@ -1694,7 +1694,7 @@ public class TwoStepVerificationSetupActivity extends BaseFragment {
         if (setAnimationRunnable != null) {
             AndroidUtilities.cancelRunOnUIThread(setAnimationRunnable);
         }
-        RLottieDrawable currentAnimation = imageView.getAnimatedDrawable();
+        TLottieDrawable currentAnimation = imageView.getAnimatedDrawable();
         if (first || (currentAnimation == animationDrawables[0] || currentAnimation == animationDrawables[1]) || editTextFirstRow.length() == 0 && (currentAnimation == null || !currentAnimation.isRunning())) {
             if (Utilities.random.nextInt() % 2 == 0) {
                 imageView.setAnimation(animationDrawables[0]);

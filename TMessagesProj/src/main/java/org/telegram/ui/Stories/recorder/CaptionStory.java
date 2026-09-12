@@ -44,7 +44,7 @@ import org.telegram.ui.Components.ButtonBounce;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.Text;
 import org.telegram.ui.Components.WaveDrawable;
@@ -746,7 +746,7 @@ public class CaptionStory extends CaptionContainerView {
         private boolean isIncr;
         boolean attachedToWindow;
         boolean playing;
-        RLottieDrawable drawable;
+        TLottieDrawable drawable;
         private boolean enterAnimation;
 
         private final View parent;
@@ -768,7 +768,7 @@ public class CaptionStory extends CaptionContainerView {
         public RecordDot(View parent) {
             this.parent = parent;
             int resId = R.raw.chat_audio_record_delete_3;
-            drawable = new RLottieDrawable(resId, "" + resId, AndroidUtilities.dp(28), AndroidUtilities.dp(28), false, null);
+            drawable = new TLottieDrawable(resId, "" + resId, AndroidUtilities.dp(28), AndroidUtilities.dp(28), false, null);
             drawable.setInvalidateOnProgressSet(true);
             updateColors();
         }

@@ -136,7 +136,7 @@ import org.telegram.ui.Components.Paint.Views.StickerView;
 import org.telegram.ui.Components.Paint.Views.TextPaintView;
 import org.telegram.ui.Components.Paint.Views.WeatherView;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.Reactions.ReactionsUtils;
 import org.telegram.ui.Components.ReactionsContainerLayout;
@@ -2875,7 +2875,7 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
                                         final boolean isAnimatedSticker = MessageObject.isAnimatedStickerDocument(document, true);
                                         stickerEntity.subType |= isAnimatedSticker ? 1 : 4;
                                         final long duration;
-                                        RLottieDrawable lottieDrawable = imageReceiver.getLottieAnimation();
+                                        TLottieDrawable lottieDrawable = imageReceiver.getLottieAnimation();
                                         if (lottieDrawable != null && (isAnimatedSticker || isVideoStickerDocument(document))) {
                                             duration = lottieDrawable.getDuration();
                                         } else {
@@ -3184,15 +3184,15 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
             if (child instanceof StickerView) {
                 ImageReceiver imageReceiver = ((StickerView) child).centerImage;
 
-                RLottieDrawable rLottieDrawable = imageReceiver.getLottieAnimation();
+                TLottieDrawable tLottieDrawable = imageReceiver.getLottieAnimation();
                 AnimatedFileDrawable animatedFileDrawable = imageReceiver.getAnimation();
                 imageReceiver.setAllowStartLottieAnimation(!pause);
                 imageReceiver.setAllowStartAnimation(!pause);
-                if (rLottieDrawable != null) {
+                if (tLottieDrawable != null) {
                     if (pause) {
-                        rLottieDrawable.stop();
+                        tLottieDrawable.stop();
                     } else {
-                        rLottieDrawable.start();
+                        tLottieDrawable.start();
                     }
                 } else if (animatedFileDrawable != null) {
                     animatedFileDrawable.setAllowDecodeSingleFrame(pause);
@@ -3212,10 +3212,10 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
             if (child instanceof StickerView) {
                 ImageReceiver imageReceiver = ((StickerView) child).centerImage;
 
-                RLottieDrawable rLottieDrawable = imageReceiver.getLottieAnimation();
+                TLottieDrawable tLottieDrawable = imageReceiver.getLottieAnimation();
                 AnimatedFileDrawable animatedFileDrawable = imageReceiver.getAnimation();
-                if (rLottieDrawable != null) {
-                    rLottieDrawable.setCurrentFrame(Math.round(((float) time % rLottieDrawable.getDuration()) / rLottieDrawable.getDuration() * rLottieDrawable.getFramesCount()), true, false);
+                if (tLottieDrawable != null) {
+                    tLottieDrawable.setCurrentFrame(Math.round(((float) time % tLottieDrawable.getDuration()) / tLottieDrawable.getDuration() * tLottieDrawable.getFramesCount()), true, false);
                 } else if (animatedFileDrawable != null) {
 //                    animatedFileDrawable.seekToSync(time);
                 }
@@ -4686,7 +4686,7 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
         PaintView.StickerPosition position = calculateStickerPosition(sticker);
         StickerView view = new StickerView(getContext(), position.position, position.angle, position.scale, baseStickerSize(), sticker, parentObject) {
             @Override
-            protected void didSetAnimatedSticker(RLottieDrawable drawable) {
+            protected void didSetAnimatedSticker(TLottieDrawable drawable) {
                 PaintView.this.didSetAnimatedSticker(drawable);
             }
         };
@@ -4836,7 +4836,7 @@ public class PaintView extends SizeNotifierFrameLayoutPhoto implements IPhotoPai
         undoStore.registerUndo(entityView.getUUID(), () -> removeEntity(entityView));
     }
 
-    protected void didSetAnimatedSticker(RLottieDrawable drawable) {}
+    protected void didSetAnimatedSticker(TLottieDrawable drawable) {}
 
     @Override
     public boolean onEntitySelected(EntityView entityView) {

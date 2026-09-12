@@ -164,13 +164,13 @@ public final class AnimatedFileDrawable extends BitmapDrawable implements Animat
     private void uiRunnableGenerateCacheImpl() {
         if (!isRecycled && !destroyWhenDone && !generatingCache && cacheGenRunnable == null) {
             startTime = System.currentTimeMillis();
-            if (RLottieDrawable.lottieCacheGenerateQueue == null) {
-                RLottieDrawable.createCacheGenQueue();
+            if (TLottieDrawable.lottieCacheGenerateQueue == null) {
+                TLottieDrawable.createCacheGenQueue();
             }
             generatingCache = true;
             loadFrameTask = null;
             BitmapsCache.incrementTaskCounter();
-            RLottieDrawable.lottieCacheGenerateQueue.postRunnable(cacheGenRunnable = () -> {
+            TLottieDrawable.lottieCacheGenerateQueue.postRunnable(cacheGenRunnable = () -> {
                 bitmapsCache.createCache();
                 AndroidUtilities.runOnUIThread(() -> {
                     if (cacheGenRunnable != null) {
@@ -675,7 +675,7 @@ public final class AnimatedFileDrawable extends BitmapDrawable implements Animat
         checkChoreographer();
         if (cacheGenRunnable != null) {
             BitmapsCache.decrementTaskCounter();
-            RLottieDrawable.lottieCacheGenerateQueue.cancelRunnable(cacheGenRunnable);
+            TLottieDrawable.lottieCacheGenerateQueue.cancelRunnable(cacheGenRunnable);
             cacheGenRunnable = null;
         }
         if (loadFrameTask == null) {

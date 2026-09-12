@@ -244,7 +244,7 @@ import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
 import org.telegram.ui.Components.ProxyDrawable;
 import org.telegram.ui.Components.PullForegroundDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.RecyclerAnimationScrollHelper;
 import org.telegram.ui.Components.RecyclerItemsEnterAnimator;
@@ -5983,7 +5983,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
         if (dialogsHintCell != null) {
             try {
-                ((RLottieDrawable) ((AvatarDrawable) dialogsHintCell.imageView.getImageReceiver().getStaticThumb()).getCustomIcon()).setMasterParent(null);
+                ((TLottieDrawable) ((AvatarDrawable) dialogsHintCell.imageView.getImageReceiver().getStaticThumb()).getCustomIcon()).setMasterParent(null);
             } catch (Exception e) {}
             dialogsHintCell.clear();
         }
@@ -12316,35 +12316,35 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 arrayList.add(new ThemeDescription(viewPages[a].listView, ThemeDescription.FLAG_TEXTCOLOR, new Class[]{DialogsEmptyCell.class}, new String[]{"emptyTextView2"}, null, null, null, Theme.key_chats_message));
 
                 if (SharedConfig.archiveHidden) {
-                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow1", Theme.key_avatar_backgroundArchivedHidden));
-                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow2", Theme.key_avatar_backgroundArchivedHidden));
+                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow1", Theme.key_avatar_backgroundArchivedHidden));
+                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow2", Theme.key_avatar_backgroundArchivedHidden));
                 } else {
-                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow1", Theme.key_avatar_backgroundArchived));
-                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow2", Theme.key_avatar_backgroundArchived));
+                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow1", Theme.key_avatar_backgroundArchived));
+                    arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Arrow2", Theme.key_avatar_backgroundArchived));
                 }
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Box2", Theme.key_avatar_text));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Box1", Theme.key_avatar_text));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Box2", Theme.key_avatar_text));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveAvatarDrawable}, "Box1", Theme.key_avatar_text));
 
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_pinArchiveDrawable}, "Arrow", Theme.key_chats_archiveIcon));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_pinArchiveDrawable}, "Line", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_pinArchiveDrawable}, "Arrow", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_pinArchiveDrawable}, "Line", Theme.key_chats_archiveIcon));
 
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_unpinArchiveDrawable}, "Arrow", Theme.key_chats_archiveIcon));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_unpinArchiveDrawable}, "Line", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_unpinArchiveDrawable}, "Arrow", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_unpinArchiveDrawable}, "Line", Theme.key_chats_archiveIcon));
 
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveDrawable}, "Arrow", Theme.key_chats_archiveBackground));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveDrawable}, "Box2", Theme.key_chats_archiveIcon));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_archiveDrawable}, "Box1", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveDrawable}, "Arrow", Theme.key_chats_archiveBackground));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveDrawable}, "Box2", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_archiveDrawable}, "Box1", Theme.key_chats_archiveIcon));
 
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Line 1", Theme.key_chats_archiveBackground));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Line 2", Theme.key_chats_archiveBackground));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Line 3", Theme.key_chats_archiveBackground));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Cup Red", Theme.key_chats_archiveIcon));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Box", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Line 1", Theme.key_chats_archiveBackground));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Line 2", Theme.key_chats_archiveBackground));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Line 3", Theme.key_chats_archiveBackground));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Cup Red", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_hidePsaDrawable}, "Box", Theme.key_chats_archiveIcon));
 
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Arrow1", Theme.key_chats_archiveIcon));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Arrow2", Theme.key_chats_archivePinBackground));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Box2", Theme.key_chats_archiveIcon));
-                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new RLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Box1", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Arrow1", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Arrow2", Theme.key_chats_archivePinBackground));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Box2", Theme.key_chats_archiveIcon));
+                arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{DialogCell.class}, new TLottieDrawable[]{Theme.dialogs_unarchiveDrawable}, "Box1", Theme.key_chats_archiveIcon));
 
                 arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{UserCell.class}, new String[]{"nameTextView"}, null, null, null, Theme.key_windowBackgroundWhiteBlackText));
                 arrayList.add(new ThemeDescription(viewPages[a].listView, 0, new Class[]{UserCell.class}, new String[]{"statusColor"}, null, null, cellDelegate, Theme.key_windowBackgroundWhiteGrayText));
@@ -13295,7 +13295,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     public void openSetAvatar() {
         try {
-            ((RLottieDrawable) ((AvatarDrawable) dialogsHintCell.imageView.getImageReceiver().getStaticThumb()).getCustomIcon()).restart(true);
+            ((TLottieDrawable) ((AvatarDrawable) dialogsHintCell.imageView.getImageReceiver().getStaticThumb()).getCustomIcon()).restart(true);
         } catch (Exception e) {}
         if (imageUpdater == null) {
             imageUpdater = new ImageUpdater(true, ImageUpdater.FOR_TYPE_USER, true);

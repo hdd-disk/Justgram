@@ -192,8 +192,8 @@ import org.telegram.ui.Components.Premium.boosts.cells.msg.GiveawayMessageCell;
 import org.telegram.ui.Components.Premium.boosts.cells.msg.GiveawayResultsMessageCell;
 import org.telegram.ui.Components.QuoteHighlight;
 import org.telegram.ui.Components.QuoteSpan;
-import org.telegram.ui.Components.RLottieDiceDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDiceDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RadialProgress2;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.RecyclerListView;
@@ -1119,7 +1119,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
     private Paint gradientLoadingPaint;
     private CaptionContainerView.PeriodDrawable oncePeriod;
     private Paint onceClearPaint;
-    private RLottieDrawable onceFire;
+    private TLottieDrawable onceFire;
     private Paint onceRadialPaint;
     private Paint onceRadialCutPaint;
     private Paint onceRadialStrokePaint;
@@ -15152,8 +15152,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         if (playedDice) return;
 
         final Drawable drawable = photoImage.getDrawable();
-        if (!(drawable instanceof RLottieDiceDrawable)) return;
-        final RLottieDiceDrawable lottieDrawable = (RLottieDiceDrawable) drawable;
+        if (!(drawable instanceof TLottieDiceDrawable)) return;
+        final TLottieDiceDrawable lottieDrawable = (TLottieDiceDrawable) drawable;
         if (!lottieDrawable.hasBaseDice()) return;
 
         if (!playedDice && lottieDrawable.isDiceRevealed()) {
@@ -15361,7 +15361,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 final float s = (1f - scale) * .7f;
                 canvas.scale(s, s, radialProgress.progressRect.centerX(), AndroidUtilities.lerp(radialProgress.progressRect.top, radialProgress.progressRect.bottom, .5f));
                 if (onceFire == null) {
-                    onceFire = new RLottieDrawable(R.raw.fire_once, "fire_once", dp(32), dp(32), true, null);
+                    onceFire = new TLottieDrawable(R.raw.fire_once, "fire_once", dp(32), dp(32), true, null);
                     onceFire.setMasterParent(this);
                     onceFire.setAllowDecodeSingleFrame(true);
                     onceFire.setAutoRepeat(1);
@@ -18195,11 +18195,11 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         }
         
         Drawable drawable = photoImage.getDrawable();
-        if (!(drawable instanceof RLottieDiceDrawable)) {
+        if (!(drawable instanceof TLottieDiceDrawable)) {
             return false;
         }
         
-        RLottieDiceDrawable lottieDrawable = (RLottieDiceDrawable) drawable;
+        TLottieDiceDrawable lottieDrawable = (TLottieDiceDrawable) drawable;
         String emoji = currentMessageObject.getDiceEmoji();
         TLRPC.TL_messages_stickerSet stickerSet = MediaDataController.getInstance(currentAccount).getStickerSetByEmojiOrName(emoji);
         if (stickerSet == null) {

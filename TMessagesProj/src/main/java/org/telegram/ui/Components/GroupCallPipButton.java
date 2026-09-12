@@ -57,8 +57,8 @@ public class GroupCallPipButton extends FrameLayout implements NotificationCente
     public final static int MUTE_BUTTON_STATE_RECONNECT = 2;
     public final static int MUTE_BUTTON_STATE_MUTED_BY_ADMIN = 3;
 
-    private RLottieImageView muteButton;
-    private RLottieDrawable bigMicDrawable;
+    private TLottieImageView muteButton;
+    private TLottieDrawable bigMicDrawable;
     long lastStubUpdateAmplitude;
 
     private boolean stub;
@@ -81,10 +81,10 @@ public class GroupCallPipButton extends FrameLayout implements NotificationCente
         blobDrawable.generateBlob();
         blobDrawable2.generateBlob();
 
-        bigMicDrawable = new RLottieDrawable(R.raw.voice_outlined, "" + R.raw.voice_outlined, AndroidUtilities.dp(22), AndroidUtilities.dp(30), true, null);
+        bigMicDrawable = new TLottieDrawable(R.raw.voice_outlined, "" + R.raw.voice_outlined, AndroidUtilities.dp(22), AndroidUtilities.dp(30), true, null);
         setWillNotDraw(false);
 
-        muteButton = new RLottieImageView(context);
+        muteButton = new TLottieImageView(context);
         muteButton.setAnimation(bigMicDrawable);
         muteButton.setScaleType(ImageView.ScaleType.CENTER);
         addView(muteButton);

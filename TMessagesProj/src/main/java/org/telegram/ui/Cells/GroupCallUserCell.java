@@ -47,8 +47,8 @@ import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.BlobDrawable;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.WaveDrawable;
 
@@ -62,9 +62,9 @@ public class GroupCallUserCell extends FrameLayout {
     private SimpleTextView nameTextView;
     private SimpleTextView[] statusTextView = new SimpleTextView[5];
     private SimpleTextView fullAboutTextView;
-    private RLottieImageView muteButton;
-    private RLottieDrawable muteDrawable;
-    private RLottieDrawable shakeHandDrawable;
+    private TLottieImageView muteButton;
+    private TLottieDrawable muteDrawable;
+    private TLottieDrawable shakeHandDrawable;
 
     public final AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable leftDrawable;
     public final AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable rightDrawable;
@@ -380,10 +380,10 @@ public class GroupCallUserCell extends FrameLayout {
         fullAboutTextView.setVisibility(View.GONE);
         addView(fullAboutTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 20 * 3, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.TOP, 14, 32, 14, 0));
 
-        muteDrawable = new RLottieDrawable(R.raw.voice_outlined2, "" + R.raw.voice_outlined2, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
-        shakeHandDrawable = new RLottieDrawable(R.raw.hand_1, "" + R.raw.hand_1, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
+        muteDrawable = new TLottieDrawable(R.raw.voice_outlined2, "" + R.raw.voice_outlined2, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
+        shakeHandDrawable = new TLottieDrawable(R.raw.hand_1, "" + R.raw.hand_1, AndroidUtilities.dp(34), AndroidUtilities.dp(32), true, null);
 
-        muteButton = new RLottieImageView(context);
+        muteButton = new TLottieImageView(context);
         muteButton.setScaleType(ImageView.ScaleType.CENTER);
         muteButton.setAnimation(muteDrawable);
         if (Build.VERSION.SDK_INT >= 21) {

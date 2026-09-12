@@ -40,7 +40,7 @@ import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.TextHelper;
 import org.telegram.ui.Components.UItem;
@@ -310,7 +310,7 @@ public class PasskeysActivity extends BaseFragment {
         linearLayout.setPadding(dp(16), 0, dp(16), dp(8));
         b.setCustomView(linearLayout);
 
-        RLottieImageView imageView = new RLottieImageView(context);
+        TLottieImageView imageView = new TLottieImageView(context);
         imageView.setAnimation(R.raw.passkey, dp(115), dp(115));
         imageView.playAnimation();
         linearLayout.addView(imageView, LayoutHelper.createLinear(115, 115, Gravity.CENTER, 0, 0, 0, 9));

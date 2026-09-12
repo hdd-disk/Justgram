@@ -100,7 +100,7 @@ import org.telegram.ui.Components.AnimationProperties;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.PlayPauseDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Scroller;
 import org.telegram.ui.Components.TimerParticles;
 import org.telegram.ui.Components.TranslateAlert2;
@@ -164,7 +164,7 @@ public class SecretMediaViewer implements NotificationCenter.NotificationCenterD
         private long destroyTtl;
         private boolean useVideoProgress;
 
-        private RLottieDrawable drawable;
+        private TLottieDrawable drawable;
 
         private TextPaint oncePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         private StaticLayout onceLayout;
@@ -189,7 +189,7 @@ public class SecretMediaViewer implements NotificationCenter.NotificationCenterD
             circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             circlePaint.setColor(0x7f000000);
 
-            drawable = new RLottieDrawable(R.raw.fire_on, "" + R.raw.fire_on, dp(16), dp(16));
+            drawable = new TLottieDrawable(R.raw.fire_on, "" + R.raw.fire_on, dp(16), dp(16));
             drawable.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
             drawable.setMasterParent(this);
             drawable.start();

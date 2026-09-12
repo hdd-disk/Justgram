@@ -29,7 +29,7 @@ import org.telegram.ui.ChatActivity;
 import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.AnimatedTextView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.GradientClip;
 import org.telegram.ui.LaunchActivity;
@@ -246,7 +246,7 @@ public class StarReactionsOverlay extends View {
 
             final int effectSize = (int) (dp(90) * s);
             for (int i = 0; i < effects.size(); ++i) {
-                RLottieDrawable drawable = effects.get(i);
+                TLottieDrawable drawable = effects.get(i);
                 if (drawable.getCurrentFrame() >= drawable.getFramesCount()) {
                     effects.remove(i);
                     i--;
@@ -420,7 +420,7 @@ public class StarReactionsOverlay extends View {
         focusTo(1f, null);
     }
 
-    private final ArrayList<RLottieDrawable> effects = new ArrayList<>();
+    private final ArrayList<TLottieDrawable> effects = new ArrayList<>();
     private final int[] effectAssets = new int[] {
         R.raw.star_reaction_effect1,
         R.raw.star_reaction_effect2,
@@ -431,11 +431,11 @@ public class StarReactionsOverlay extends View {
 
     public void playEffect() {
         while (effects.size() > 4) {
-            RLottieDrawable drawable = effects.remove(0);
+            TLottieDrawable drawable = effects.remove(0);
             drawable.recycle(true);
         }
         final int asset = effectAssets[Utilities.fastRandom.nextInt(effectAssets.length)];
-        RLottieDrawable drawable = new RLottieDrawable(asset, "" + asset, dp(70), dp(70));
+        TLottieDrawable drawable = new TLottieDrawable(asset, "" + asset, dp(70), dp(70));
         drawable.setMasterParent(this);
         drawable.setAllowDecodeSingleFrame(true);
         drawable.setAutoRepeat(0);
@@ -445,7 +445,7 @@ public class StarReactionsOverlay extends View {
     }
 
     public void clearEffects() {
-        for (RLottieDrawable effect : effects) {
+        for (TLottieDrawable effect : effects) {
             effect.recycle(true);
         }
         effects.clear();

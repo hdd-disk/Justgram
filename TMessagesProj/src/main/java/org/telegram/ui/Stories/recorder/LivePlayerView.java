@@ -39,7 +39,7 @@ import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Stories.PeerStoriesView;
 import org.telegram.ui.Stories.PeerStoriesView.VideoPlayerSharedScope;
 import org.webrtc.EglBase;
@@ -528,7 +528,7 @@ public class LivePlayerView extends FrameLayout implements RendererCommon.Render
             super.setVisibility(visibility);
             if (visibility == View.VISIBLE) {
                 if (!hasSetImage) {
-                    final RLottieDrawable drawable = new RLottieDrawable(R.raw.utyan_empty2, "utyan_empty2", dp(130), dp(130));
+                    final TLottieDrawable drawable = new TLottieDrawable(R.raw.utyan_empty2, "utyan_empty2", dp(130), dp(130));
                     imageView.setImageDrawable(drawable);
                     hasSetImage = true;
                 }

@@ -21,11 +21,12 @@ import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.Theme;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public class RLottieImageView extends ImageView {
+public class TLottieImageView extends ImageView {
 
     private HashMap<String, Integer> layerColors;
-    private RLottieDrawable drawable;
+    private TLottieDrawable drawable;
     private ImageReceiver imageReceiver;
     private boolean autoRepeat;
     private boolean attachedToWindow;
@@ -36,7 +37,7 @@ public class RLottieImageView extends ImageView {
     public boolean cached;
     private boolean reverse;
 
-    public RLottieImageView(Context context) {
+    public TLottieImageView(Context context) {
         super(context);
     }
 
@@ -72,7 +73,7 @@ public class RLottieImageView extends ImageView {
     }
 
     public void setAnimation(int resId, int w, int h, int[] colorReplacement) {
-        setAnimation(new RLottieDrawable(resId, "" + resId, AndroidUtilities.dp(w), AndroidUtilities.dp(h), false, colorReplacement));
+        setAnimation(new TLottieDrawable(resId, "" + resId, AndroidUtilities.dp(w), AndroidUtilities.dp(h), false, colorReplacement));
     }
 
     public void setOnAnimationEndListener(Runnable r) {
@@ -81,7 +82,7 @@ public class RLottieImageView extends ImageView {
         }
     }
 
-    public void setAnimation(RLottieDrawable lottieDrawable) {
+    public void setAnimation(TLottieDrawable lottieDrawable) {
         if (drawable == lottieDrawable) {
             return;
         }
@@ -305,7 +306,7 @@ public class RLottieImageView extends ImageView {
         }
     }
 
-    public RLottieDrawable getAnimatedDrawable() {
+    public TLottieDrawable getAnimatedDrawable() {
         return drawable;
     }
 }

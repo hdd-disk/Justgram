@@ -80,7 +80,7 @@ public class TopViewCell extends LinearLayout implements Theme.Colorable {
     private int lastIconResId;
     public void setEmoji(int iconResId) {
         if (lastIconResId != iconResId) {
-            imageView.setImageDrawable(new RLottieDrawable(lastIconResId = iconResId, "" + iconResId, dp(90), dp(90)));
+            imageView.setImageDrawable(new TLottieDrawable(lastIconResId = iconResId, "" + iconResId, dp(90), dp(90)));
             imageView.getImageReceiver().setAutoRepeat(2);
         }
     }

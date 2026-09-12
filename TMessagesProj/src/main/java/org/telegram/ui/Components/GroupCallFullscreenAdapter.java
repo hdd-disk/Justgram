@@ -169,7 +169,7 @@ public class GroupCallFullscreenAdapter extends RecyclerListView.SelectionAdapte
 
         TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
-        RLottieImageView muteButton;
+        TLottieImageView muteButton;
 
         float selectionProgress;
         boolean selected;
@@ -194,7 +194,7 @@ public class GroupCallFullscreenAdapter extends RecyclerListView.SelectionAdapte
             selectionPaint.setStrokeWidth(AndroidUtilities.dp(2));
             textPaint.setColor(Color.WHITE);
 
-            muteButton = new RLottieImageView(context) {
+            muteButton = new TLottieImageView(context) {
                 @Override
                 public void invalidate() {
                     super.invalidate();

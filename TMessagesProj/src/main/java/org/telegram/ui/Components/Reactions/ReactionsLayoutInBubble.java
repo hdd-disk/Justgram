@@ -58,7 +58,7 @@ import org.telegram.ui.Components.AvatarsDrawable;
 import org.telegram.ui.Components.ButtonBounce;
 import org.telegram.ui.Components.CounterView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Stars.StarsReactionsSheet;
 
 import java.util.ArrayList;
@@ -844,7 +844,7 @@ public class ReactionsLayoutInBubble {
         public final ButtonBounce bounce;
         private StarsReactionsSheet.Particles particles;
 
-        private RLottieDrawable starDrawable;
+        private TLottieDrawable starDrawable;
 
         protected int getCacheType() {
             if (isTag) {
@@ -914,7 +914,7 @@ public class ReactionsLayoutInBubble {
                         if (reuseFrom != null && reuseFrom.starDrawable != null) {
                             starDrawable = reuseFrom.starDrawable;
                         } else {
-                            starDrawable = new RLottieDrawable(R.raw.star_reaction_click, "star_reaction_click", dp(40), dp(40));
+                            starDrawable = new TLottieDrawable(R.raw.star_reaction_click, "star_reaction_click", dp(40), dp(40));
                         }
                         imageReceiver.setImageBitmap(starDrawable);
                     } else {
@@ -1353,9 +1353,9 @@ public class ReactionsLayoutInBubble {
                 imageReceiver = this.imageReceiver;
             }
             if (imageReceiver != null) {
-                RLottieDrawable rLottieDrawable = imageReceiver.getLottieAnimation();
-                if (rLottieDrawable != null) {
-                    rLottieDrawable.restart(true);
+                TLottieDrawable tLottieDrawable = imageReceiver.getLottieAnimation();
+                if (tLottieDrawable != null) {
+                    tLottieDrawable.restart(true);
                 } else {
                     AnimatedFileDrawable animatedFileDrawable = imageReceiver.getAnimation();
                     if (animatedFileDrawable != null) {
@@ -1373,9 +1373,9 @@ public class ReactionsLayoutInBubble {
                 imageReceiver = this.imageReceiver;
             }
             if (imageReceiver != null) {
-                RLottieDrawable rLottieDrawable = imageReceiver.getLottieAnimation();
-                if (rLottieDrawable != null) {
-                    rLottieDrawable.stop();
+                TLottieDrawable tLottieDrawable = imageReceiver.getLottieAnimation();
+                if (tLottieDrawable != null) {
+                    tLottieDrawable.stop();
                 } else {
                     AnimatedFileDrawable animatedFileDrawable = imageReceiver.getAnimation();
                     if (animatedFileDrawable != null) {

@@ -28,11 +28,11 @@ import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.AnimatedTextView;
 import org.telegram.ui.Components.ButtonBounce;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 public class TrashView extends View {
 
-    private final RLottieDrawable drawable;
+    private final TLottieDrawable drawable;
 
     private final AnimatedTextView.AnimatedTextDrawable textDrawable;
 
@@ -50,7 +50,7 @@ public class TrashView extends View {
         circlePaint.setShadowLayer(dpf2(3f), 0, dp(1.66f), 0x30000000);
         greyPaint.setColor(0x33000000);
 
-        drawable = new RLottieDrawable(R.raw.group_pip_delete_icon, "" + R.raw.group_pip_delete_icon, dp(48), dp(48), true, null);
+        drawable = new TLottieDrawable(R.raw.group_pip_delete_icon, "" + R.raw.group_pip_delete_icon, dp(48), dp(48), true, null);
         drawable.setMasterParent(this);
         drawable.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY));
         drawable.setPlayInDirectionOfCustomEndFrame(true);

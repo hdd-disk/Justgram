@@ -76,8 +76,8 @@ import org.telegram.ui.Components.AttachableDrawable;
 import org.telegram.ui.Components.EffectsTextView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LineProgressView;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.spoilers.SpoilersTextView;
 import org.telegram.ui.LaunchActivity;
@@ -158,7 +158,7 @@ public class AlertDialog extends Dialog implements Drawable.Callback, Notificati
     private boolean dismissDialogByButtons = true;
     private boolean drawBackground;
     private boolean notDrawBackgroundOnTopView;
-    private RLottieImageView topImageView;
+    private TLottieImageView topImageView;
     private CharSequence positiveButtonText;
     private OnButtonClickListener positiveButtonListener;
     private CharSequence negativeButtonText;
@@ -707,7 +707,7 @@ public class AlertDialog extends Dialog implements Drawable.Callback, Notificati
         final boolean hasButtons = positiveButtonText != null || negativeButtonText != null || negative2ButtonText != null || neutralButtonText != null;
 
         if (topResId != 0 || topAnimationId != 0 || topDrawable != null) {
-            topImageView = new RLottieImageView(getContext());
+            topImageView = new TLottieImageView(getContext());
             if (topDrawable != null) {
                 topImageView.setImageDrawable(topDrawable);
                 if (topDrawable instanceof AttachableDrawable) {
@@ -730,7 +730,7 @@ public class AlertDialog extends Dialog implements Drawable.Callback, Notificati
                 topImageView.setAutoRepeat(topAnimationAutoRepeat);
                 topImageView.setAnimation(topAnimationId, topAnimationSize, topAnimationSize);
                 if (topAnimationLayerColors != null) {
-                    RLottieDrawable drawable = topImageView.getAnimatedDrawable();
+                    TLottieDrawable drawable = topImageView.getAnimatedDrawable();
                     for (Map.Entry<String, Integer> en : topAnimationLayerColors.entrySet()) {
                         drawable.setLayerColor(en.getKey(), en.getValue());
                     }

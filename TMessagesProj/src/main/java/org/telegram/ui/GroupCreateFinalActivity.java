@@ -69,8 +69,8 @@ import org.telegram.ui.Components.FragmentFloatingButton;
 import org.telegram.ui.Components.ImageUpdater;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.ListView.AdapterWithDiffUtils;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
@@ -86,7 +86,7 @@ public class GroupCreateFinalActivity extends BaseFragment implements Notificati
     private EditTextEmoji editText;
     private BackupImageView avatarImage;
     private View avatarOverlay;
-    private RLottieImageView avatarEditor;
+    private TLottieImageView avatarEditor;
     private AnimatorSet avatarAnimation;
     private RadialProgressView avatarProgressView;
     private AvatarDrawable avatarDrawable;
@@ -111,7 +111,7 @@ public class GroupCreateFinalActivity extends BaseFragment implements Notificati
     private int chatType;
     private boolean canToggleTopics;
 
-    private RLottieDrawable cameraDrawable;
+    private TLottieDrawable cameraDrawable;
     
     private boolean forImport;
 
@@ -546,9 +546,9 @@ public class GroupCreateFinalActivity extends BaseFragment implements Notificati
             avatarEditor.playAnimation();
         });
 
-        cameraDrawable = new RLottieDrawable(R.raw.camera, "" + R.raw.camera, dp(60), dp(60), false, null);
+        cameraDrawable = new TLottieDrawable(R.raw.camera, "" + R.raw.camera, dp(60), dp(60), false, null);
 
-        avatarEditor = new RLottieImageView(context) {
+        avatarEditor = new TLottieImageView(context) {
             @Override
             public void invalidate(int l, int t, int r, int b) {
                 super.invalidate(l, t, r, b);

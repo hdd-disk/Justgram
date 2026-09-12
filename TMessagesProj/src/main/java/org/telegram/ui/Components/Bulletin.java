@@ -1438,7 +1438,7 @@ public class Bulletin {
 
     public static class TwoLineLottieLayout extends ButtonLayout {
 
-        public final RLottieImageView imageView;
+        public final TLottieImageView imageView;
         public final LinkSpanDrawable.LinksTextView titleTextView;
         public final LinkSpanDrawable.LinksTextView subtitleTextView;
         private final LinearLayout linearLayout;
@@ -1450,7 +1450,7 @@ public class Bulletin {
             this.textColor = getThemedColor(Theme.key_undo_infoColor);
             setBackground(getThemedColor(Theme.key_undo_background));
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             addView(imageView, LayoutHelper.createFrameRelatively(56, 48, Gravity.START | Gravity.CENTER_VERTICAL));
 
@@ -1564,7 +1564,7 @@ public class Bulletin {
 
     public static class ProgressTwoLineAnimatedTitleLottieLayout extends ButtonLayout {
 
-        public final RLottieImageView imageView;
+        public final TLottieImageView imageView;
         public final AnimatedTextView titleTextView;
         public final LinkSpanDrawable.LinksTextView subtitleTextView;
         private final LinearLayout linearLayout;
@@ -1584,7 +1584,7 @@ public class Bulletin {
             this.textColor = getThemedColor(Theme.key_undo_infoColor);
             setBackground(getThemedColor(Theme.key_undo_background));
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             addView(imageView, LayoutHelper.createFrameRelatively(56, 48, Gravity.START | Gravity.CENTER_VERTICAL));
 
@@ -1665,7 +1665,7 @@ public class Bulletin {
 
     public static class TwoLineAnimatedLottieLayout extends ButtonLayout {
 
-        public final RLottieImageView imageView;
+        public final TLottieImageView imageView;
         public final AnimatedTextView titleTextView;
         public final AnimatedTextView subtitleTextView;
         private final LinearLayout linearLayout;
@@ -1677,7 +1677,7 @@ public class Bulletin {
             this.textColor = getThemedColor(Theme.key_undo_infoColor);
             setBackground(getThemedColor(Theme.key_undo_background));
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             addView(imageView, LayoutHelper.createFrameRelatively(56, 48, Gravity.START | Gravity.CENTER_VERTICAL));
 
@@ -1973,7 +1973,7 @@ public class Bulletin {
 
     public static class LottieLayout extends ButtonLayout {
 
-        public RLottieImageView imageView;
+        public TLottieImageView imageView;
         public TextView textView;
 
         private int textColor;
@@ -1981,7 +1981,7 @@ public class Bulletin {
         public LottieLayout(@NonNull Context context, Theme.ResourcesProvider resourcesProvider) {
             super(context, resourcesProvider);
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             addView(imageView, LayoutHelper.createFrameRelatively(56, 48, Gravity.START | Gravity.CENTER_VERTICAL));
 

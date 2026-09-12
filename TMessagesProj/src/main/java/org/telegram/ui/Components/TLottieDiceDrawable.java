@@ -16,8 +16,8 @@ import org.telegram.messenger.Utilities;
 
 import java.io.File;
 
-public class RLottieDiceDrawable extends RLottieDrawable {
-    protected volatile RLottieNative secondNativePtr;
+public class TLottieDiceDrawable extends TLottieDrawable {
+    protected volatile TLottieNative secondNativePtr;
     protected boolean secondLoadingInBackground;
     protected boolean destroyAfterLoading;
     protected volatile boolean setLastFrame;
@@ -26,7 +26,7 @@ public class RLottieDiceDrawable extends RLottieDrawable {
     private int diceSwitchFramesCount = -1;
     private int secondFramesCount;
 
-    public RLottieDiceDrawable(String diceEmoji, int w, int h) {
+    public TLottieDiceDrawable(String diceEmoji, int w, int h) {
         super(w, h);
 
         isDice = 1;
@@ -43,7 +43,7 @@ public class RLottieDiceDrawable extends RLottieDrawable {
         if (TextUtils.isEmpty(jsonString)) {
             return;
         }
-        nativePtr = RLottieNative.createFromRawJson(jsonString, "dice", metaData, null);
+        nativePtr = TLottieNative.createFromRawJson(jsonString, "dice", metaData, null);
     }
 
     public boolean hasBaseDice() {
@@ -73,7 +73,7 @@ public class RLottieDiceDrawable extends RLottieDrawable {
                 });
                 return;
             }
-            secondNativePtr = RLottieNative.createFromRawJson(jsonString, "dice", null);
+            secondNativePtr = TLottieNative.createFromRawJson(jsonString, "dice", null);
             final int framesCountToSet = secondNativePtr != null ? secondNativePtr.getFrameCount() : 0;
             final int fpsCountToSet = secondNativePtr != null ? secondNativePtr.getFps() : 0;
             AndroidUtilities.runOnUIThread(() -> {
@@ -115,7 +115,7 @@ public class RLottieDiceDrawable extends RLottieDrawable {
         }
         loadingInBackground = true;
         Utilities.globalQueue.postRunnable(() -> {
-            nativePtr = RLottieNative.createFromRawJson(jsonString, "dice", metaData, null);
+            nativePtr = TLottieNative.createFromRawJson(jsonString, "dice", metaData, null);
             AndroidUtilities.runOnUIThread(() -> {
                 loadingInBackground = false;
                 if (!secondLoadingInBackground && destroyAfterLoading) {
@@ -155,7 +155,7 @@ public class RLottieDiceDrawable extends RLottieDrawable {
         }
         if (backgroundBitmap != null) {
             try {
-                final RLottieNative ptrToUse;
+                final TLottieNative ptrToUse;
                 if (isDice == 1) {
                     ptrToUse = nativePtr;
                 } else if (isDice == 2) {
@@ -247,8 +247,8 @@ public class RLottieDiceDrawable extends RLottieDrawable {
 
     @Override
     protected void recycleNativePtr(boolean uiThread) {
-        RLottieNative nativePtrFinal = nativePtr;
-        RLottieNative secondNativePtrFinal = secondNativePtr;
+        TLottieNative nativePtrFinal = nativePtr;
+        TLottieNative secondNativePtrFinal = secondNativePtr;
 
         nativePtr = null;
         secondNativePtr = null;

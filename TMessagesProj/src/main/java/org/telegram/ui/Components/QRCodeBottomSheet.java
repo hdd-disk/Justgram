@@ -41,7 +41,7 @@ public class QRCodeBottomSheet extends BottomSheet {
     private final TextView buttonTextView;
     private TextView button2TextView;
     int imageSize;
-    RLottieImageView iconImage;
+    TLottieImageView iconImage;
 
     public QRCodeBottomSheet(Context context, String title, String link, String helpMessage, boolean includeShareLink) {
         this(context, title, link, helpMessage, includeShareLink, null);
@@ -74,7 +74,7 @@ public class QRCodeBottomSheet extends BottomSheet {
         linearLayout.setPadding(0, AndroidUtilities.dp(16), 0, 0);
         imageView.setImageBitmap(qrCode = createQR(context, link, qrCode));
 
-        iconImage = new RLottieImageView(context);
+        iconImage = new TLottieImageView(context);
         iconImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         iconImage.setBackgroundColor(Color.WHITE);
         //iconImage.setPadding(-AndroidUtilities.dp(4), -AndroidUtilities.dp(4), -AndroidUtilities.dp(4), -AndroidUtilities.dp(4));

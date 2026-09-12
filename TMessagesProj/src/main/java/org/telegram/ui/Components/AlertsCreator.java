@@ -4495,8 +4495,8 @@ public class AlertsCreator {
             });
         }
 
-        final RLottieImageView notifyItem = new RLottieImageView(context);
-        final RLottieDrawable notifyIcon = new RLottieDrawable(R.raw.notify_toggle, "notify_toggle", dp(24), dp(24), true, null);
+        final TLottieImageView notifyItem = new TLottieImageView(context);
+        final TLottieDrawable notifyIcon = new TLottieDrawable(R.raw.notify_toggle, "notify_toggle", dp(24), dp(24), true, null);
         notifyIcon.setAllowDecodeSingleFrame(true);
         notifyIcon.setPlayInDirectionOfCustomEndFrame(true);
         notifyIcon.start();
@@ -9313,7 +9313,7 @@ public class AlertsCreator {
         linearLayout.setClipChildren(false);
         linearLayout.setClipToPadding(false);
 
-        RLottieImageView backupImageView = new RLottieImageView(context);
+        TLottieImageView backupImageView = new TLottieImageView(context);
         linearLayout.addView(backupImageView, LayoutHelper.createLinear(110, 110, Gravity.CENTER, 0, 21, 0, 11));
         backupImageView.setAnimation(R.raw.raised_hand, 110, 110);
         backupImageView.setAutoRepeat(false);

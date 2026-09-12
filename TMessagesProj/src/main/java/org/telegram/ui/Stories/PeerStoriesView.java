@@ -157,8 +157,8 @@ import org.telegram.ui.Components.MediaActivity;
 import org.telegram.ui.Components.MentionsContainerView;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgress;
 import org.telegram.ui.Components.Reactions.AnimatedEmojiEffect;
 import org.telegram.ui.Components.Reactions.ReactionImageHolder;
@@ -227,7 +227,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
     private final ImageView optionsIconView;
     private final ImageView pipIconView;
     private final FrameLayout muteIconContainer;
-    private final RLottieImageView muteIconView;
+    private final TLottieImageView muteIconView;
     private final ImageView noSoundIconView;
     private final Theme.ResourcesProvider resourcesProvider;
     private final StoryPrivacyButton privacyButton;
@@ -2237,7 +2237,7 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
         };
         storyContainer.addView(muteIconContainer, LayoutHelper.createFrame(40, 40, Gravity.RIGHT | Gravity.TOP, 2, 15, 2 + 40, 0));
 
-        muteIconView = new RLottieImageView(context);
+        muteIconView = new TLottieImageView(context);
         muteIconView.setPadding(dp(6), dp(6), dp(6), dp(6));
         muteIconContainer.addView(muteIconView);
 
@@ -8204,9 +8204,9 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
         public Drawable optionsDrawable;
         public Drawable pipDrawable;
         public Drawable deleteDrawable;
-        public RLottieDrawable noSoundDrawable;
+        public TLottieDrawable noSoundDrawable;
        // public ReplaceableIconDrawable muteDrawable;
-        public RLottieDrawable muteDrawable;
+        public TLottieDrawable muteDrawable;
 
         SharedResources(Context context) {
             shareDrawable = ContextCompat.getDrawable(context, R.drawable.media_share);
@@ -8217,9 +8217,9 @@ public class PeerStoriesView extends SizeNotifierFrameLayout implements Notifica
             optionsDrawable = ContextCompat.getDrawable(context, R.drawable.media_more);
             pipDrawable = ContextCompat.getDrawable(context, R.drawable.menu_stream_pip);
             deleteDrawable = ContextCompat.getDrawable(context, R.drawable.msg_delete);
-            muteDrawable = new RLottieDrawable(R.raw.media_mute_unmute, "media_mute_unmute", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
+            muteDrawable = new TLottieDrawable(R.raw.media_mute_unmute, "media_mute_unmute", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
            // muteDrawable = new ReplaceableIconDrawable(context);
-            noSoundDrawable = new RLottieDrawable(R.raw.media_mute_unmute, "media_mute_unmute", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
+            noSoundDrawable = new TLottieDrawable(R.raw.media_mute_unmute, "media_mute_unmute", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
             noSoundDrawable.setCurrentFrame(20, false, true);
             noSoundDrawable.stop();
           //  muteDrawable = new CrossOutDrawable(context, R.drawable.msg_unmute, -1);

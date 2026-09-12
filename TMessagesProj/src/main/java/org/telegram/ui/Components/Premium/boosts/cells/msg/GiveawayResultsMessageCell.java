@@ -48,7 +48,7 @@ import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.LinkPath;
 import org.telegram.ui.Components.LinkSpanDrawable;
 import org.telegram.ui.Components.Premium.boosts.BoostDialogs;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.StaticLayoutEx;
 import org.telegram.ui.LaunchActivity;
 
@@ -62,7 +62,7 @@ public class GiveawayResultsMessageCell {
     private AvatarDrawable[] avatarDrawables;
     private final ChatMessageCell parentView;
     private ImageReceiver giftReceiver;
-    private RLottieDrawable giftDrawable;
+    private TLottieDrawable giftDrawable;
 
     private CharSequence[] userTitles;
     private TLRPC.User[] users;
@@ -682,7 +682,7 @@ public class GiveawayResultsMessageCell {
     private void setGiftImage() {
         giftReceiver.setAllowStartLottieAnimation(false);
         if (giftDrawable == null) {
-            giftDrawable = new RLottieDrawable(R.raw.giveaway_results, "" + R.raw.giveaway_results, dp(120), dp(120));
+            giftDrawable = new TLottieDrawable(R.raw.giveaway_results, "" + R.raw.giveaway_results, dp(120), dp(120));
         }
         giftReceiver.setImageBitmap(giftDrawable);
     }

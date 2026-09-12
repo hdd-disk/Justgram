@@ -63,7 +63,7 @@ import org.telegram.ui.Components.ColoredImageSpan;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LinkPath;
 import org.telegram.ui.Components.LinkSpanDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.TypefaceSpan;
 
 public class HintView2 extends View {
@@ -304,7 +304,7 @@ public class HintView2 extends View {
     }
 
     public HintView2 setIcon(int resId) {
-        RLottieDrawable icon = new RLottieDrawable(resId, "" + resId, dp(34), dp(34));
+        TLottieDrawable icon = new TLottieDrawable(resId, "" + resId, dp(34), dp(34));
         icon.start();
         return setIcon(icon);
     }
@@ -316,8 +316,8 @@ public class HintView2 extends View {
         this.icon = icon;
         if (this.icon != null) {
             this.icon.setCallback(this);
-            if (this.icon instanceof RLottieDrawable) {
-                duration = Math.max(duration, ((RLottieDrawable) this.icon).getDuration());
+            if (this.icon instanceof TLottieDrawable) {
+                duration = Math.max(duration, ((TLottieDrawable) this.icon).getDuration());
             }
             // TODO: to be custom
             this.iconWidth  = this.icon.getIntrinsicWidth();

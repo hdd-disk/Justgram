@@ -138,7 +138,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.SeekBarView;
@@ -347,7 +347,7 @@ public class ThemePreviewActivity extends BaseFragment implements DownloadContro
     boolean self = true;
     private boolean shouldShowDayNightIcon;
     private boolean shouldShowBrightnessControll;
-    private RLottieDrawable sunDrawable;
+    private TLottieDrawable sunDrawable;
     private ActionBarMenuItem dayNightItem;
     private ValueAnimator changeDayNightViewAnimator2;
     private FrameLayout dimmingSliderContainer;
@@ -1077,7 +1077,7 @@ public class ThemePreviewActivity extends BaseFragment implements DownloadContro
                     menu2.addItem(5, R.drawable.msg_header_share);
                 }
                 if (dialogId != 0 && shouldShowDayNightIcon) {
-                    sunDrawable = new RLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
+                    sunDrawable = new TLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
                     dayNightItem = menu2.addItem(OPTION_DAY_NIGHT, sunDrawable);
 
                     sunDrawable.setPlayInDirectionOfCustomEndFrame(true);

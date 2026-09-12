@@ -139,9 +139,9 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
     private FrameLayout groupCallMessagesContainer;
     private View shadow;
     private View selector;
-    private RLottieImageView importingImageView;
-    private RLottieImageView muteButton;
-    private RLottieDrawable muteDrawable;
+    private TLottieImageView importingImageView;
+    private TLottieImageView muteButton;
+    private TLottieDrawable muteDrawable;
     private ImageView closeButton;
     private ActionBarMenuItem playbackSpeedButton;
     private SpeedIconDrawable speedIcon;
@@ -422,7 +422,7 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
             }
         });
 
-        importingImageView = new RLottieImageView(context);
+        importingImageView = new TLottieImageView(context);
         importingImageView.setScaleType(ImageView.ScaleType.CENTER);
         importingImageView.setAutoRepeat(true);
         importingImageView.setAnimation(R.raw.import_progress, 30, 30);
@@ -558,9 +558,9 @@ public class FragmentContextView extends FrameLayout implements NotificationCent
         avatars.setVisibility(GONE);
         addView(avatars, LayoutHelper.createFrame(108, 36, Gravity.LEFT | Gravity.TOP));
 
-        muteDrawable = new RLottieDrawable(R.raw.voice_muted, "" + R.raw.voice_muted, dp(16), dp(20), true, null);
+        muteDrawable = new TLottieDrawable(R.raw.voice_muted, "" + R.raw.voice_muted, dp(16), dp(20), true, null);
 
-        muteButton = new RLottieImageView(context) {
+        muteButton = new TLottieImageView(context) {
             boolean scheduled;
             boolean pressed;
 

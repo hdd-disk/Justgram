@@ -734,9 +734,9 @@ public class AnimatedEmojiDrawable extends Drawable {
                         animation.setUseSharedQueue(imageReceiver.useSharedAnimationQueue);
                         animation.start();
                     } else {
-                        RLottieDrawable rLottieDrawable = imageReceiver.getLottieAnimation();
-                        if (rLottieDrawable != null) {
-                            rLottieDrawable.start();
+                        TLottieDrawable tLottieDrawable = imageReceiver.getLottieAnimation();
+                        if (tLottieDrawable != null) {
+                            tLottieDrawable.start();
                         }
                     }
                 } else {

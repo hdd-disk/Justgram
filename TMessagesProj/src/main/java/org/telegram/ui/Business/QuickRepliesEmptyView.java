@@ -20,7 +20,7 @@ import org.telegram.messenger.UserConfig;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.ChatActivity;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Stories.recorder.HintView2;
 
 public class QuickRepliesEmptyView extends LinearLayout {
@@ -28,7 +28,7 @@ public class QuickRepliesEmptyView extends LinearLayout {
     private TextView titleView;
     private TextView descriptionView, descriptionView2;
 
-    public RLottieImageView imageView;
+    public TLottieImageView imageView;
     private final Theme.ResourcesProvider resourcesProvider;
 
     private class DotTextView extends TextView {
@@ -64,7 +64,7 @@ public class QuickRepliesEmptyView extends LinearLayout {
         descriptionView.setLineSpacing(dp(2), 1);
         descriptionView.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
 //        imageView.setAnimation(R.raw.large_message_lock, 80, 80);

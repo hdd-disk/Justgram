@@ -33,7 +33,7 @@ public class SeekSpeedDrawable extends Drawable {
     private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint arrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private RLottieDrawable hintDrawable;
+    private TLottieDrawable hintDrawable;
     private final Path hintArrow = new Path();
     private final Text hintText = new Text(LocaleController.getString(R.string.SeekSpeedHint), 14);
 
@@ -174,7 +174,7 @@ public class SeekSpeedDrawable extends Drawable {
         final float hintShown = animatedHintShown.set(this.showHint && this.shown);
         if (hintShown > 0) {
             if (hintDrawable == null) {
-                hintDrawable = new RLottieDrawable(R.raw.seek_speed_hint, "" + R.raw.seek_speed_hint, AndroidUtilities.dp(24), AndroidUtilities.dp(24), true, null);
+                hintDrawable = new TLottieDrawable(R.raw.seek_speed_hint, "" + R.raw.seek_speed_hint, AndroidUtilities.dp(24), AndroidUtilities.dp(24), true, null);
                 hintDrawable.setAllowDecodeSingleFrame(true);
                 hintDrawable.setCallback(new Callback() {
                     @Override

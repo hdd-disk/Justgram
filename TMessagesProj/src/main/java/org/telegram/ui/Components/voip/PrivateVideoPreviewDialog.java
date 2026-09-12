@@ -39,8 +39,8 @@ import org.telegram.ui.ActionBar.BackDrawable;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.LaunchActivity;
 import org.webrtc.RendererCommon;
 
@@ -60,7 +60,7 @@ public abstract class PrivateVideoPreviewDialog extends FrameLayout implements V
     private final ViewPager viewPager;
     private final TextView positiveButton;
     private final LinearLayout titlesLayout;
-    private RLottieImageView micIconView;
+    private TLottieImageView micIconView;
     private final TextView[] titles;
     private final VoIPTextureView textureView;
     private int currentTexturePage = 1;
@@ -275,10 +275,10 @@ public abstract class PrivateVideoPreviewDialog extends FrameLayout implements V
         viewPager.setCurrentItem(needScreencast ? 1 : 0);
 
         if (mic) {
-            micIconView = new RLottieImageView(context);
+            micIconView = new TLottieImageView(context);
             micIconView.setPadding(AndroidUtilities.dp(9), AndroidUtilities.dp(9), AndroidUtilities.dp(9), AndroidUtilities.dp(9));
             micIconView.setBackground(Theme.createCircleDrawable(AndroidUtilities.dp(48), ColorUtils.setAlphaComponent(Color.BLACK, (int) (255 * 0.3f))));
-            RLottieDrawable micIcon = new RLottieDrawable(R.raw.voice_mini, "" + R.raw.voice_mini, AndroidUtilities.dp(24), AndroidUtilities.dp(24), true, null);
+            TLottieDrawable micIcon = new TLottieDrawable(R.raw.voice_mini, "" + R.raw.voice_mini, AndroidUtilities.dp(24), AndroidUtilities.dp(24), true, null);
             micIconView.setAnimation(micIcon);
             micIconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             micEnabled = true;

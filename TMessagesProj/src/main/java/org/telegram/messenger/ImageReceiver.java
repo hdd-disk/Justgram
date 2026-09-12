@@ -45,7 +45,7 @@ import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.ClipRoundedDrawable;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LoadingStickerDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclableDrawable;
 import org.telegram.ui.Components.VectorAvatarThumbDrawable;
 
@@ -168,8 +168,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
                     if (bitmap != null) {
                         bitmap.recycle();
                     } else if (drawable != null) {
-                        if (drawable instanceof RLottieDrawable) {
-                            RLottieDrawable fileDrawable = (RLottieDrawable) drawable;
+                        if (drawable instanceof TLottieDrawable) {
+                            TLottieDrawable fileDrawable = (TLottieDrawable) drawable;
                             fileDrawable.recycle(false);
                         } else if (drawable instanceof AnimatedFileDrawable) {
                             AnimatedFileDrawable fileDrawable = (AnimatedFileDrawable) drawable;
@@ -938,8 +938,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
                 fileDrawable.checkRepeat();
             }
             fileDrawable.setAllowDecodeSingleFrame(allowDecodeSingleFrame);
-        } else if (bitmap instanceof RLottieDrawable) {
-            RLottieDrawable fileDrawable = (RLottieDrawable) bitmap;
+        } else if (bitmap instanceof TLottieDrawable) {
+            TLottieDrawable fileDrawable = (TLottieDrawable) bitmap;
             if (attachedToWindow) {
                 fileDrawable.addParentView(this);
             }
@@ -1079,7 +1079,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
                 ((AvatarDrawable) drawable).setRoundRadius(r[0]);
             } else {
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-                if (bitmapDrawable instanceof RLottieDrawable) {
+                if (bitmapDrawable instanceof TLottieDrawable) {
 
                 } else if (bitmapDrawable instanceof AnimatedFileDrawable) {
                     AnimatedFileDrawable animatedFileDrawable = (AnimatedFileDrawable) drawable;
@@ -1148,7 +1148,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         if (animatedFileDrawable != null) {
             animatedFileDrawable.removeParent(this);
         }
-        final RLottieDrawable lottieDrawable = getLottieAnimation();
+        final TLottieDrawable lottieDrawable = getLottieAnimation();
         if (lottieDrawable != null) {
             lottieDrawable.removeParentView(this);
         }
@@ -1165,14 +1165,14 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             setImageBackup = null;
             if (temp.thumb instanceof BitmapDrawable) {
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) temp.thumb;
-                if (!(bitmapDrawable instanceof RLottieDrawable) && !(bitmapDrawable instanceof AnimatedFileDrawable) && bitmapDrawable.getBitmap() != null && bitmapDrawable.getBitmap().isRecycled()) {
+                if (!(bitmapDrawable instanceof TLottieDrawable) && !(bitmapDrawable instanceof AnimatedFileDrawable) && bitmapDrawable.getBitmap() != null && bitmapDrawable.getBitmap().isRecycled()) {
                     temp.thumb = null;
                 }
             }
             setImage(temp.mediaLocation, temp.mediaFilter, temp.imageLocation, temp.imageFilter, temp.thumbLocation, temp.thumbFilter, temp.thumb, temp.size, temp.ext, temp.parentObject, temp.cacheType);
             temp.clear();
             setImageBackup = temp;
-            RLottieDrawable lottieDrawable = getLottieAnimation();
+            TLottieDrawable lottieDrawable = getLottieAnimation();
             if (lottieDrawable != null) {
                 lottieDrawable.setAllowVibration(allowLottieVibration);
             }
@@ -1199,7 +1199,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         if (setBackupImage()) {
             return true;
         }
-        final RLottieDrawable lottieDrawable = getLottieAnimation();
+        final TLottieDrawable lottieDrawable = getLottieAnimation();
         if (lottieDrawable != null) {
             lottieDrawable.addParentView(this);
             lottieDrawable.setAllowVibration(allowLottieVibration);
@@ -1283,8 +1283,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         if (!useRoundRadius) roundRadius = emptyRoundRadius;
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (drawable instanceof RLottieDrawable) {
-                ((RLottieDrawable) drawable).skipFrameUpdate = skipUpdateFrame;
+            if (drawable instanceof TLottieDrawable) {
+                ((TLottieDrawable) drawable).skipFrameUpdate = skipUpdateFrame;
             } else if (drawable instanceof AnimatedFileDrawable) {
                 ((AnimatedFileDrawable) drawable).skipFrameUpdate = skipUpdateFrame;
             }
@@ -1333,7 +1333,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             }
             int bitmapW;
             int bitmapH;
-            if (bitmapDrawable instanceof AnimatedFileDrawable || bitmapDrawable instanceof RLottieDrawable) {
+            if (bitmapDrawable instanceof AnimatedFileDrawable || bitmapDrawable instanceof TLottieDrawable) {
                 if (orientation % 360 == 90 || orientation % 360 == 270) {
                     bitmapW = bitmapDrawable.getIntrinsicHeight();
                     bitmapH = bitmapDrawable.getIntrinsicWidth();
@@ -1691,8 +1691,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
                 }
             }
 
-            if (drawable instanceof RLottieDrawable) {
-                ((RLottieDrawable) drawable).skipFrameUpdate = false;
+            if (drawable instanceof TLottieDrawable) {
+                ((TLottieDrawable) drawable).skipFrameUpdate = false;
             } else if (drawable instanceof AnimatedFileDrawable) {
                 ((AnimatedFileDrawable) drawable).skipFrameUpdate = false;
             }
@@ -1753,8 +1753,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
 
     private void drawBitmapDrawable(Canvas canvas, BitmapDrawable bitmapDrawable, BackgroundThreadDrawHolder backgroundThreadDrawHolder, int alpha) {
         if (backgroundThreadDrawHolder != null) {
-            if (bitmapDrawable instanceof RLottieDrawable) {
-                ((RLottieDrawable) bitmapDrawable).drawInBackground(canvas, backgroundThreadDrawHolder.imageX, backgroundThreadDrawHolder.imageY, backgroundThreadDrawHolder.imageW, backgroundThreadDrawHolder.imageH, alpha, backgroundThreadDrawHolder.colorFilter, backgroundThreadDrawHolder.threadIndex);
+            if (bitmapDrawable instanceof TLottieDrawable) {
+                ((TLottieDrawable) bitmapDrawable).drawInBackground(canvas, backgroundThreadDrawHolder.imageX, backgroundThreadDrawHolder.imageY, backgroundThreadDrawHolder.imageW, backgroundThreadDrawHolder.imageH, alpha, backgroundThreadDrawHolder.colorFilter, backgroundThreadDrawHolder.threadIndex);
             } else if (bitmapDrawable instanceof AnimatedFileDrawable) {
                 ((AnimatedFileDrawable) bitmapDrawable).drawInBackground(canvas, backgroundThreadDrawHolder.imageX, backgroundThreadDrawHolder.imageY, backgroundThreadDrawHolder.imageW, backgroundThreadDrawHolder.imageH, alpha, backgroundThreadDrawHolder.colorFilter, backgroundThreadDrawHolder.threadIndex);
             } else {
@@ -1774,8 +1774,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             }
         } else {
             bitmapDrawable.setAlpha(alpha);
-            if (bitmapDrawable instanceof RLottieDrawable) {
-                ((RLottieDrawable) bitmapDrawable).drawInternal(canvas, null, false, currentTime, 0);
+            if (bitmapDrawable instanceof TLottieDrawable) {
+                ((TLottieDrawable) bitmapDrawable).drawInternal(canvas, null, false, currentTime, 0);
             } else if (bitmapDrawable instanceof AnimatedFileDrawable) {
                 ((AnimatedFileDrawable) bitmapDrawable).drawInternal(canvas, false, currentTime, 0);
             } else {
@@ -1860,7 +1860,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
     }
 
     public void skipDraw() {
-//        RLottieDrawable lottieDrawable = getLottieAnimation();
+//        TLottieDrawable lottieDrawable = getLottieAnimation();
 //        if (lottieDrawable != null) {
 //            lottieDrawable.updateCurrentFrame();
 //        }
@@ -1880,7 +1880,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         try {
             Drawable drawable = null;
             AnimatedFileDrawable animation;
-            RLottieDrawable lottieDrawable;
+            TLottieDrawable lottieDrawable;
             Drawable currentMediaDrawable;
             BitmapShader mediaShader;
             Drawable currentImageDrawable;
@@ -2133,18 +2133,18 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
     }
 
     public Bitmap getBitmap() {
-        RLottieDrawable lottieDrawable = getLottieAnimation();
+        TLottieDrawable lottieDrawable = getLottieAnimation();
         if (lottieDrawable != null && lottieDrawable.hasBitmap()) {
             return lottieDrawable.getAnimatedBitmap();
         }
         AnimatedFileDrawable animation = getAnimation();
         if (animation != null && animation.hasBitmap()) {
             return animation.getAnimatedBitmap();
-        } else if (currentMediaDrawable instanceof BitmapDrawable && !(currentMediaDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentMediaDrawable instanceof BitmapDrawable && !(currentMediaDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             return ((BitmapDrawable) currentMediaDrawable).getBitmap();
-        } else if (currentImageDrawable instanceof BitmapDrawable && !(currentImageDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentImageDrawable instanceof BitmapDrawable && !(currentImageDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             return ((BitmapDrawable) currentImageDrawable).getBitmap();
-        } else if (currentThumbDrawable instanceof BitmapDrawable && !(currentThumbDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentThumbDrawable instanceof BitmapDrawable && !(currentThumbDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             return ((BitmapDrawable) currentThumbDrawable).getBitmap();
         } else if (staticThumbDrawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) staticThumbDrawable).getBitmap();
@@ -2156,7 +2156,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         Bitmap bitmap = null;
         String key = null;
         AnimatedFileDrawable animation = getAnimation();
-        RLottieDrawable lottieDrawable = getLottieAnimation();
+        TLottieDrawable lottieDrawable = getLottieAnimation();
         int orientation = 0;
         if (lottieDrawable != null && lottieDrawable.hasBitmap()) {
             bitmap = lottieDrawable.getAnimatedBitmap();
@@ -2166,13 +2166,13 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             if (orientation != 0) {
                 return new BitmapHolder(Bitmap.createBitmap(bitmap), null, orientation);
             }
-        } else if (currentMediaDrawable instanceof BitmapDrawable && !(currentMediaDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentMediaDrawable instanceof BitmapDrawable && !(currentMediaDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             bitmap = ((BitmapDrawable) currentMediaDrawable).getBitmap();
             key = currentMediaKey;
-        } else if (currentImageDrawable instanceof BitmapDrawable && !(currentImageDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentImageDrawable instanceof BitmapDrawable && !(currentImageDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             bitmap = ((BitmapDrawable) currentImageDrawable).getBitmap();
             key = currentImageKey;
-        } else if (currentThumbDrawable instanceof BitmapDrawable && !(currentThumbDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentThumbDrawable instanceof BitmapDrawable && !(currentThumbDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             bitmap = ((BitmapDrawable) currentThumbDrawable).getBitmap();
             key = currentThumbKey;
         } else if (staticThumbDrawable instanceof BitmapDrawable) {
@@ -2187,13 +2187,13 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
     public BitmapHolder getDrawableSafe() {
         Drawable drawable = null;
         String key = null;
-        if (currentMediaDrawable instanceof BitmapDrawable && !(currentMediaDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        if (currentMediaDrawable instanceof BitmapDrawable && !(currentMediaDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             drawable = currentMediaDrawable;
             key = currentMediaKey;
-        } else if (currentImageDrawable instanceof BitmapDrawable && !(currentImageDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentImageDrawable instanceof BitmapDrawable && !(currentImageDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             drawable = currentImageDrawable;
             key = currentImageKey;
-        } else if (currentThumbDrawable instanceof BitmapDrawable && !(currentThumbDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof RLottieDrawable)) {
+        } else if (currentThumbDrawable instanceof BitmapDrawable && !(currentThumbDrawable instanceof AnimatedFileDrawable) && !(currentMediaDrawable instanceof TLottieDrawable)) {
             drawable = currentThumbDrawable;
             key = currentThumbKey;
         } else if (staticThumbDrawable instanceof BitmapDrawable) {
@@ -2239,7 +2239,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         if (animation != null) {
             return imageOrientation % 360 == 0 || imageOrientation % 360 == 180 ? animation.getIntrinsicWidth() : animation.getIntrinsicHeight();
         }
-        RLottieDrawable lottieDrawable = getLottieAnimation();
+        TLottieDrawable lottieDrawable = getLottieAnimation();
         if (lottieDrawable != null) {
             return lottieDrawable.getIntrinsicWidth();
         }
@@ -2259,7 +2259,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         if (animation != null) {
             return imageOrientation % 360 == 0 || imageOrientation % 360 == 180 ? animation.getIntrinsicHeight() : animation.getIntrinsicWidth();
         }
-        RLottieDrawable lottieDrawable = getLottieAnimation();
+        TLottieDrawable lottieDrawable = getLottieAnimation();
         if (lottieDrawable != null) {
             return lottieDrawable.getIntrinsicHeight();
         }
@@ -2671,7 +2671,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
 
     public void setAutoRepeat(int value) {
         autoRepeat = value;
-        RLottieDrawable drawable = getLottieAnimation();
+        TLottieDrawable drawable = getLottieAnimation();
         if (drawable != null) {
             drawable.setAutoRepeat(value);
         }
@@ -2695,7 +2695,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
 
     public void setAutoRepeatTimeout(long timeout) {
         autoRepeatTimeout = timeout;
-        RLottieDrawable drawable = getLottieAnimation();
+        TLottieDrawable drawable = getLottieAnimation();
         if (drawable != null) {
             drawable.setAutoRepeatTimeout(autoRepeatTimeout);
         }
@@ -2718,9 +2718,9 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             animation.setUseSharedQueue(useSharedAnimationQueue);
             animation.start();
         } else {
-            RLottieDrawable rLottieDrawable = getLottieAnimation();
-            if (rLottieDrawable != null && !rLottieDrawable.isRunning()) {
-                rLottieDrawable.restart(force);
+            TLottieDrawable tLottieDrawable = getLottieAnimation();
+            if (tLottieDrawable != null && !tLottieDrawable.isRunning()) {
+                tLottieDrawable.restart(force);
             }
         }
     }
@@ -2730,9 +2730,9 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         if (animation != null) {
             animation.stop();
         } else {
-            RLottieDrawable rLottieDrawable = getLottieAnimation();
-            if (rLottieDrawable != null) {
-                rLottieDrawable.stop();
+            TLottieDrawable tLottieDrawable = getLottieAnimation();
+            if (tLottieDrawable != null) {
+                tLottieDrawable.stop();
             }
         }
     }
@@ -2742,12 +2742,12 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         if (emojiPaused == paused) return;
         emojiPaused = paused;
         allowStartLottieAnimation = !paused;
-        RLottieDrawable rLottieDrawable = getLottieAnimation();
-        if (rLottieDrawable != null) {
+        TLottieDrawable tLottieDrawable = getLottieAnimation();
+        if (tLottieDrawable != null) {
             if (paused) {
-                rLottieDrawable.stop();
-            } else if (!rLottieDrawable.isRunning()) {
-                rLottieDrawable.start();
+                tLottieDrawable.stop();
+            } else if (!tLottieDrawable.isRunning()) {
+                tLottieDrawable.start();
             }
         }
     }
@@ -2758,7 +2758,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
     }
 
     public boolean isLottieRunning() {
-        RLottieDrawable animation = getLottieAnimation();
+        TLottieDrawable animation = getLottieAnimation();
         return animation != null && animation.isRunning();
     }
 
@@ -2788,15 +2788,15 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         return null;
     }
 
-    public RLottieDrawable getLottieAnimation() {
-        if (currentMediaDrawable instanceof RLottieDrawable) {
-            return (RLottieDrawable) currentMediaDrawable;
-        } else if (currentImageDrawable instanceof RLottieDrawable) {
-            return (RLottieDrawable) currentImageDrawable;
-        } else if (currentThumbDrawable instanceof RLottieDrawable) {
-            return (RLottieDrawable) currentThumbDrawable;
-        } else if (staticThumbDrawable instanceof RLottieDrawable) {
-            return (RLottieDrawable) staticThumbDrawable;
+    public TLottieDrawable getLottieAnimation() {
+        if (currentMediaDrawable instanceof TLottieDrawable) {
+            return (TLottieDrawable) currentMediaDrawable;
+        } else if (currentImageDrawable instanceof TLottieDrawable) {
+            return (TLottieDrawable) currentImageDrawable;
+        } else if (currentThumbDrawable instanceof TLottieDrawable) {
+            return (TLottieDrawable) currentThumbDrawable;
+        } else if (staticThumbDrawable instanceof TLottieDrawable) {
+            return (TLottieDrawable) staticThumbDrawable;
         }
         return null;
     }
@@ -2866,11 +2866,11 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
 
             if (allowCrossFade && isVisible && (!memCache && !forcePreview || forceCrossfade) && crossfadeDuration != 0) {
                 boolean allowCrossfade = true;
-                if (currentMediaDrawable instanceof RLottieDrawable && ((RLottieDrawable) currentMediaDrawable).hasBitmap()) {
+                if (currentMediaDrawable instanceof TLottieDrawable && ((TLottieDrawable) currentMediaDrawable).hasBitmap()) {
                     allowCrossfade = false;
                 } else if (currentMediaDrawable instanceof AnimatedFileDrawable && ((AnimatedFileDrawable) currentMediaDrawable).hasBitmap()) {
                     allowCrossfade = false;
-                } else if (currentImageDrawable instanceof RLottieDrawable) {
+                } else if (currentImageDrawable instanceof TLottieDrawable) {
                     allowCrossfade = staticThumbDrawable instanceof LoadingStickerDrawable || staticThumbDrawable instanceof SvgHelper.SvgDrawable || staticThumbDrawable instanceof Emoji.EmojiDrawable;
                 }
                 if (allowCrossfade && (currentThumbDrawable != null || staticThumbDrawable != null || forceCrossfade)) {
@@ -2996,8 +2996,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             if (parentView != null) {
                 parentView.invalidate();
             }
-        } else if (drawable instanceof RLottieDrawable) {
-            RLottieDrawable fileDrawable = (RLottieDrawable) drawable;
+        } else if (drawable instanceof TLottieDrawable) {
+            TLottieDrawable fileDrawable = (TLottieDrawable) drawable;
             if (attachedToWindow) {
                 fileDrawable.addParentView(this);
             }
@@ -3046,8 +3046,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
                 key = replacedKey;
             }
         }
-        if (image instanceof RLottieDrawable) {
-            RLottieDrawable lottieDrawable = (RLottieDrawable) image;
+        if (image instanceof TLottieDrawable) {
+            TLottieDrawable lottieDrawable = (TLottieDrawable) image;
             lottieDrawable.removeParentView(this);
         }
         if (image instanceof AnimatedFileDrawable) {
@@ -3059,8 +3059,8 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             animatedEmojiDrawable.removeView(this);
         }
         if (key != null && (newKey == null || !newKey.equals(key)) && image != null) {
-            if (image instanceof RLottieDrawable) {
-                RLottieDrawable fileDrawable = (RLottieDrawable) image;
+            if (image instanceof TLottieDrawable) {
+                TLottieDrawable fileDrawable = (TLottieDrawable) image;
                 boolean canDelete = ImageLoader.getInstance().decrementUseCount(key);
                 if (!ImageLoader.getInstance().isInMemCache(key, true)) {
                     if (canDelete) {
@@ -3154,7 +3154,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             }
             currentOpenedLayerFlags |= layer;
             if (currentOpenedLayerFlags != 0) {
-                RLottieDrawable lottieDrawable = getLottieAnimation();
+                TLottieDrawable lottieDrawable = getLottieAnimation();
                 if (lottieDrawable != null && lottieDrawable.isHeavyDrawable()) {
                     lottieDrawable.stop();
                 }
@@ -3170,7 +3170,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
             }
             currentOpenedLayerFlags &= ~layer;
             if (currentOpenedLayerFlags == 0) {
-                RLottieDrawable lottieDrawable = getLottieAnimation();
+                TLottieDrawable lottieDrawable = getLottieAnimation();
                 if (lottieDrawable != null) {
                     lottieDrawable.setAllowVibration(allowLottieVibration);
                 }
@@ -3227,10 +3227,10 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
     public void moveLottieToFront() {
         BitmapDrawable drawable = null;
         String key = null;
-        if (currentMediaDrawable instanceof RLottieDrawable) {
+        if (currentMediaDrawable instanceof TLottieDrawable) {
             drawable = (BitmapDrawable) currentMediaDrawable;
             key = currentMediaKey;
-        } else if (currentImageDrawable instanceof RLottieDrawable) {
+        } else if (currentImageDrawable instanceof TLottieDrawable) {
             drawable = (BitmapDrawable) currentImageDrawable;
             key = currentImageKey;
         }
@@ -3344,7 +3344,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
         public int threadIndex;
         public BitmapShader staticThumbShader;
         private AnimatedFileDrawable animation;
-        private RLottieDrawable lottieDrawable;
+        private TLottieDrawable lottieDrawable;
         private int[] roundRadius = new int[4];
         private BitmapShader mediaShader;
         private Drawable mediaDrawable;

@@ -38,7 +38,7 @@ import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.ColoredImageSpan;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LinkSpanDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Stories.recorder.ButtonWithCounterView;
 
 public class FragmentUsernameBottomSheet {
@@ -65,7 +65,7 @@ public class FragmentUsernameBottomSheet {
         imageContainerView.setBackground(Theme.createCircleDrawable(dp(80), Theme.getColor(Theme.key_featuredStickers_addButton, resourcesProvider)));
         layout.addView(imageContainerView, LayoutHelper.createLinear(80, 80, Gravity.CENTER_HORIZONTAL, 0, 16, 0, 16));
 
-        RLottieImageView imageView = new RLottieImageView(context);
+        TLottieImageView imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         int sz = type == TYPE_USERNAME ? 70 : 78;
         imageView.setAnimation(type == TYPE_USERNAME ? R.raw.fragment_username : R.raw.fragment, sz, sz);

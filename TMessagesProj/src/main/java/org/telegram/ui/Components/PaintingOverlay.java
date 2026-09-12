@@ -193,7 +193,7 @@ public class PaintingOverlay extends FrameLayout {
                         if (startAfterSet) {
                             imageReceiver.setDelegate((imageReceiver1, set, thumb, memCache) -> {
                                 if (set && !thumb) {
-                                    RLottieDrawable drawable = imageReceiver1.getLottieAnimation();
+                                    TLottieDrawable drawable = imageReceiver1.getLottieAnimation();
                                     if (drawable != null) {
                                         drawable.start();
                                     }

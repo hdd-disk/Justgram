@@ -151,8 +151,8 @@ import org.telegram.ui.Components.PhotoFilterCurvesControl;
 import org.telegram.ui.Components.PhotoFilterView;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RectOld;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.TextStyleSpan;
@@ -1947,9 +1947,9 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
     private CaptionStory captionEdit;
     private MultipleStoriesSelector storiesSelector;
     private DownloadButton downloadButton;
-    private RLottieDrawable muteButtonDrawable;
-    private RLottieImageView muteButton;
-    private RLottieDrawable themeButtonDrawable;
+    private TLottieDrawable muteButtonDrawable;
+    private TLottieImageView muteButton;
+    private TLottieDrawable themeButtonDrawable;
     private ImageView themeButton;
     private PlayPauseButton playButton;
     private HintView2 muteHint;
@@ -2708,7 +2708,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
         muteHint.setPadding(dp(8), 0, dp(8), 0);
         actionBarContainer.addView(muteHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 52, 0, 0));
 
-        muteButton = new RLottieImageView(context);
+        muteButton = new TLottieImageView(context);
         muteButton.setScaleType(ImageView.ScaleType.CENTER);
         muteButton.setImageResource(outputEntry != null && outputEntry.muted ? R.drawable.media_unmute : R.drawable.media_mute);
         muteButton.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY));
@@ -7592,7 +7592,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     public void setIconMuted(boolean muted, boolean animated) {
         if (muteButtonDrawable == null) {
-            muteButtonDrawable = new RLottieDrawable(R.raw.media_mute_unmute, "media_mute_unmute", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
+            muteButtonDrawable = new TLottieDrawable(R.raw.media_mute_unmute, "media_mute_unmute", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
             muteButtonDrawable.multiplySpeed(1.5f);
         }
         muteButton.setAnimation(muteButtonDrawable);
@@ -7673,7 +7673,7 @@ public class StoryRecorder implements NotificationCenter.NotificationCenterDeleg
 
     public ImageView getThemeButton() {
         if (themeButton == null) {
-            themeButtonDrawable = new RLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, dp(28), dp(28), true, null);
+            themeButtonDrawable = new TLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, dp(28), dp(28), true, null);
             themeButtonDrawable.setPlayInDirectionOfCustomEndFrame(true);
             if (!(outputEntry != null && outputEntry.isDark)) {
                 themeButtonDrawable.setCustomEndFrame(0);

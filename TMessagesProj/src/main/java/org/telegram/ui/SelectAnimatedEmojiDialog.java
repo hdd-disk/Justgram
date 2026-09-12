@@ -120,7 +120,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.PremiumButtonView;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumLockIconView;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.Reactions.HwEmojis;
 import org.telegram.ui.Components.Reactions.ReactionsEffectOverlay;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
@@ -2926,7 +2926,7 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
     private class HeaderView extends FrameLayout {
         private LinearLayout layoutView;
         private TextView textView;
-        private RLottieImageView lockView;
+        private TLottieImageView lockView;
         ImageView closeIcon;
 
         public HeaderView(Context context, boolean leftGravity) {
@@ -2936,7 +2936,7 @@ public class SelectAnimatedEmojiDialog extends FrameLayout implements Notificati
             layoutView.setOrientation(LinearLayout.HORIZONTAL);
             addView(layoutView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, leftGravity ? Gravity.LEFT : Gravity.CENTER));
 
-            lockView = new RLottieImageView(context);
+            lockView = new TLottieImageView(context);
             lockView.setAnimation(R.raw.unlock_icon, 20, 20);
             lockView.setColorFilter(Theme.getColor(Theme.key_chat_emojiPanelStickerSetName, resourcesProvider));
             layoutView.addView(lockView, LayoutHelper.createLinear(20, 20));

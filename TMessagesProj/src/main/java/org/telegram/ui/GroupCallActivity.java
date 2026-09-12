@@ -179,8 +179,8 @@ import org.telegram.ui.Components.PermissionRequest;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
 import org.telegram.ui.Components.ProfileGalleryView;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.Reactions.CustomEmojiReactionsWindow;
 import org.telegram.ui.Components.Reactions.ReactionsEffectOverlay;
@@ -269,7 +269,7 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
     private final VoIPToggleButton leaveButton;
     private final VoIPToggleButton messageButton;
     private final VoIPToggleButton muteButton;
-    private final RLottieImageView muteButtonIcon;
+    private final TLottieImageView muteButtonIcon;
     private final ImageView expandOrMinimizeButton;
 
     private final Paint callMessageEnterContainerBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -349,8 +349,8 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
     private final ArrayList<Long> oldShadyLeft = new ArrayList<>();
     private int oldCount;
 
-    private final RLottieDrawable bigMicDrawable;
-    private final RLottieDrawable handDrawables;
+    private final TLottieDrawable bigMicDrawable;
+    private final TLottieDrawable handDrawables;
     private boolean playingHandAnimation;
 
     private final BlobDrawable tinyWaveDrawable;
@@ -581,7 +581,7 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
     private final AvatarPreviewPagerIndicator avatarPagerIndicator;
     private ViewGroup currentOptionsLayout;
     public boolean drawingForBlur;
-    private final RLottieDrawable flipIcon;
+    private final TLottieDrawable flipIcon;
     private int flipIconCurrentEndFrame;
     private boolean hasVideo;
     private final View buttonsBackgroundGradientView;
@@ -766,10 +766,10 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
 
     private class VolumeSlider extends FrameLayout {
 
-        private RLottieImageView imageView;
+        private TLottieImageView imageView;
         private TextView textView;
         private TLRPC.GroupCallParticipant currentParticipant;
-        private RLottieDrawable speakerDrawable;
+        private TLottieDrawable speakerDrawable;
 
         private boolean captured;
         private float sx, sy;
@@ -796,9 +796,9 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
 
             setPadding(dp(12), 0, dp(12), 0);
 
-            speakerDrawable = new RLottieDrawable(R.raw.speaker, "" + R.raw.speaker, dp(24), dp(24), true, null);
+            speakerDrawable = new TLottieDrawable(R.raw.speaker, "" + R.raw.speaker, dp(24), dp(24), true, null);
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.setAnimation(speakerDrawable);
             imageView.setTag(currentProgress == 0 ? 1 : null);
@@ -2454,8 +2454,8 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
 
         shadowDrawable = context.getResources().getDrawable(R.drawable.sheet_shadow_round).mutate();
 
-        bigMicDrawable = new RLottieDrawable(R.raw.voip_filled, "" + R.raw.voip_filled, dp(46), dp(46), true, null);
-        handDrawables = new RLottieDrawable(R.raw.hand_2, "" + R.raw.hand_2, dp(46), dp(46), true, null);
+        bigMicDrawable = new TLottieDrawable(R.raw.voip_filled, "" + R.raw.voip_filled, dp(46), dp(46), true, null);
+        handDrawables = new TLottieDrawable(R.raw.hand_2, "" + R.raw.hand_2, dp(46), dp(46), true, null);
 
         containerView = sizeNotifierFrameLayout = new SizeNotifierFrameLayout(context) {
             private boolean ignoreLayout = false;
@@ -4362,9 +4362,9 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
         flipButton.setCheckable(true);
         flipButton.setTextSize(12);
         flipButton.showText(false, false);
-        RLottieImageView flipIconView = new RLottieImageView(context);
+        TLottieImageView flipIconView = new TLottieImageView(context);
         flipButton.addView(flipIconView, LayoutHelper.createFrame(32, 32, Gravity.CENTER_HORIZONTAL, 0, 10, 0, 0));
-        flipIcon = new RLottieDrawable(R.raw.camera_flip, "" + R.raw.camera_flip, dp(24), dp(24), true, null);
+        flipIcon = new TLottieDrawable(R.raw.camera_flip, "" + R.raw.camera_flip, dp(24), dp(24), true, null);
         flipIconView.setAnimation(flipIcon);
         flipButton.setOnClickListener(view -> {
             renderersContainer.delayHideUi();
@@ -4437,7 +4437,7 @@ public class GroupCallActivity extends BottomSheet implements NotificationCenter
         messageButton.setTextSize(12);
         messageButton.setData(R.drawable.filled_voice_comment_32, Color.WHITE, 0, 1f, true, getString(R.string.VoipMessage), false, false);
 
-        muteButtonIcon = new RLottieImageView(context) {
+        muteButtonIcon = new TLottieImageView(context) {
 
             @Override
             public boolean onTouchEvent(MotionEvent event) {

@@ -1055,7 +1055,7 @@ public class ChatAttachAlertAudioLayout extends ChatAttachAlert.AttachAlertLayou
             addView(layout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
 
             imageView = new BackupImageView(context);
-            imageView.setImageDrawable(new RLottieDrawable(R.raw.utyan_empty, "utyan_empty", dp(120), dp(120)));
+            imageView.setImageDrawable(new TLottieDrawable(R.raw.utyan_empty, "utyan_empty", dp(120), dp(120)));
             layout.addView(imageView, LayoutHelper.createLinear(120, 120, Gravity.CENTER, 0, 0, 0, 0));
 
             titleView = new TextView(context);

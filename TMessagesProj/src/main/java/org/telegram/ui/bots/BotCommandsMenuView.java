@@ -38,7 +38,7 @@ import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.ColoredImageSpan;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.StaticLayoutEx;
 
@@ -56,7 +56,7 @@ public class BotCommandsMenuView extends View {
             invalidate();
         }
     };
-    RLottieDrawable webViewAnimation = new RLottieDrawable(R.raw.bot_webview_sheet_to_cross, String.valueOf(R.raw.bot_webview_sheet_to_cross) + hashCode(), AndroidUtilities.dp(20), AndroidUtilities.dp(20));
+    TLottieDrawable webViewAnimation = new TLottieDrawable(R.raw.bot_webview_sheet_to_cross, String.valueOf(R.raw.bot_webview_sheet_to_cross) + hashCode(), AndroidUtilities.dp(20), AndroidUtilities.dp(20));
     public boolean expanded;
     float expandProgress;
 
@@ -168,7 +168,7 @@ public class BotCommandsMenuView extends View {
             if (isWebView) {
                 canvas.save();
                 canvas.translate(AndroidUtilities.dp(9.5f), AndroidUtilities.dp(6));
-                RLottieDrawable drawable = webViewAnimation;
+                TLottieDrawable drawable = webViewAnimation;
                 drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                 drawable.draw(canvas);
                 canvas.restore();
@@ -306,7 +306,7 @@ public class BotCommandsMenuView extends View {
         }
         if (isWebView) {
             if (isWebViewOpened != opened) {
-                RLottieDrawable drawable = webViewAnimation;
+                TLottieDrawable drawable = webViewAnimation;
                 drawable.stop();
                 drawable.setPlayInDirectionOfCustomEndFrame(true);
                 drawable.setCustomEndFrame(opened ? drawable.getFramesCount() : 1);

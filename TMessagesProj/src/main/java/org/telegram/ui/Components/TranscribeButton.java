@@ -69,9 +69,9 @@ public class TranscribeButton {
     private final AnimatedFloat loadingFloat;
 
     private int inIconDrawableAlpha;
-    private RLottieDrawable inIconDrawable;
+    private TLottieDrawable inIconDrawable;
     private int outIconDrawableAlpha;
-    private RLottieDrawable outIconDrawable;
+    private TLottieDrawable outIconDrawable;
 
     private Drawable selectorDrawable;
     private ChatMessageCell parent;
@@ -92,7 +92,7 @@ public class TranscribeButton {
         this.pressBounds = new Rect(this.bounds);
         this.pressBounds.inset(dp(8), dp(8));
 
-        outIconDrawable = new RLottieDrawable(R.raw.transcribe_out, "transcribe_out", dp(26), dp(26));
+        outIconDrawable = new TLottieDrawable(R.raw.transcribe_out, "transcribe_out", dp(26), dp(26));
         outIconDrawable.setCurrentFrame(0);
         outIconDrawable.setCallback(parent);
         outIconDrawable.setOnFinishCallback(() -> {
@@ -103,7 +103,7 @@ public class TranscribeButton {
         }, 19);
         outIconDrawable.setAllowDecodeSingleFrame(true);
 
-        inIconDrawable = new RLottieDrawable(R.raw.transcribe_in, "transcribe_in", dp(26), dp(26));
+        inIconDrawable = new TLottieDrawable(R.raw.transcribe_in, "transcribe_in", dp(26), dp(26));
         inIconDrawable.setCurrentFrame(0);
         inIconDrawable.setCallback(parent);
         inIconDrawable.setMasterParent(parent);
@@ -571,7 +571,7 @@ public class TranscribeButton {
     }
 
     private static class LoadingPointsDrawable extends Drawable {
-        private RLottieDrawable lottie;
+        private TLottieDrawable lottie;
         private int lastColor;
         private Paint paint;
         private final Drawable.Callback callback = new Callback() {
@@ -594,7 +594,7 @@ public class TranscribeButton {
         public LoadingPointsDrawable(TextPaint textPaint) {
             this.paint = textPaint;
             float fontSize = textPaint.getTextSize() * 0.89f;
-            lottie = new RLottieDrawable(R.raw.dots_loading, "dots_loading", (int) fontSize, (int) (fontSize * 1.25f));
+            lottie = new TLottieDrawable(R.raw.dots_loading, "dots_loading", (int) fontSize, (int) (fontSize * 1.25f));
             lottie.setCallback(callback);
             lottie.setAutoRepeat(1);
             lottie.setCurrentFrame((int) (SystemClock.elapsedRealtime() / 16f % 60f));

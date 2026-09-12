@@ -138,7 +138,7 @@ static bool writeMetadata(JNIEnv *env, jintArray data, TLottieInstance *instance
 
 extern "C" {
 
-JNIEXPORT jlong JNICALL Java_org_telegram_ui_Components_RLottieNative_nCreate(
+JNIEXPORT jlong JNICALL Java_org_telegram_ui_Components_TLottieNative_nCreate(
         JNIEnv *env, jclass, jstring src, jstring json, jint, jint, jintArray data,
         jboolean, jintArray colorReplacement, jboolean, jint fitzModifier,
         jobjectArray layerNames, jintArray layerColors) {
@@ -166,7 +166,7 @@ JNIEXPORT jlong JNICALL Java_org_telegram_ui_Components_RLottieNative_nCreate(
     return reinterpret_cast<jlong>(instance);
 }
 
-JNIEXPORT jlong JNICALL Java_org_telegram_ui_Components_RLottieNative_nCreateWithJson(
+JNIEXPORT jlong JNICALL Java_org_telegram_ui_Components_TLottieNative_nCreateWithJson(
         JNIEnv *env, jclass, jstring json, jstring, jintArray data, jintArray colorReplacement,
         jobjectArray layerNames, jintArray layerColors) {
     if (json == nullptr) return 0;
@@ -183,11 +183,11 @@ JNIEXPORT jlong JNICALL Java_org_telegram_ui_Components_RLottieNative_nCreateWit
     return reinterpret_cast<jlong>(instance);
 }
 
-JNIEXPORT void JNICALL Java_org_telegram_ui_Components_RLottieNative_nDestroy(JNIEnv *, jclass, jlong ptr) {
+JNIEXPORT void JNICALL Java_org_telegram_ui_Components_TLottieNative_nDestroy(JNIEnv *, jclass, jlong ptr) {
     tlottie_drop(reinterpret_cast<TLottieInstance *>(ptr));
 }
 
-JNIEXPORT jint JNICALL Java_org_telegram_ui_Components_RLottieNative_nGetFrame(
+JNIEXPORT jint JNICALL Java_org_telegram_ui_Components_TLottieNative_nGetFrame(
         JNIEnv *env, jclass, jlong ptr, jint frame, jobject bitmap, jboolean clear) {
     if (ptr == 0 || bitmap == nullptr) return 0;
     auto *instance = reinterpret_cast<TLottieInstance *>(ptr);

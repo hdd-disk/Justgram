@@ -96,7 +96,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LinkSpanDrawable;
 import org.telegram.ui.Components.LoadingSpan;
 import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.ShareAlert;
@@ -467,7 +467,7 @@ public class ProfileGiftsContainer extends FrameLayout implements NotificationCe
                 emptyView1.addView(emptyView1Layout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
 
                 BackupImageView emptyView1Image = new BackupImageView(getContext());
-                emptyView1Image.setImageDrawable(new RLottieDrawable(R.raw.utyan_empty, "utyan_empty", dp(120), dp(120)));
+                emptyView1Image.setImageDrawable(new TLottieDrawable(R.raw.utyan_empty, "utyan_empty", dp(120), dp(120)));
                 emptyView1Layout.addView(emptyView1Image, LayoutHelper.createLinear(120, 120, Gravity.CENTER_HORIZONTAL, 0, 0, 0, 0));
 
                 emptyView1Title = new TextView(getContext());

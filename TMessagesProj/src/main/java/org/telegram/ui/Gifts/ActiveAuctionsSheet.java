@@ -29,7 +29,7 @@ import org.telegram.ui.Components.AnimatedTextView;
 import org.telegram.ui.Components.BottomSheetWithRecyclerListView;
 import org.telegram.ui.Components.ColoredImageSpan;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
@@ -167,7 +167,7 @@ public class ActiveAuctionsSheet extends BottomSheetWithRecyclerListView impleme
             buttonView = new ButtonWithCounterView(context, resourcesProvider);
             buttonView.setTextHacks(false, true, true, true);
 
-            RLottieImageView backupImageView = new RLottieImageView(context);
+            TLottieImageView backupImageView = new TLottieImageView(context);
             titleView = new AnimatedTextView(context);
             titleView.setTextSize(dp(14));
             titleView.setTypeface(AndroidUtilities.bold());

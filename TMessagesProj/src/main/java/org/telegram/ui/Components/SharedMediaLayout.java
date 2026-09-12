@@ -690,7 +690,7 @@ public class SharedMediaLayout extends FrameLayout implements NotificationCenter
     private float optionsAlpha;
     public TextView saveItem;
     public ImageView photoVideoOptionsItem;
-    private RLottieImageView optionsSearchImageView;
+    private TLottieImageView optionsSearchImageView;
     private ActionBarMenuItem forwardItem;
     private ActionBarMenuItem gotoItem;
     private ActionBarMenuItem pinItem;
@@ -1874,7 +1874,7 @@ public class SharedMediaLayout extends FrameLayout implements NotificationCenter
         if (!isArchivedOnlyStoriesView() && !isSearchingStories()) {
             actionBar.addView(photoVideoOptionsItem, LayoutHelper.createFrame(48, 56, Gravity.RIGHT | Gravity.BOTTOM));
 
-            optionsSearchImageView = new RLottieImageView(context);
+            optionsSearchImageView = new TLottieImageView(context);
             optionsSearchImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             optionsSearchImageView.setAnimation(R.raw.options_to_search, 24, 24);
             optionsSearchImageView.getAnimatedDrawable().multiplySpeed(2f);
@@ -4919,7 +4919,7 @@ public class SharedMediaLayout extends FrameLayout implements NotificationCenter
         return searchItem;
     }
 
-    public RLottieImageView getSearchOptionsItem() {
+    public TLottieImageView getSearchOptionsItem() {
         return optionsSearchImageView;
     }
 

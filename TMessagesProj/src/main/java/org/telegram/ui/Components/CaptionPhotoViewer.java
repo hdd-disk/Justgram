@@ -402,7 +402,7 @@ public class CaptionPhotoViewer extends CaptionContainerView {
         hint.setTranslationY((-Math.min(dp(34), getEditTextHeight()) - dp(14)) * (isAtTop() ? -1.0f : 1.0f));
         hint.setText(text);
         final int iconResId = value > 0 ? R.raw.fire_on : R.raw.fire_off;
-        RLottieDrawable icon = new RLottieDrawable(iconResId, "" + iconResId, dp(34), dp(34));
+        TLottieDrawable icon = new TLottieDrawable(iconResId, "" + iconResId, dp(34), dp(34));
         icon.start();
         hint.setIcon(icon);
         hint.show();

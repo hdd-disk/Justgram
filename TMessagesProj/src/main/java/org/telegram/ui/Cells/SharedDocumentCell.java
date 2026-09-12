@@ -51,8 +51,8 @@ import org.telegram.ui.Components.DotDividerSpan;
 import org.telegram.ui.Components.FlickerLoadingView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LineProgressView;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.FilteredSearchView;
 
 import java.io.File;
@@ -66,7 +66,7 @@ public class SharedDocumentCell extends FrameLayout implements DownloadControlle
     private TextView nameTextView;
     private TextView extTextView;
     private AnimatedEmojiSpan.TextViewEmojis dateTextView;
-    private RLottieImageView statusImageView;
+    private TLottieImageView statusImageView;
     private LineProgressView progressView;
     private CheckBox2 checkBox;
     public TextView rightDateTextView;
@@ -92,7 +92,7 @@ public class SharedDocumentCell extends FrameLayout implements DownloadControlle
 
     private SpannableStringBuilder dotSpan;
     private CharSequence caption;
-    private RLottieDrawable statusDrawable;
+    private TLottieDrawable statusDrawable;
     private final Theme.ResourcesProvider resourcesProvider;
     FlickerLoadingView globalGradientView;
     private long downloadedSize;
@@ -203,8 +203,8 @@ public class SharedDocumentCell extends FrameLayout implements DownloadControlle
             addView(nameTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.TOP, LocaleController.isRTL ? 8 : 72, 5, LocaleController.isRTL ? 72 : 8, 0));
         }
 
-        statusDrawable = new RLottieDrawable(R.raw.download_arrow, "download_arrow", AndroidUtilities.dp(14), AndroidUtilities.dp(14), true, null);
-        statusImageView = new RLottieImageView(context);
+        statusDrawable = new TLottieDrawable(R.raw.download_arrow, "download_arrow", AndroidUtilities.dp(14), AndroidUtilities.dp(14), true, null);
+        statusImageView = new TLottieImageView(context);
         statusImageView.setAnimation(statusDrawable);
         statusImageView.setVisibility(INVISIBLE);
         statusImageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_sharedMedia_startStopLoadIcon), PorterDuff.Mode.SRC_IN));

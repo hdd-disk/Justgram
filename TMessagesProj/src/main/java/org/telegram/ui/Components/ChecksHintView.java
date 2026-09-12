@@ -26,7 +26,7 @@ import org.telegram.ui.Cells.ChatMessageCell;
 public class ChecksHintView extends FrameLayout {
 
     private TextView[] textView = new TextView[2];
-    private RLottieImageView[] imageView = new RLottieImageView[2];
+    private TLottieImageView[] imageView = new TLottieImageView[2];
     private ImageView arrowImageView;
     private ChatMessageCell messageCell;
     private View currentView;
@@ -47,7 +47,7 @@ public class ChecksHintView extends FrameLayout {
         addView(backgroundView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP, 0, 0, 0, 6));
 
         for (int a = 0; a < 2; a++) {
-            imageView[a] = new RLottieImageView(context);
+            imageView[a] = new TLottieImageView(context);
             imageView[a].setScaleType(ImageView.ScaleType.CENTER);
             backgroundView.addView(imageView[a], LayoutHelper.createFrame(24, 24, Gravity.LEFT | Gravity.TOP, 0, a == 0 ? 0 : 24, 0, 0));
 

@@ -10,14 +10,14 @@ import org.telegram.messenger.R;
 import org.telegram.messenger.Utilities;
 import org.telegram.messenger.voip.VoIPService;
 import org.telegram.tgnet.TLRPC;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 
 public class GroupCallStatusIcon {
 
-    RLottieDrawable micDrawable;
-    RLottieDrawable shakeHandDrawable;
-    RLottieImageView iconView;
+    TLottieDrawable micDrawable;
+    TLottieDrawable shakeHandDrawable;
+    TLottieImageView iconView;
 
     boolean updateRunnableScheduled;
     boolean isSpeaking;
@@ -68,8 +68,8 @@ public class GroupCallStatusIcon {
     private boolean mutedByMe;
 
     public GroupCallStatusIcon() {
-        micDrawable = new RLottieDrawable(R.raw.voice_mini, "" + R.raw.voice_mini, AndroidUtilities.dp(24), AndroidUtilities.dp(24), true, null);
-        shakeHandDrawable = new RLottieDrawable(R.raw.hand_2, "" + R.raw.hand_2, AndroidUtilities.dp(15), AndroidUtilities.dp(15), true, null);
+        micDrawable = new TLottieDrawable(R.raw.voice_mini, "" + R.raw.voice_mini, AndroidUtilities.dp(24), AndroidUtilities.dp(24), true, null);
+        shakeHandDrawable = new TLottieDrawable(R.raw.hand_2, "" + R.raw.hand_2, AndroidUtilities.dp(15), AndroidUtilities.dp(15), true, null);
     }
 
     private Runnable updateRunnable = () -> {
@@ -101,7 +101,7 @@ public class GroupCallStatusIcon {
         updateIcon(true);
     };
 
-    public void setImageView(RLottieImageView iconView) {
+    public void setImageView(TLottieImageView iconView) {
         this.iconView = iconView;
         updateIcon(false);
     }

@@ -38,12 +38,12 @@ import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.AnimatedTextView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 
 public class NotificationPermissionDialog extends BottomSheet implements NotificationCenter.NotificationCenterDelegate {
 
     private CounterView counterView;
-    private RLottieImageView rLottieImageView;
+    private TLottieImageView tLottieImageView;
     private Utilities.Callback<Boolean> whenGranted;
 
     public NotificationPermissionDialog(Context context, boolean settings, Utilities.Callback<Boolean> whenGranted) {
@@ -54,18 +54,18 @@ public class NotificationPermissionDialog extends BottomSheet implements Notific
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         FrameLayout block = new FrameLayout(context);
-        rLottieImageView = new RLottieImageView(context);
-        rLottieImageView.setScaleType(ImageView.ScaleType.CENTER);
-        rLottieImageView.setAnimation(R.raw.silent_unmute, 46, 46);
-        rLottieImageView.playAnimation();
-        rLottieImageView.setBackground(Theme.createCircleDrawable(AndroidUtilities.dp(72), Theme.getColor(Theme.key_featuredStickers_addButton)));
-        block.addView(rLottieImageView, LayoutHelper.createFrame(72, 72, Gravity.CENTER));
+        tLottieImageView = new TLottieImageView(context);
+        tLottieImageView.setScaleType(ImageView.ScaleType.CENTER);
+        tLottieImageView.setAnimation(R.raw.silent_unmute, 46, 46);
+        tLottieImageView.playAnimation();
+        tLottieImageView.setBackground(Theme.createCircleDrawable(AndroidUtilities.dp(72), Theme.getColor(Theme.key_featuredStickers_addButton)));
+        block.addView(tLottieImageView, LayoutHelper.createFrame(72, 72, Gravity.CENTER));
         block.addView(counterView = new CounterView(context), LayoutHelper.createFrame(64, 32, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 29, 16, 0, 0));
         counterView.setCount(0);
         block.setOnClickListener(e -> {
-            if (!rLottieImageView.isPlaying()) {
-                rLottieImageView.setProgress(0);
-                rLottieImageView.playAnimation();
+            if (!tLottieImageView.isPlaying()) {
+                tLottieImageView.setProgress(0);
+                tLottieImageView.playAnimation();
             }
         });
         linearLayout.addView(block, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 110));
@@ -136,9 +136,9 @@ public class NotificationPermissionDialog extends BottomSheet implements Notific
             }
         }
         if (counterView.setCount(counter)) {
-            if (!rLottieImageView.isPlaying()) {
-                rLottieImageView.setProgress(0);
-                rLottieImageView.playAnimation();
+            if (!tLottieImageView.isPlaying()) {
+                tLottieImageView.setProgress(0);
+                tLottieImageView.playAnimation();
             }
         }
     }

@@ -37,7 +37,7 @@ import org.telegram.ui.Components.AnimatedEmojiSpan;
 import org.telegram.ui.Components.AnimatedFileDrawable;
 import org.telegram.ui.Components.Paint.Views.EditTextOutline;
 import org.telegram.ui.Components.Paint.Views.PaintTextOptionsView;
-import org.telegram.ui.Components.RLottieNative;
+import org.telegram.ui.Components.TLottieNative;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -373,7 +373,7 @@ public class WebmEncoder {
                     return;
                 }
                 entity.bitmap = Bitmap.createBitmap(entity.W, entity.H, Bitmap.Config.ARGB_8888);
-                entity.lottieNative = RLottieNative.createFromFile(entity.text, null, entity.W, entity.H, false, null, false, 0);
+                entity.lottieNative = TLottieNative.createFromFile(entity.text, null, entity.W, entity.H, false, null, false, 0);
                 entity.framesPerDraw = entity.lottieNative != null ? (float) entity.lottieNative.getFps() / fps : 0;
             } else if ((entity.subType & 4) != 0) {
                 entity.looped = false;

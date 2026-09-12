@@ -74,8 +74,8 @@ import org.telegram.ui.ActionBar.ThemeColors;
 import org.telegram.ui.ActionBar.ThemeDescription;
 import org.telegram.ui.Components.BottomPagesView;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.SimpleThemeDescription;
 import org.telegram.ui.Components.voip.CellFlickerDrawable;
@@ -105,7 +105,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
     private FrameLayout frameLayout2;
     private FrameLayout frameContainerView;
 
-    private RLottieDrawable darkThemeDrawable;
+    private TLottieDrawable darkThemeDrawable;
 
     private int lastPage = 0;
     private boolean justCreated = false;
@@ -156,7 +156,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
         ScrollView scrollView = new ScrollView(context);
         scrollView.setFillViewport(true);
 
-        RLottieImageView themeIconView = new RLottieImageView(context);
+        TLottieImageView themeIconView = new TLottieImageView(context);
         FrameLayout themeFrameLayout = new FrameLayout(context);
         themeFrameLayout.addView(themeIconView, LayoutHelper.createFrame(28, 28, Gravity.CENTER));
 
@@ -194,7 +194,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
         };
         scrollView.addView(frameContainerView, LayoutHelper.createScroll(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP));
 
-        darkThemeDrawable = new RLottieDrawable(R.raw.sun, String.valueOf(R.raw.sun), dp(28), dp(28), true, null);
+        darkThemeDrawable = new TLottieDrawable(R.raw.sun, String.valueOf(R.raw.sun), dp(28), dp(28), true, null);
         darkThemeDrawable.setPlayInDirectionOfCustomEndFrame(true);
         darkThemeDrawable.beginApplyLayerColors();
         darkThemeDrawable.commitApplyLayerColors();

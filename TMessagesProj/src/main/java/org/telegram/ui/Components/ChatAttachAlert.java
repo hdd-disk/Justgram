@@ -1209,10 +1209,10 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
             glassTabView = GlassTabView.createAttachBotTab(context, resourcesProvider);
             glassTabView.getBackupImageView().imageReceiver.setDelegate((imageReceiver1, set, thumb, memCache) -> {
                 Drawable drawable = imageReceiver1.getDrawable();
-                if (drawable instanceof RLottieDrawable) {
-                    ((RLottieDrawable) drawable).setCustomEndFrame(0);
-                    ((RLottieDrawable) drawable).stop();
-                    ((RLottieDrawable) drawable).setProgress(0, false);
+                if (drawable instanceof TLottieDrawable) {
+                    ((TLottieDrawable) drawable).setCustomEndFrame(0);
+                    ((TLottieDrawable) drawable).stop();
+                    ((TLottieDrawable) drawable).setProgress(0, false);
                 }
             });
             addView(glassTabView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
@@ -1228,7 +1228,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
             final boolean checked = attachMenuBot != null && -currentUser.id == selectedId;
             glassTabView.setSelected(checked, animate);
 
-            RLottieDrawable drawable = glassTabView.getBackupImageView().getImageReceiver().getLottieAnimation();
+            TLottieDrawable drawable = glassTabView.getBackupImageView().getImageReceiver().getLottieAnimation();
             if (animate) {
                 if (checked && drawable != null) {
                     drawable.setAutoRepeat(0);

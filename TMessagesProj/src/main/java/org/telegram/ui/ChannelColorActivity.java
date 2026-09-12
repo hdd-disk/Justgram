@@ -92,7 +92,7 @@ import org.telegram.ui.Components.Easings;
 import org.telegram.ui.Components.FlickerLoadingView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.Text;
 import org.telegram.ui.Components.ThemeSmallPreviewView;
@@ -308,7 +308,7 @@ public class ChannelColorActivity extends BaseFragment implements NotificationCe
     }
 
     private boolean isDark = Theme.isCurrentThemeDark();
-    private RLottieDrawable sunDrawable;
+    private TLottieDrawable sunDrawable;
     private ActionBarMenuItem dayNightItem;
 
     protected RecyclerListView listView;
@@ -361,7 +361,7 @@ public class ChannelColorActivity extends BaseFragment implements NotificationCe
             }
         });
 
-        sunDrawable = new RLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
+        sunDrawable = new TLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
         sunDrawable.setPlayInDirectionOfCustomEndFrame(true);
         if (!isDark) {
             sunDrawable.setCustomEndFrame(0);

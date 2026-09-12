@@ -17,7 +17,7 @@ import org.telegram.ui.Cells.ChatMessageCell;
 
 import java.io.File;
 
-public final class SlotsDrawable extends RLottieDiceDrawable {
+public final class SlotsDrawable extends TLottieDiceDrawable {
 
     private enum ReelValue {
         bar,
@@ -32,11 +32,11 @@ public final class SlotsDrawable extends RLottieDiceDrawable {
     private ReelValue right;
 
     private Bitmap backgroundBitmapTmp;
-    private final RLottieNative[] lottieNatives = new RLottieNative[5];
+    private final TLottieNative[] lottieNatives = new TLottieNative[5];
     private final int[] frameCounts = new int[5];
     private final int[] frameNums = new int[5];
 
-    private final RLottieNative[] secondLottieNatives = new RLottieNative[3];
+    private final TLottieNative[] secondLottieNatives = new TLottieNative[3];
     private final int[] secondFrameCounts = new int[3];
     private final int[] secondFrameNums = new int[3];
 
@@ -236,7 +236,7 @@ public final class SlotsDrawable extends RLottieDiceDrawable {
                         FileLoader.getInstance(account).loadFile(document, stickerSet, FileLoader.PRIORITY_NORMAL, 1);
                     });
                 } else {
-                    final RLottieNative lottieNative = RLottieNative.createFromRawJson(json, "dice", metaData, null);
+                    final TLottieNative lottieNative = TLottieNative.createFromRawJson(json, "dice", metaData, null);
                     lottieNatives[a] = lottieNative;
                     frameCounts[a] = metaData[0];
                 }
@@ -347,7 +347,7 @@ public final class SlotsDrawable extends RLottieDiceDrawable {
                         FileLoader.getInstance(account).loadFile(document, stickerSet, FileLoader.PRIORITY_NORMAL, 1);
                     });
                 } else {
-                    final RLottieNative lottieNative = RLottieNative.createFromRawJson(json, "dice", metaData, null);
+                    final TLottieNative lottieNative = TLottieNative.createFromRawJson(json, "dice", metaData, null);
                     if (a <= 2) {
                         secondLottieNatives[a] = lottieNative;
                         secondFrameCounts[a] = metaData[0];

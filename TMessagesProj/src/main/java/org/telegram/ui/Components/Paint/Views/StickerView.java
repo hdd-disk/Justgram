@@ -16,7 +16,7 @@ import org.telegram.ui.Components.AnimatedFileDrawable;
 import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RectOld;
 import org.telegram.ui.Components.Size;
 
@@ -79,7 +79,7 @@ public class StickerView extends EntityView {
         centerImage.setImage(ImageLocation.getForDocument(sticker), null, ImageLocation.getForDocument(thumb, sticker), null, "webp", parentObject, 1);
         centerImage.setDelegate((imageReceiver, set, isThumb, memCache) -> {
             if (set && !isThumb) {
-                RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+                TLottieDrawable drawable = imageReceiver.getLottieAnimation();
                 if (drawable != null) {
                     didSetAnimatedSticker(drawable);
                 }
@@ -136,7 +136,7 @@ public class StickerView extends EntityView {
         updateSelectionView();
     }
 
-    protected void didSetAnimatedSticker(RLottieDrawable drawable) {
+    protected void didSetAnimatedSticker(TLottieDrawable drawable) {
 
     }
 
@@ -155,9 +155,9 @@ public class StickerView extends EntityView {
     }
 
     public long getDuration() {
-        RLottieDrawable rLottieDrawable = centerImage.getLottieAnimation();
-        if (rLottieDrawable != null) {
-            return rLottieDrawable.getDuration();
+        TLottieDrawable tLottieDrawable = centerImage.getLottieAnimation();
+        if (tLottieDrawable != null) {
+            return tLottieDrawable.getDuration();
         }
         AnimatedFileDrawable animatedFileDrawable = centerImage.getAnimation();
         if (animatedFileDrawable != null) {

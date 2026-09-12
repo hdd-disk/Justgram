@@ -1857,9 +1857,9 @@ public class ReactionsContainerLayout extends FrameLayout implements Notificatio
                     return new ImageReceiver(this) {
                         @Override
                         protected boolean setImageBitmapByKey(Drawable drawable, String key, int type, boolean memCache, int guid) {
-                            if (drawable instanceof RLottieDrawable) {
-                                RLottieDrawable rLottieDrawable = (RLottieDrawable) drawable;
-                                rLottieDrawable.setCurrentFrame(0, false, true);
+                            if (drawable instanceof TLottieDrawable) {
+                                TLottieDrawable tLottieDrawable = (TLottieDrawable) drawable;
+                                tLottieDrawable.setCurrentFrame(0, false, true);
                             }
                             return super.setImageBitmapByKey(drawable, key, type, memCache, guid);
                         }
@@ -1928,10 +1928,10 @@ public class ReactionsContainerLayout extends FrameLayout implements Notificatio
                         protected boolean setImageBitmapByKey(Drawable drawable, String key, int type, boolean memCache, int guid) {
                             boolean rez = super.setImageBitmapByKey(drawable, key, type, memCache, guid);
                             if (rez) {
-                                if (drawable instanceof RLottieDrawable) {
-                                    RLottieDrawable rLottieDrawable = (RLottieDrawable) drawable;
-                                    rLottieDrawable.setCurrentFrame(0, false, true);
-                                    rLottieDrawable.stop();
+                                if (drawable instanceof TLottieDrawable) {
+                                    TLottieDrawable tLottieDrawable = (TLottieDrawable) drawable;
+                                    tLottieDrawable.setCurrentFrame(0, false, true);
+                                    tLottieDrawable.stop();
                                 }
                             }
                             return rez;
@@ -2091,7 +2091,7 @@ public class ReactionsContainerLayout extends FrameLayout implements Notificatio
 
         private void updateImage(ReactionsLayoutInBubble.VisibleReaction react) {
             if (react != null && react.isStar) {
-                enterImageView.getImageReceiver().setImageBitmap(new RLottieDrawable(R.raw.star_reaction, "star_reaction", dp(30), dp(30)));
+                enterImageView.getImageReceiver().setImageBitmap(new TLottieDrawable(R.raw.star_reaction, "star_reaction", dp(30), dp(30)));
                 loopImageView.getImageReceiver().setImageBitmap(getContext().getResources().getDrawable(R.drawable.star_reaction));
                 if (particles == null) {
                     particles = new StarsReactionsSheet.Particles(StarsReactionsSheet.Particles.TYPE_RADIAL, SharedConfig.getDevicePerformanceClass() == SharedConfig.PERFORMANCE_CLASS_HIGH ? 45 : 18);
@@ -2297,7 +2297,7 @@ public class ReactionsContainerLayout extends FrameLayout implements Notificatio
             if (currentReaction != null && currentReaction.isStar && particles != null && LiteMode.isEnabled(LiteMode.FLAG_ANIMATED_EMOJI_REACTIONS) && LiteMode.isEnabled(LiteMode.FLAG_PARTICLES)) {
                 final int sz = (int) (getHeight() * .7f);
                 AndroidUtilities.rectTmp.set(getWidth() / 2f - sz / 2f, getHeight() / 2f - sz / 2f, getWidth() / 2f + sz / 2f, getHeight() / 2f + sz / 2f);
-                RLottieDrawable lottieDrawable = enterImageView.getImageReceiver().getLottieAnimation();
+                TLottieDrawable lottieDrawable = enterImageView.getImageReceiver().getLottieAnimation();
                 final int startframe = 30, dur = 30;
                 particles.setVisible(lottieDrawable != null && lottieDrawable.getCurrentFrame() > startframe ? Utilities.clamp01((float) (lottieDrawable.getCurrentFrame() - startframe) / dur) : 0f);
                 particles.setBounds(AndroidUtilities.rectTmp);

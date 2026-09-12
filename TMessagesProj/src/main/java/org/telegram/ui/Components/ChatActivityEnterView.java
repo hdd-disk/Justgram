@@ -637,7 +637,7 @@ public class ChatActivityEnterView extends FrameLayout implements
     @Nullable
     protected VideoTimelineView videoTimelineView;
     @SuppressWarnings("FieldCanBeLocal")
-    private RLottieImageView recordDeleteImageView;
+    private TLottieImageView recordDeleteImageView;
     protected RecordedAudioPlayerView audioTimelineView;
     private long millisecondsRecorded;
     @Nullable
@@ -988,7 +988,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         private boolean isIncr;
         boolean attachedToWindow;
         boolean playing;
-        RLottieDrawable drawable;
+        TLottieDrawable drawable;
         private boolean enterAnimation;
 
         @Override
@@ -1012,7 +1012,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         public RecordDot(Context context) {
             super(context);
             int resId = R.raw.chat_audio_record_delete_2;
-            drawable = new RLottieDrawable(resId, "" + resId, dp(28), dp(28), false, null);
+            drawable = new TLottieDrawable(resId, "" + resId, dp(28), dp(28), false, null);
             drawable.setInvalidateOnProgressSet(true);
             updateColors();
         }
@@ -4107,7 +4107,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             messageEditTextContainer.addView(recordedAudioPanel, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, DEFAULT_HEIGHT, Gravity.BOTTOM));
         }
 
-        recordDeleteImageView = new RLottieImageView(getContext());
+        recordDeleteImageView = new TLottieImageView(getContext());
         recordDeleteImageView.setScaleType(ImageView.ScaleType.CENTER);
         recordDeleteImageView.setAnimation(R.raw.chat_audio_record_delete_2, 28, 28);
         recordDeleteImageView.getAnimatedDrawable().setInvalidateOnProgressSet(true);

@@ -98,7 +98,7 @@ import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.PermissionRequest;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.SeekBarView;
 import org.telegram.ui.Components.ShareAlert;
@@ -257,7 +257,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
     private final static int reset_settings = 4;
     private final static int day_night_switch = 5;
 
-    private RLottieDrawable sunDrawable;
+    private TLottieDrawable sunDrawable;
 
     private boolean highlightSensitiveRow;
     public ThemeActivity highlightSensitiveRow() {
@@ -944,7 +944,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
         if (currentType == THEME_TYPE_THEMES_BROWSER) {
             actionBar.setTitle(getString("BrowseThemes", R.string.BrowseThemes));
             ActionBarMenu menu = actionBar.createMenu();
-            sunDrawable = new RLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
+            sunDrawable = new TLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
             if (lastIsDarkTheme) {
                 sunDrawable.setCurrentFrame(sunDrawable.getFramesCount() - 1);
             } else {

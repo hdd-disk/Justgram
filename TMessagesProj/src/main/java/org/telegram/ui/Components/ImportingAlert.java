@@ -38,10 +38,10 @@ public class ImportingAlert extends BottomSheet implements NotificationCenter.No
     private TextView percentTextView;
     private LineProgressView lineProgressView;
     private ChatActivity parentFragment;
-    private RLottieImageView imageView;
+    private TLottieImageView imageView;
     private BottomSheetCell cell;
     private boolean completed;
-    private RLottieDrawable completedDrawable;
+    private TLottieDrawable completedDrawable;
     private TextView[] infoTextView = new TextView[2];
 
     private String stickersShortName;
@@ -50,7 +50,7 @@ public class ImportingAlert extends BottomSheet implements NotificationCenter.No
 
         private View background;
         private TextView textView;
-        private RLottieImageView imageView;
+        private TLottieImageView imageView;
         private LinearLayout linearLayout;
         private Theme.ResourcesProvider resourcesProvider;
 
@@ -66,7 +66,7 @@ public class ImportingAlert extends BottomSheet implements NotificationCenter.No
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             addView(linearLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setBackground(Theme.createCircleDrawable(AndroidUtilities.dp(20), getThemedColor(Theme.key_featuredStickers_buttonText)));
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_featuredStickers_addButton), PorterDuff.Mode.MULTIPLY));
@@ -136,10 +136,10 @@ public class ImportingAlert extends BottomSheet implements NotificationCenter.No
         textView.setEllipsize(TextUtils.TruncateAt.END);
         frameLayout.addView(textView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT, 17, 20, 17, 0));
 
-        completedDrawable = new RLottieDrawable(R.raw.import_finish, "" + R.raw.import_finish, AndroidUtilities.dp(120), AndroidUtilities.dp(120), false, null);
+        completedDrawable = new TLottieDrawable(R.raw.import_finish, "" + R.raw.import_finish, AndroidUtilities.dp(120), AndroidUtilities.dp(120), false, null);
         completedDrawable.setAllowDecodeSingleFrame(true);
 
-        imageView = new RLottieImageView(context);
+        imageView = new TLottieImageView(context);
         imageView.setAutoRepeat(true);
         imageView.setAnimation(R.raw.import_loop, 120, 120);
         imageView.playAnimation();

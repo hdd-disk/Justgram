@@ -523,7 +523,7 @@ public class PostsSearchContainer extends FrameLayout {
             emptyUnderButtonTextView.setText(getString(R.string.SearchPostsPremium));
         } else if (!TextUtils.isEmpty(lastQuery) && messages.isEmpty() && endReached) {
             if (emptyImageView.getImageReceiver().getImageDrawable() == null) {
-                emptyImageView.setImageDrawable(new RLottieDrawable(R.raw.utyan_empty, "utyan_empty", dp(130), dp(130)));
+                emptyImageView.setImageDrawable(new TLottieDrawable(R.raw.utyan_empty, "utyan_empty", dp(130), dp(130)));
             }
             emptyImageView.setVisibility(View.VISIBLE);
             emptyTitleView.setText(getString(R.string.SearchPostsNotFound));

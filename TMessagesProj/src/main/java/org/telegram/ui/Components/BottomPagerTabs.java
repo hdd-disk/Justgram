@@ -32,7 +32,7 @@ public class BottomPagerTabs extends View {
 
     protected class Tab {
         final int i;
-        final RLottieDrawable drawable;
+        final TLottieDrawable drawable;
         final Drawable ripple;
 
         final TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -57,7 +57,7 @@ public class BottomPagerTabs extends View {
             customEndFrameMid = endFrameMid;
             customEndFrameEnd = endFrameEnd;
 
-            drawable = new RLottieDrawable(resId, "" + resId, dp(29), dp(29));
+            drawable = new TLottieDrawable(resId, "" + resId, dp(29), dp(29));
             drawable.setMasterParent(BottomPagerTabs.this);
             drawable.setAllowDecodeSingleFrame(true);
             drawable.setPlayInDirectionOfCustomEndFrame(true);

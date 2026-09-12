@@ -116,7 +116,7 @@ import org.telegram.ui.Components.Premium.PremiumLockIconView;
 import org.telegram.ui.Components.Premium.PremiumPreviewBottomSheet;
 import org.telegram.ui.Components.Premium.StarParticlesView;
 import org.telegram.ui.Components.Premium.boosts.BoostRepository;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.Shaker;
@@ -2518,7 +2518,7 @@ public class GiftSheet extends BottomSheetWithRecyclerListView implements Notifi
                     @Override
                     public void didSetImage(ImageReceiver imageReceiver, boolean set, boolean thumb, boolean memCache) {
                         if (set) {
-                            RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+                            TLottieDrawable drawable = imageReceiver.getLottieAnimation();
                             if (drawable != null && !played[0]) {
                                 drawable.setCurrentFrame(0, false);
                                 AndroidUtilities.runOnUIThread(drawable::restart);

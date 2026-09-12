@@ -15,7 +15,7 @@ import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -171,7 +171,7 @@ public class BitmapsCache {
         taskCounter--;
         if (taskCounter <= 0) {
             taskCounter = 0;
-            RLottieDrawable.lottieCacheGenerateQueue.postRunnable(() -> {
+            TLottieDrawable.lottieCacheGenerateQueue.postRunnable(() -> {
                 if (sharedTools != null) {
                     sharedTools.release();
                     sharedTools = null;

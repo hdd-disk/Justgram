@@ -34,7 +34,7 @@ import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Components.ChatThemeBottomSheet;
 import org.telegram.ui.Components.FlickerLoadingView;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ThemeSmallPreviewView;
 
@@ -50,7 +50,7 @@ public class DefaultThemesPreviewCell extends LinearLayout {
     private LinearLayoutManager layoutManager = null;
     private final FlickerLoadingView progressView;
     private final ChatThemeBottomSheet.Adapter adapter;
-    RLottieDrawable darkThemeDrawable;
+    TLottieDrawable darkThemeDrawable;
     TextCell dayNightCell;
     TextCell browseThemesCell;
     private ValueAnimator navBarAnimator;
@@ -156,7 +156,7 @@ public class DefaultThemesPreviewCell extends LinearLayout {
         recyclerView.setAnimateEmptyView(true, RecyclerListView.EMPTY_VIEW_ANIMATION_TYPE_ALPHA);
 
         if (currentType == ThemeActivity.THEME_TYPE_BASIC) {
-            darkThemeDrawable = new RLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
+            darkThemeDrawable = new TLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
             darkThemeDrawable.setPlayInDirectionOfCustomEndFrame(true);
             darkThemeDrawable.beginApplyLayerColors();
             darkThemeDrawable.commitApplyLayerColors();

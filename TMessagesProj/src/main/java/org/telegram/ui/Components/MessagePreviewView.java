@@ -2341,7 +2341,7 @@ public class MessagePreviewView extends FrameLayout {
 
     public static class ToggleButton extends View {
         AnimatedTextView.AnimatedTextDrawable textDrawable;
-        RLottieToggleDrawable iconDrawable;
+        TLottieToggleDrawable iconDrawable;
 
         private boolean first = true;
         private boolean isState1;
@@ -2373,7 +2373,7 @@ public class MessagePreviewView extends FrameLayout {
             minWidth = (int) (dp(59 + 18) + Math.max(textDrawable.getPaint().measureText(text1), textDrawable.getPaint().measureText(text2)));
             textDrawable.setOverrideFullWidth(minWidth);
 
-            iconDrawable = new RLottieToggleDrawable(this, iconRes1, iconRes2);
+            iconDrawable = new TLottieToggleDrawable(this, iconRes1, iconRes2);
             iconDrawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_actionBarDefaultSubmenuItemIcon, resourcesProvider), PorterDuff.Mode.SRC_IN));
         }
 
@@ -2455,20 +2455,20 @@ public class MessagePreviewView extends FrameLayout {
         }
     }
 
-    private static  class RLottieToggleDrawable extends Drawable {
+    private static  class TLottieToggleDrawable extends Drawable {
 
-        private RLottieDrawable state1, state2;
-        private RLottieDrawable currentState;
+        private TLottieDrawable state1, state2;
+        private TLottieDrawable currentState;
 
         // R.raw.media_shrink, R.raw.media_enlarge
-        public RLottieToggleDrawable(View view, int state1Res, int state2Res) {
-            state1 = new RLottieDrawable(state1Res, "" + state1Res, dp(24), dp(24));
+        public TLottieToggleDrawable(View view, int state1Res, int state2Res) {
+            state1 = new TLottieDrawable(state1Res, "" + state1Res, dp(24), dp(24));
             state1.setMasterParent(view);
             state1.setAllowDecodeSingleFrame(true);
             state1.setPlayInDirectionOfCustomEndFrame(true);
             state1.setAutoRepeat(0);
 
-            state2 = new RLottieDrawable(state2Res, "" + state2Res, dp(24), dp(24));
+            state2 = new TLottieDrawable(state2Res, "" + state2Res, dp(24), dp(24));
             state2.setMasterParent(view);
             state2.setAllowDecodeSingleFrame(true);
             state2.setPlayInDirectionOfCustomEndFrame(true);

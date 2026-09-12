@@ -104,8 +104,8 @@ public class ChatThemeBottomSheet extends BottomSheet implements NotificationCen
     private final LinearLayoutManager layoutManager;
     private final FlickerLoadingView progressView;
     private final TextView titleView;
-    private final RLottieDrawable darkThemeDrawable;
-    private final RLottieImageView darkThemeView;
+    private final TLottieDrawable darkThemeDrawable;
+    private final TLottieImageView darkThemeView;
     private final LinearSmoothScroller scroller;
     private final View applyButton;
     private AnimatedTextView applyTextView;
@@ -180,14 +180,14 @@ public class ChatThemeBottomSheet extends BottomSheet implements NotificationCen
 
         int drawableColor = getThemedColor(Theme.key_featuredStickers_addButton);
         int drawableSize = dp(28);
-        darkThemeDrawable = new RLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, drawableSize, drawableSize, false, null);
+        darkThemeDrawable = new TLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, drawableSize, drawableSize, false, null);
         forceDark = !Theme.getActiveTheme().isDark();
         setForceDark(Theme.getActiveTheme().isDark(), false);
         darkThemeDrawable.setAllowDecodeSingleFrame(true);
         darkThemeDrawable.setPlayInDirectionOfCustomEndFrame(true);
         darkThemeDrawable.setColorFilter(new PorterDuffColorFilter(drawableColor, PorterDuff.Mode.MULTIPLY));
 
-        darkThemeView = new RLottieImageView(getContext()) {
+        darkThemeView = new TLottieImageView(getContext()) {
             @Override
             public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(info);

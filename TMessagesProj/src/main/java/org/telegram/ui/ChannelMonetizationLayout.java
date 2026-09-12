@@ -83,7 +83,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LinkSpanDrawable;
 import org.telegram.ui.Components.OutlineTextContainerView;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.UItem;
@@ -494,7 +494,7 @@ public class ChannelMonetizationLayout extends SizeNotifierFrameLayout implement
         progress.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundGray, resourcesProvider));
         progress.addView(progressLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
 
-        RLottieImageView imageView = new RLottieImageView(context);
+        TLottieImageView imageView = new TLottieImageView(context);
         imageView.setAutoRepeat(true);
         imageView.setAnimation(R.raw.statistic_preload, 120, 120);
         imageView.playAnimation();
@@ -1546,7 +1546,7 @@ public class ChannelMonetizationLayout extends SizeNotifierFrameLayout implement
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(dp(8), 0, dp(8), 0);
 
-        RLottieImageView imageView = new RLottieImageView(context);
+        TLottieImageView imageView = new TLottieImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setImageResource(R.drawable.large_monetize);
         imageView.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));

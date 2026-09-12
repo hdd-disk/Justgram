@@ -50,8 +50,8 @@ import org.telegram.ui.Components.LetterDrawable;
 import org.telegram.ui.Components.LineProgressView;
 import org.telegram.ui.Components.MessageBackgroundDrawable;
 import org.telegram.ui.Components.NumberTextView;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.RadioButton;
 import org.telegram.ui.Components.RecyclerListView;
@@ -150,7 +150,7 @@ public class ThemeDescription {
         }
     }
 
-    public ThemeDescription(View view, int flags, Class[] classes, RLottieDrawable[] drawables, String layerName, int key) {
+    public ThemeDescription(View view, int flags, Class[] classes, TLottieDrawable[] drawables, String layerName, int key) {
         currentKey = key;
         lottieLayerName = layerName;
         drawablesToUpdate = drawables;
@@ -244,9 +244,9 @@ public class ThemeDescription {
                     ((BackDrawable) drawablesToUpdate[a]).setColor(color);
                 } else if (drawablesToUpdate[a] instanceof ScamDrawable) {
                     ((ScamDrawable) drawablesToUpdate[a]).setColor(color);
-                } else if (drawablesToUpdate[a] instanceof RLottieDrawable) {
+                } else if (drawablesToUpdate[a] instanceof TLottieDrawable) {
                     if (lottieLayerName != null) {
-                        ((RLottieDrawable) drawablesToUpdate[a]).setLayerColor(lottieLayerName, color);
+                        ((TLottieDrawable) drawablesToUpdate[a]).setLayerColor(lottieLayerName, color);
                     }
                 } else if (drawablesToUpdate[a] instanceof CombinedDrawable) {
                     if ((changeFlags & FLAG_BACKGROUNDFILTER) != 0) {
@@ -574,8 +574,8 @@ public class ThemeDescription {
                                 if (object instanceof View) {
                                     ((View) object).invalidate();
                                 }
-                                if (lottieLayerName != null && object instanceof RLottieImageView) {
-                                    ((RLottieImageView) object).setLayerColor(lottieLayerName, color);
+                                if (lottieLayerName != null && object instanceof TLottieImageView) {
+                                    ((TLottieImageView) object).setLayerColor(lottieLayerName, color);
                                 }
                                 if ((changeFlags & FLAG_USEBACKGROUNDDRAWABLE) != 0 && object instanceof View) {
                                     object = ((View) object).getBackground();

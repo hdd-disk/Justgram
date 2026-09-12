@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.justgram.messenger.JustgramConfig;
 
-public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
+public class ChatActivityEnterViewAnimatedIconView extends TLottieImageView {
     private State currentState;
     private TransitState animatingState;
     private final int sizeDp;
@@ -22,11 +22,11 @@ public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
         return JustgramConfig.iOSMessageInputField;
     }
 
-    private final Map<TransitState, RLottieDrawable> stateMap = new HashMap<TransitState, RLottieDrawable>() {
+    private final Map<TransitState, TLottieDrawable> stateMap = new HashMap<TransitState, TLottieDrawable>() {
         @Nullable
         @Override
-        public RLottieDrawable get(@Nullable Object key) {
-            RLottieDrawable obj = super.get(key);
+        public TLottieDrawable get(@Nullable Object key) {
+            TLottieDrawable obj = super.get(key);
             if (obj == null) {
                 TransitState state = (TransitState) key;
                 int res = state.resource;
@@ -37,9 +37,9 @@ public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
                         res = R.raw.voice_and_video_cg_2;
                     }
                 }
-                RLottieDrawable rLottieDrawable = new RLottieDrawable(res, String.valueOf(res), AndroidUtilities.dp(sizeDp), AndroidUtilities.dp(sizeDp));
-                put(state, rLottieDrawable);
-                return rLottieDrawable;
+                TLottieDrawable tLottieDrawable = new TLottieDrawable(res, String.valueOf(res), AndroidUtilities.dp(sizeDp), AndroidUtilities.dp(sizeDp));
+                put(state, tLottieDrawable);
+                return tLottieDrawable;
             }
             return obj;
         }
@@ -61,7 +61,7 @@ public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
         State fromState = currentState;
         currentState = state;
         if (!animate || fromState == null || getState(fromState, currentState) == null) {
-            RLottieDrawable drawable = stateMap.get(getAnyState(currentState));
+            TLottieDrawable drawable = stateMap.get(getAnyState(currentState));
             drawable.stop();
 
             drawable.setProgress(state == State.VOICE && !iosInput() ? 0.5f : 0, false);
@@ -73,7 +73,7 @@ public class ChatActivityEnterViewAnimatedIconView extends RLottieImageView {
             }
 
             animatingState = transitState;
-            RLottieDrawable drawable = stateMap.get(transitState);
+            TLottieDrawable drawable = stateMap.get(transitState);
             drawable.stop();
             if (transitState == TransitState.VIDEO_TO_VOICE && !iosInput()) {
                 drawable.setCustomEndFrame(30);

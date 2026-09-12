@@ -279,8 +279,8 @@ import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
 import org.telegram.ui.Components.ProfileGalleryView;
 import org.telegram.ui.Components.ProfileGooeyView;
 import org.telegram.ui.Components.ProfileMusicView;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.RecyclerListView;
@@ -377,7 +377,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private String nameTextViewRightDrawable2ContentDescription = null;
     private SimpleTextView[] onlineTextView = new SimpleTextView[4];
     private AudioPlayerAlert.ClippingTextViewSwitcher mediaCounterTextView;
-    private RLottieImageView writeButton;
+    private TLottieImageView writeButton;
     private AnimatorSet writeButtonAnimation;
     private Drawable lockIconDrawable;
     private final Drawable[] verifiedDrawable = new Drawable[2];
@@ -400,8 +400,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
     private View blurredView;
 
-    private RLottieDrawable cameraDrawable;
-    private RLottieDrawable cellCameraDrawable;
+    private TLottieDrawable cameraDrawable;
+    private TLottieDrawable cellCameraDrawable;
 
     private HintView fwdRestrictedHint;
 //    private ProfileMetaballView metaball;
@@ -5858,7 +5858,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         avatarContainer2.addView(giftsView, 0, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         updateProfileData(true);
 
-        writeButton = new RLottieImageView(context);
+        writeButton = new TLottieImageView(context);
 
         if (actionsView != null) {
             writeButton.setVisibility(View.GONE);
@@ -5866,8 +5866,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         writeButtonSetBackground();
         if (userId != 0) {
             if (imageUpdater != null) {
-                cameraDrawable = new RLottieDrawable(R.raw.camera_outline, String.valueOf(R.raw.camera_outline), dp(56), dp(56), false, null);
-                cellCameraDrawable = new RLottieDrawable(R.raw.camera_outline, R.raw.camera_outline + "_cell", dp(42), dp(42), false, null);
+                cameraDrawable = new TLottieDrawable(R.raw.camera_outline, String.valueOf(R.raw.camera_outline), dp(56), dp(56), false, null);
+                cellCameraDrawable = new TLottieDrawable(R.raw.camera_outline, R.raw.camera_outline + "_cell", dp(42), dp(42), false, null);
 
                 if (actionsView != null) {
                     actionsView.beginApplyingActions();

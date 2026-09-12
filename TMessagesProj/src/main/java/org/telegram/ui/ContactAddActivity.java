@@ -65,7 +65,7 @@ import org.telegram.ui.Components.BackupImageView;
 import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.ImageUpdater;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
@@ -344,7 +344,7 @@ public class ContactAddActivity extends BaseFragment implements NotificationCent
             suggestPhoto.setTextAndIcon(LocaleController.formatString(R.string.SuggestUserPhoto, user.first_name), R.drawable.msg_addphoto, true);
             suggestPhoto.setBackground(Theme.getSelectorDrawable(true, resourcesProvider));
             suggestPhoto.setColors(Theme.key_windowBackgroundWhiteBlueIcon, Theme.key_windowBackgroundWhiteBlueButton);
-            RLottieDrawable suggestDrawable = new RLottieDrawable(R.raw.photo_suggest_icon, "" + R.raw.photo_suggest_icon, AndroidUtilities.dp(50), AndroidUtilities.dp(50), false, null);
+            TLottieDrawable suggestDrawable = new TLottieDrawable(R.raw.photo_suggest_icon, "" + R.raw.photo_suggest_icon, AndroidUtilities.dp(50), AndroidUtilities.dp(50), false, null);
             suggestPhoto.imageView.setTranslationX(-AndroidUtilities.dp(8));
             suggestPhoto.imageView.setAnimation(suggestDrawable);
             suggestPhoto.setOnClickListener(v -> {
@@ -371,7 +371,7 @@ public class ContactAddActivity extends BaseFragment implements NotificationCent
             setAvatarCell.setTextAndIcon(LocaleController.formatString(R.string.UserSetPhoto, user.first_name), R.drawable.msg_addphoto, false);
             setAvatarCell.setBackground(Theme.getSelectorDrawable(true, resourcesProvider));
             setAvatarCell.setColors(Theme.key_windowBackgroundWhiteBlueIcon, Theme.key_windowBackgroundWhiteBlueButton);
-            RLottieDrawable cameraDrawable = new RLottieDrawable(R.raw.camera_outline, "" + R.raw.camera_outline, AndroidUtilities.dp(50), AndroidUtilities.dp(50), false, null);
+            TLottieDrawable cameraDrawable = new TLottieDrawable(R.raw.camera_outline, "" + R.raw.camera_outline, AndroidUtilities.dp(50), AndroidUtilities.dp(50), false, null);
             setAvatarCell.imageView.setTranslationX(-AndroidUtilities.dp(8));
             setAvatarCell.imageView.setAnimation(cameraDrawable);
             setAvatarCell.setOnClickListener(v -> {

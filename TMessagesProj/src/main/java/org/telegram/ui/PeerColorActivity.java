@@ -108,7 +108,7 @@ import org.telegram.ui.Components.FlickerLoadingView;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumGradient;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.SimpleThemeDescription;
@@ -786,7 +786,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
                 setBackgroundColor(getThemedColor(Theme.key_windowBackgroundWhite));
 
                 imageView = new BackupImageView(getContext());
-                imageView.setImageDrawable(new RLottieDrawable(R.raw.utyan_draw, "utyan_draw", dp(120), dp(120)));
+                imageView.setImageDrawable(new TLottieDrawable(R.raw.utyan_draw, "utyan_draw", dp(120), dp(120)));
                 addView(imageView, LayoutHelper.createLinear(120, 120, Gravity.CENTER_HORIZONTAL, 0, 6, 0, 0));
 
                 title = TextHelper.makeLinkTextView(getContext(), 14, Theme.key_windowBackgroundWhiteGrayText, false, resourceProvider);
@@ -1630,7 +1630,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
         });
         actionBarContainer.addView(backButton, LayoutHelper.createFrame(54, 54, Gravity.LEFT | Gravity.CENTER_VERTICAL));
 
-        sunDrawable = new RLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
+        sunDrawable = new TLottieDrawable(R.raw.sun, "" + R.raw.sun, dp(28), dp(28), true, null);
         sunDrawable.setPlayInDirectionOfCustomEndFrame(true);
         if (!isDark) {
             sunDrawable.setCustomEndFrame(0);
@@ -1665,7 +1665,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
     }
 
     private boolean isDark = Theme.isCurrentThemeDark();
-    private RLottieDrawable sunDrawable;
+    private TLottieDrawable sunDrawable;
 
     public boolean hasUnsavedChanged() {
         return namePage.hasUnsavedChanged() || profilePage.hasUnsavedChanged();

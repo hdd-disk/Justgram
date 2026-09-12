@@ -268,7 +268,7 @@ public class CreateGroupCallBottomSheet extends BottomSheetWithRecyclerListView 
             super(context);
             setOrientation(LinearLayout.VERTICAL);
 
-            RLottieImageView imageView = new RLottieImageView(context);
+            TLottieImageView imageView = new TLottieImageView(context);
             imageView.setAutoRepeat(true);
             imageView.setAnimation(R.raw.utyan_schedule, 112, 112);
             imageView.playAnimation();

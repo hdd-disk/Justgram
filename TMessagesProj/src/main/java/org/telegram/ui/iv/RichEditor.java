@@ -92,8 +92,8 @@ import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.EmojiView;
 import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable;
@@ -339,7 +339,7 @@ public class RichEditor extends BaseFragment implements NotificationCenter.Notif
     private Button mathButton;
     private Button quoteButton;
     private FrameLayout trashPanel;
-    private RLottieImageView trashPanelIcon;
+    private TLottieImageView trashPanelIcon;
     private ItemOptions currentMenuVisible;
 
     private ChatActivityEnterView.SendButton sendButton;
@@ -851,9 +851,9 @@ public class RichEditor extends BaseFragment implements NotificationCenter.Notif
         trashPanel.setPadding(dp(8), dp(8), dp(8), dp(8));
         bottomContainer.addView(trashPanel, LayoutHelper.createFrame(8 + 64 + 8, 8 + 44 + 8, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
 
-        trashPanelIcon = new RLottieImageView(context);
+        trashPanelIcon = new TLottieImageView(context);
         trashPanelIcon.setAnimation(R.raw.group_pip_delete_icon, dp(16), dp(16));
-        final RLottieDrawable trashDrawable = trashPanelIcon.getAnimatedDrawable();
+        final TLottieDrawable trashDrawable = trashPanelIcon.getAnimatedDrawable();
         if (trashDrawable != null) {
             trashDrawable.setPlayInDirectionOfCustomEndFrame(true);
             trashDrawable.setAutoRepeat(0);
@@ -1058,7 +1058,7 @@ public class RichEditor extends BaseFragment implements NotificationCenter.Notif
             trashPanelIcon.setScaleY(scale);
         }
         trashPanelIcon.setColorFilter(new PorterDuffColorFilter(getThemedColor(hovered ? Theme.key_text_RedBold : Theme.key_windowBackgroundWhiteBlackText), PorterDuff.Mode.SRC_IN));
-        final RLottieDrawable d = trashPanelIcon.getAnimatedDrawable();
+        final TLottieDrawable d = trashPanelIcon.getAnimatedDrawable();
         if (d != null) {
             if (hovered) {
                 if (d.getCurrentFrame() > 34) d.setCurrentFrame(0, false);

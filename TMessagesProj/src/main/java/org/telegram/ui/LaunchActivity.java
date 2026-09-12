@@ -199,8 +199,8 @@ import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.BoostPagerBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.GiftInfoBottomSheet;
 import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.SearchTagsList;
 import org.telegram.ui.Components.ShareTopView;
 import org.telegram.ui.Components.SharingLocationsAlert;
@@ -7370,7 +7370,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 try {
                     int[] pos = (int[]) args[2];
                     boolean toDark = (Boolean) args[4];
-                    final RLottieImageView darkThemeView = (RLottieImageView) args[5];
+                    final TLottieImageView darkThemeView = (TLottieImageView) args[5];
                     final boolean colorNotDark = args.length > 8 ? (boolean) args[8] : false;
                     int w = drawerLayoutContainer.getMeasuredWidth();
                     int h = drawerLayoutContainer.getMeasuredHeight();
@@ -7401,7 +7401,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     }
                     frameLayout.removeView(themeSwitchImageView);
                     themeSwitchImageView = new ImageView(this);
-                    final RLottieDrawable drawable = darkThemeView != null ? darkThemeView.getAnimatedDrawable() : null;
+                    final TLottieDrawable drawable = darkThemeView != null ? darkThemeView.getAnimatedDrawable() : null;
                     themeSwitchSunView.setImageDrawable(drawable);
                     if (toDark) {
                         frameLayout.addView(themeSwitchImageView, 0, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));

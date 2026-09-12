@@ -21,11 +21,11 @@ import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Paint.Brush;
 import org.telegram.ui.Components.Paint.PersistColorPalette;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 
 public class PaintToolsView extends LinearLayout {
-    private RLottieImageView[] buttons = new RLottieImageView[Brush.BRUSHES_LIST.size() + 2];
+    private TLottieImageView[] buttons = new TLottieImageView[Brush.BRUSHES_LIST.size() + 2];
     private Delegate delegate;
     private Paint selectorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final int brushesCount;
@@ -102,12 +102,12 @@ public class PaintToolsView extends LinearLayout {
             return;
         }
 
-        RLottieImageView button = buttons[index];
+        TLottieImageView button = buttons[index];
         if (button != null) {
             Drawable dr = button.getDrawable();
-            if (dr instanceof RLottieDrawable) {
-                ((RLottieDrawable) dr).setCurrentFrame(0);
-                ((RLottieDrawable) dr).start();
+            if (dr instanceof TLottieDrawable) {
+                ((TLottieDrawable) dr).setCurrentFrame(0);
+                ((TLottieDrawable) dr).start();
             }
         }
 
@@ -201,8 +201,8 @@ public class PaintToolsView extends LinearLayout {
         this.delegate = delegate;
     }
 
-    private RLottieImageView createView(boolean first, boolean last) {
-        RLottieImageView imageView = new RLottieImageView(getContext());
+    private TLottieImageView createView(boolean first, boolean last) {
+        TLottieImageView imageView = new TLottieImageView(getContext());
         imageView.setPadding(AndroidUtilities.dp(first ? 0 : 8), AndroidUtilities.dp(8), AndroidUtilities.dp(last ? 0 : 8), AndroidUtilities.dp(8));
         imageView.setLayoutParams(LayoutHelper.createLinear(0, 24 + 16, 1f));
         imageView.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));

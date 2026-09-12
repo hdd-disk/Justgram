@@ -150,8 +150,8 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
     private ItemTouchHelper itemTouchHelper;
     private CoverContainer coverContainer;
     private ClippingTextViewSwitcher titleTextView;
-    private RLottieImageView prevButton;
-    private RLottieImageView nextButton;
+    private TLottieImageView prevButton;
+    private TLottieImageView nextButton;
     private ClippingTextViewSwitcher authorTextView;
     private ActionBarMenuItem optionsButton;
     private ChooseQualityLayout.QualityIcon optionsIcon;
@@ -815,7 +815,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         final int iconColor = getThemedColor(Theme.key_player_button);
         float touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
-        buttons[1] = prevButton = new RLottieImageView(context) {
+        buttons[1] = prevButton = new TLottieImageView(context) {
             float startX;
             float startY;
 
@@ -975,7 +975,7 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
             }
         });
 
-        buttons[3] = nextButton = new RLottieImageView(context) {
+        buttons[3] = nextButton = new TLottieImageView(context) {
 
             float startX;
             float startY;
@@ -2700,17 +2700,17 @@ public class AudioPlayerAlert extends BottomSheet implements NotificationCenter.
         themeDescriptions.add(new ThemeDescription(optionsButton, 0, null, null, null, delegate, Theme.key_actionBarDefaultSubmenuItem));
         themeDescriptions.add(new ThemeDescription(optionsButton, 0, null, null, null, delegate, Theme.key_actionBarDefaultSubmenuBackground));
 
-        themeDescriptions.add(new ThemeDescription(prevButton, 0, null, new RLottieDrawable[]{prevButton.getAnimatedDrawable()}, "Triangle 3", Theme.key_player_button));
-        themeDescriptions.add(new ThemeDescription(prevButton, 0, null, new RLottieDrawable[]{prevButton.getAnimatedDrawable()}, "Triangle 4", Theme.key_player_button));
-        themeDescriptions.add(new ThemeDescription(prevButton, 0, null, new RLottieDrawable[]{prevButton.getAnimatedDrawable()}, "Rectangle 4", Theme.key_player_button));
+        themeDescriptions.add(new ThemeDescription(prevButton, 0, null, new TLottieDrawable[]{prevButton.getAnimatedDrawable()}, "Triangle 3", Theme.key_player_button));
+        themeDescriptions.add(new ThemeDescription(prevButton, 0, null, new TLottieDrawable[]{prevButton.getAnimatedDrawable()}, "Triangle 4", Theme.key_player_button));
+        themeDescriptions.add(new ThemeDescription(prevButton, 0, null, new TLottieDrawable[]{prevButton.getAnimatedDrawable()}, "Rectangle 4", Theme.key_player_button));
         themeDescriptions.add(new ThemeDescription(prevButton, ThemeDescription.FLAG_IMAGECOLOR | ThemeDescription.FLAG_USEBACKGROUNDDRAWABLE, null, null, null, null, Theme.key_listSelector));
 
         themeDescriptions.add(new ThemeDescription(playButton, ThemeDescription.FLAG_IMAGECOLOR, null, null, null, null, Theme.key_player_button));
         themeDescriptions.add(new ThemeDescription(playButton, ThemeDescription.FLAG_IMAGECOLOR | ThemeDescription.FLAG_USEBACKGROUNDDRAWABLE, null, null, null, null, Theme.key_listSelector));
 
-        themeDescriptions.add(new ThemeDescription(nextButton, 0, null, new RLottieDrawable[]{nextButton.getAnimatedDrawable()}, "Triangle 3", Theme.key_player_button));
-        themeDescriptions.add(new ThemeDescription(nextButton, 0, null, new RLottieDrawable[]{nextButton.getAnimatedDrawable()}, "Triangle 4", Theme.key_player_button));
-        themeDescriptions.add(new ThemeDescription(nextButton, 0, null, new RLottieDrawable[]{nextButton.getAnimatedDrawable()}, "Rectangle 4", Theme.key_player_button));
+        themeDescriptions.add(new ThemeDescription(nextButton, 0, null, new TLottieDrawable[]{nextButton.getAnimatedDrawable()}, "Triangle 3", Theme.key_player_button));
+        themeDescriptions.add(new ThemeDescription(nextButton, 0, null, new TLottieDrawable[]{nextButton.getAnimatedDrawable()}, "Triangle 4", Theme.key_player_button));
+        themeDescriptions.add(new ThemeDescription(nextButton, 0, null, new TLottieDrawable[]{nextButton.getAnimatedDrawable()}, "Rectangle 4", Theme.key_player_button));
         themeDescriptions.add(new ThemeDescription(nextButton, ThemeDescription.FLAG_IMAGECOLOR | ThemeDescription.FLAG_USEBACKGROUNDDRAWABLE, null, null, null, null, Theme.key_listSelector));
 
         themeDescriptions.add(new ThemeDescription(playerLayout, ThemeDescription.FLAG_BACKGROUND, null, null, null, null, Theme.key_player_background));

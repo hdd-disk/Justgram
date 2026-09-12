@@ -2046,7 +2046,7 @@ public class ChatActivity extends BaseFragment implements
                             LocaleController.getString(R.string.SwipeToReplyHint),
                             LocaleController.getString(R.string.SwipeToReplyHintMessage)
                         );
-                    RLottieImageView imageView = ((Bulletin.TwoLineLottieLayout) bulletin.getLayout()).imageView;
+                    TLottieImageView imageView = ((Bulletin.TwoLineLottieLayout) bulletin.getLayout()).imageView;
                     imageView.setScaleX(1.8f);
                     imageView.setScaleY(1.8f);
                     bulletin.show(true);
@@ -4445,7 +4445,7 @@ public class ChatActivity extends BaseFragment implements
                 headerItem.lazilyAddSubItem(search, R.drawable.msg_search, LocaleController.getString(R.string.Search));
             }
             if (ChatObject.isBoostSupported(currentChat) && (getUserConfig().isPremium() || ChatObject.isBoosted(chatInfo) || ChatObject.hasAdminRights(currentChat))) {
-                RLottieDrawable drawable = new RLottieDrawable(R.raw.boosts, "" + R.raw.boosts, dp(24), dp(24));
+                TLottieDrawable drawable = new TLottieDrawable(R.raw.boosts, "" + R.raw.boosts, dp(24), dp(24));
                 headerItem.lazilyAddSubItem(boost_group, drawable, LocaleController.getString(ChatObject.isChannelAndNotMegaGroup(currentChat) ? R.string.BoostingBoostChannelMenu : R.string.BoostingBoostGroupMenu));
             }
             translateItem = headerItem.lazilyAddSubItem(translate, R.drawable.msg_translate, LocaleController.getString(R.string.TranslateMessage));
@@ -33152,7 +33152,7 @@ public class ChatActivity extends BaseFragment implements
         boolean isEmoji;
         if ((isEmoji = message.isAnimatedEmoji()) || MessageObject.isAnimatedStickerDocument(document, currentEncryptedChat == null || message.isOut()) && !SharedConfig.loopStickers()) {
             ImageReceiver imageReceiver = cell.getPhotoImage();
-            RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+            TLottieDrawable drawable = imageReceiver.getLottieAnimation();
             if (drawable != null) {
                 if (isEmoji) {
                     String emoji = message.getStickerEmoji();
@@ -33198,7 +33198,7 @@ public class ChatActivity extends BaseFragment implements
         }
         if ((message.isAnimatedEmoji()) || MessageObject.isAnimatedStickerDocument(document, currentEncryptedChat == null || message.isOut()) && !SharedConfig.loopStickers()) {
             ImageReceiver imageReceiver = cell.getPhotoImage();
-            RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+            TLottieDrawable drawable = imageReceiver.getLottieAnimation();
             if (drawable != null) {
                 drawable.restart();
             }

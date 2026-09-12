@@ -74,7 +74,7 @@ public class UndoView extends FrameLayout {
     private TextView subinfoTextView;
     private TextView undoTextView;
     private ImageView undoImageView;
-    private RLottieImageView leftImageView;
+    private TLottieImageView leftImageView;
     private BackupImageView avatarImageView;
     private LinearLayout undoButton;
     private int undoViewHeight;
@@ -270,7 +270,7 @@ public class UndoView extends FrameLayout {
         subinfoTextView.setMovementMethod(new AndroidUtilities.LinkMovementMethodMy());
         addView(subinfoTextView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT, 58, 27, 8, 0));
 
-        leftImageView = new RLottieImageView(context);
+        leftImageView = new TLottieImageView(context);
         leftImageView.setScaleType(ImageView.ScaleType.CENTER);
         leftImageView.setLayerColor("info1", getThemedColor(Theme.key_undo_background) | 0xff000000);
         leftImageView.setLayerColor("info2", getThemedColor(Theme.key_undo_background) | 0xff000000);
@@ -917,7 +917,7 @@ public class UndoView extends FrameLayout {
                     leftImageView.setImageResource(icon);
                 } else {
                     leftImageView.setAnimation(icon, size, size);
-                    RLottieDrawable drawable = leftImageView.getAnimatedDrawable();
+                    TLottieDrawable drawable = leftImageView.getAnimatedDrawable();
                     drawable.setPlayInDirectionOfCustomEndFrame(reversedPlay);
                     drawable.setCustomEndFrame(reversedPlay ? reversedPlayEndFrame : drawable.getFramesCount());
                 }

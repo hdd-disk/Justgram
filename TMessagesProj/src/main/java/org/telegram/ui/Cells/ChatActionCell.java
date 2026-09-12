@@ -122,7 +122,7 @@ import org.telegram.ui.Components.ImageUpdater;
 import org.telegram.ui.Components.LoadingDrawable;
 import org.telegram.ui.Components.MediaActionDrawable;
 import org.telegram.ui.Components.Premium.StarParticlesView;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RadialProgress2;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
@@ -452,7 +452,7 @@ public class ChatActionCell extends BaseCell implements DownloadController.FileD
     private RectF backgroundRect;
     private ImageReceiver.ImageReceiverDelegate giftStickerDelegate = (imageReceiver1, set, thumb, memCache) -> {
         if (set) {
-            RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+            TLottieDrawable drawable = imageReceiver.getLottieAnimation();
             if (drawable != null) {
                 MessageObject messageObject = currentMessageObject;
                 if (messageObject != null && !messageObject.playedGiftAnimation) {
@@ -782,7 +782,7 @@ public class ChatActionCell extends BaseCell implements DownloadController.FileD
                 forceWasUnread = messageObject.wasUnread;
                 imageReceiver.setAllowStartLottieAnimation(false);
                 imageReceiver.setDelegate(giftStickerDelegate);
-                imageReceiver.setImageBitmap(new RLottieDrawable(R.raw.premium_gift, messageObject.getId() + "_" + R.raw.premium_gift, dp(160), dp(160)));
+                imageReceiver.setImageBitmap(new TLottieDrawable(R.raw.premium_gift, messageObject.getId() + "_" + R.raw.premium_gift, dp(160), dp(160)));
             } else {
                 TLRPC.TL_messages_stickerSet set = null;
                 TLRPC.Document document = null;

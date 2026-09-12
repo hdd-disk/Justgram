@@ -46,7 +46,7 @@ import org.telegram.ui.Components.AnimatedTextView;
 import org.telegram.ui.Components.AvatarDrawable;
 import org.telegram.ui.Components.ColoredImageSpan;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.Text;
 import org.telegram.ui.Components.blur3.StrokeDrawable;
@@ -69,7 +69,7 @@ public class PaidReactionButton extends View {
 
         private Runnable hideCounterRunnable;
 
-        private final ArrayList<RLottieDrawable> effects = new ArrayList<>();
+        private final ArrayList<TLottieDrawable> effects = new ArrayList<>();
         private final int[] effectAssets = new int[] {
                 R.raw.star_reaction_effect1,
                 R.raw.star_reaction_effect2,
@@ -155,7 +155,7 @@ public class PaidReactionButton extends View {
             final float s = AndroidUtilities.lerp(1, 1.8f, focus);
             final int effectSize = (int) (dp(90) * s);
             for (int i = 0; i < effects.size(); ++i) {
-                RLottieDrawable drawable = effects.get(i);
+                TLottieDrawable drawable = effects.get(i);
                 if (drawable.getCurrentFrame() >= drawable.getFramesCount()) {
                     effects.remove(i);
                     i--;
@@ -204,11 +204,11 @@ public class PaidReactionButton extends View {
 
         public void playEffect() {
             while (effects.size() > 4) {
-                RLottieDrawable drawable = effects.remove(0);
+                TLottieDrawable drawable = effects.remove(0);
                 drawable.recycle(true);
             }
             final int asset = effectAssets[Utilities.fastRandom.nextInt(effectAssets.length)];
-            RLottieDrawable drawable = new RLottieDrawable(asset, "" + asset, dp(70), dp(70));
+            TLottieDrawable drawable = new TLottieDrawable(asset, "" + asset, dp(70), dp(70));
             drawable.setMasterParent(this);
             drawable.setAllowDecodeSingleFrame(true);
             drawable.setAutoRepeat(0);
@@ -218,7 +218,7 @@ public class PaidReactionButton extends View {
         }
 
         public void clearEffects() {
-            for (RLottieDrawable effect : effects) {
+            for (TLottieDrawable effect : effects) {
                 effect.recycle(true);
             }
             effects.clear();
@@ -244,7 +244,7 @@ public class PaidReactionButton extends View {
             private final float randomRotation;
 
             @Nullable
-            private RLottieDrawable effect;
+            private TLottieDrawable effect;
 
             private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -264,7 +264,7 @@ public class PaidReactionButton extends View {
 
                 if (withEffect) {
                     final int asset = effectAssets[Utilities.fastRandom.nextInt(effectAssets.length)];
-                    effect = new RLottieDrawable(asset, "" + asset, dp(70), dp(70));
+                    effect = new TLottieDrawable(asset, "" + asset, dp(70), dp(70));
                     effect.setMasterParent(view);
                     effect.setAllowDecodeSingleFrame(true);
                     effect.setAutoRepeat(0);

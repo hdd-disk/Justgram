@@ -91,7 +91,7 @@ import org.telegram.ui.Components.ImageUpdater;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Stories.recorder.ButtonWithCounterView;
 
@@ -206,7 +206,7 @@ public class PrivacyControlActivity extends BaseFragment implements Notification
     public final static int TYPE_PAY = 3;
 
     ImageUpdater imageUpdater;
-    private RLottieDrawable cameraDrawable;
+    private TLottieDrawable cameraDrawable;
     private TextCell setAvatarCell;
     private BackupImageView oldAvatarView;
     private TextCell oldPhotoCell;
@@ -1780,7 +1780,7 @@ public class PrivacyControlActivity extends BaseFragment implements Notification
                     }
                     setAvatarCell.setBackgroundDrawable(Theme.getSelectorDrawable(false));
                     setAvatarCell.setColors(Theme.key_windowBackgroundWhiteBlueIcon, Theme.key_windowBackgroundWhiteBlueButton);
-                    cameraDrawable = new RLottieDrawable(R.raw.camera_outline, "" + R.raw.camera_outline, dp(50), dp(50), false, null);
+                    cameraDrawable = new TLottieDrawable(R.raw.camera_outline, "" + R.raw.camera_outline, dp(50), dp(50), false, null);
                     setAvatarCell.imageView.setTranslationX(-dp(8));
                     setAvatarCell.imageView.setAnimation(cameraDrawable);
                     view = setAvatarCell;

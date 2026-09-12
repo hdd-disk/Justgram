@@ -31,7 +31,7 @@ import org.telegram.ui.Components.CounterView;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Loadable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.voip.CellFlickerDrawable;
 
@@ -53,7 +53,7 @@ public class PremiumButtonView extends FrameLayout implements Loadable {
     CellFlickerDrawable flickerDrawable;
     private boolean drawOverlayColor;
 
-    RLottieImageView iconView;
+    TLottieImageView iconView;
 
     private boolean isButtonTextSet;
 
@@ -108,7 +108,7 @@ public class PremiumButtonView extends FrameLayout implements Loadable {
         buttonTextView.setTextSize(AndroidUtilities.dp(14));
         buttonTextView.setTypeface(AndroidUtilities.bold());
 
-        iconView = new RLottieImageView(context);
+        iconView = new TLottieImageView(context);
         iconView.setColorFilter(Color.WHITE);
         iconView.setVisibility(View.GONE);
 
@@ -197,7 +197,7 @@ public class PremiumButtonView extends FrameLayout implements Loadable {
         return showOverlay;
     }
 
-    public RLottieImageView getIconView() {
+    public TLottieImageView getIconView() {
         return iconView;
     }
 

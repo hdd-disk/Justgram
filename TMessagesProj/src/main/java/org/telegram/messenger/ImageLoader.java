@@ -53,8 +53,8 @@ import org.telegram.ui.Cells.ChatMessageCell;
 import org.telegram.ui.Components.AnimatedFileDrawable;
 import org.telegram.ui.Components.BackgroundGradientDrawable;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
-import org.telegram.ui.Components.RLottieDiceDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDiceDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.SlotsDrawable;
 import org.telegram.ui.Components.ThemePreviewDrawable;
 import org.telegram.ui.web.WebInstantView;
@@ -976,12 +976,12 @@ public class ImageLoader {
                         }
                     }
                 }
-                RLottieDrawable lottieDrawable;
+                TLottieDrawable lottieDrawable;
                 if (diceEmoji != null) {
                     if ("\uD83C\uDFB0".equals(diceEmoji)) {
                         lottieDrawable = new SlotsDrawable(diceEmoji, w, h);
                     } else {
-                        lottieDrawable = new RLottieDiceDrawable(diceEmoji, w, h);
+                        lottieDrawable = new TLottieDiceDrawable(diceEmoji, w, h);
                     }
                 } else {
                     File f = cacheImage.finalFilePath;
@@ -1030,9 +1030,9 @@ public class ImageLoader {
 
                     final boolean isSingleChannel = cacheImage.imageLocation != null && MessageObject.isTextColorEmoji(cacheImage.imageLocation.document);
                     if (compressed) {
-                        lottieDrawable = new RLottieDrawable(cacheImage.finalFilePath, decompressGzip(cacheImage.finalFilePath), w, h, cacheOptions, limitFps, null, fitzModifier, isSingleChannel);
+                        lottieDrawable = new TLottieDrawable(cacheImage.finalFilePath, decompressGzip(cacheImage.finalFilePath), w, h, cacheOptions, limitFps, null, fitzModifier, isSingleChannel);
                     } else {
-                        lottieDrawable = new RLottieDrawable(cacheImage.finalFilePath, null, w, h, cacheOptions, limitFps, null, fitzModifier, isSingleChannel);
+                        lottieDrawable = new TLottieDrawable(cacheImage.finalFilePath, null, w, h, cacheOptions, limitFps, null, fitzModifier, isSingleChannel);
                     }
                 }
                 if (lastFrameBitmap || firstFrameBitmap) {
@@ -1647,7 +1647,7 @@ public class ImageLoader {
             return finalBitmap;
         }
 
-        private void loadLastFrame(RLottieDrawable lottieDrawable, int w, int h, boolean lastFrame, boolean reaction) {
+        private void loadLastFrame(TLottieDrawable lottieDrawable, int w, int h, boolean lastFrame, boolean reaction) {
             Bitmap bitmap;
             Canvas canvas;
             if (lastFrame && reaction) {
@@ -1688,8 +1688,8 @@ public class ImageLoader {
             AndroidUtilities.runOnUIThread(() -> {
                 Drawable toSet = null;
                 String decrementKey = null;
-                if (drawable instanceof RLottieDrawable) {
-                    RLottieDrawable lottieDrawable = (RLottieDrawable) drawable;
+                if (drawable instanceof TLottieDrawable) {
+                    TLottieDrawable lottieDrawable = (TLottieDrawable) drawable;
                     toSet = lottieMemCache.get(cacheImage.key);
                     if (toSet == null) {
                         lottieMemCache.put(cacheImage.key, lottieDrawable);
@@ -2136,8 +2136,8 @@ public class ImageLoader {
                     if (oldValue instanceof AnimatedFileDrawable) {
                         ((AnimatedFileDrawable) oldValue).recycle();
                     }
-                    if (oldValue instanceof RLottieDrawable) {
-                        ((RLottieDrawable) oldValue).recycle(false);
+                    if (oldValue instanceof TLottieDrawable) {
+                        ((TLottieDrawable) oldValue).recycle(false);
                     }
                 }
             }
@@ -2331,8 +2331,8 @@ public class ImageLoader {
     private int sizeOfBitmapDrawable(BitmapDrawable value) {
         if (value instanceof AnimatedFileDrawable) {
             return ((AnimatedFileDrawable) value).estimateSizeInCache();
-        } if (value instanceof RLottieDrawable) {
-            return ((RLottieDrawable) value).estimateSizeInCache();
+        } if (value instanceof TLottieDrawable) {
+            return ((TLottieDrawable) value).estimateSizeInCache();
         }
         return value.getBitmap().getByteCount();
     }
@@ -3354,8 +3354,8 @@ public class ImageLoader {
                 }
             }
             boolean hasBitmap = true;
-            if (drawable instanceof RLottieDrawable) {
-                hasBitmap = ((RLottieDrawable) drawable).hasBitmap();
+            if (drawable instanceof TLottieDrawable) {
+                hasBitmap = ((TLottieDrawable) drawable).hasBitmap();
             } else if (drawable instanceof AnimatedFileDrawable) {
                 hasBitmap = ((AnimatedFileDrawable) drawable).hasBitmap();
             }

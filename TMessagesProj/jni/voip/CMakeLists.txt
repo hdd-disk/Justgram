@@ -1888,7 +1888,7 @@ target_compile_definitions(voipandroid PUBLIC
 target_include_directories(voipandroid PUBLIC
         ./
         voip
-        rlottie/src/lottie
+        tlottie/include
         boringssl/include
         voip/tgcalls
         voip/webrtc

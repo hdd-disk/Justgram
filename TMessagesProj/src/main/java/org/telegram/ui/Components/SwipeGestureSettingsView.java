@@ -43,10 +43,10 @@ public class SwipeGestureSettingsView extends FrameLayout {
 
     String[] strings = new String[6];
     int[] backgroundKeys = new int[6];
-    RLottieDrawable[] icons = new RLottieDrawable[6];
+    TLottieDrawable[] icons = new TLottieDrawable[6];
 
     int currentIconIndex;
-    RLottieImageView[] iconViews = new RLottieImageView[2];
+    TLottieImageView[] iconViews = new TLottieImageView[2];
 
     boolean hasTabs;
     float progressToSwipeFolders;
@@ -120,11 +120,11 @@ public class SwipeGestureSettingsView extends FrameLayout {
 
         currentIconIndex = 0;
         for (int i = 0; i < 2; i++) {
-            iconViews[i] = new RLottieImageView(context);
+            iconViews[i] = new TLottieImageView(context);
             addView(iconViews[i], LayoutHelper.createFrame(28, 28, Gravity.CENTER_VERTICAL | Gravity.RIGHT, 0, 0,  132 + 21 + 21 + 10, 0));
         }
 
-        RLottieDrawable currentIcon = getIcon(picker.getValue());
+        TLottieDrawable currentIcon = getIcon(picker.getValue());
         if (currentIcon != null) {
             iconViews[0].setImageDrawable(currentIcon);
             currentIcon.setCurrentFrame(currentIcon.getFramesCount() - 1);
@@ -147,7 +147,7 @@ public class SwipeGestureSettingsView extends FrameLayout {
         if (currentIconValue != newValue) {
             currentIconValue = newValue;
             int nextIconIndex = (currentIconIndex + 1) % 2;
-            RLottieDrawable drawable = getIcon(newValue);
+            TLottieDrawable drawable = getIcon(newValue);
             if (drawable != null) {
                 if (iconViews[nextIconIndex].getVisibility() != View.VISIBLE) {
                     drawable.setCurrentFrame(0, false);
@@ -276,7 +276,7 @@ public class SwipeGestureSettingsView extends FrameLayout {
         canvas.restore();
     }
 
-    public RLottieDrawable getIcon(int i) {
+    public TLottieDrawable getIcon(int i) {
         if (icons[i] == null) {
             int rawId;
             switch (i) {
@@ -300,7 +300,7 @@ public class SwipeGestureSettingsView extends FrameLayout {
                     rawId = R.raw.swipe_disabled;
                     break;
             }
-            icons[i] = new RLottieDrawable(rawId, "" + rawId, AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
+            icons[i] = new TLottieDrawable(rawId, "" + rawId, AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
             updateIconColor(i);
         }
 

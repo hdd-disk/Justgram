@@ -16,7 +16,7 @@ import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.Components.AnimatedEmojiDrawable;
 import org.telegram.ui.Components.CubicBezierInterpolator;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.EmojiAnimationsOverlay;
 
 import java.util.ArrayList;
@@ -172,8 +172,8 @@ public class AnimatedEmojiEffect {
                 }
                 effectImageReceiver.setAutoRepeat(0);
             } else {
-                RLottieDrawable rLottieDrawable = new RLottieDrawable(R.raw.custom_emoji_reaction, "" + R.raw.custom_emoji_reaction, AndroidUtilities.dp(60), AndroidUtilities.dp(60), false, null);
-                effectImageReceiver.setImageBitmap(rLottieDrawable);
+                TLottieDrawable tLottieDrawable = new TLottieDrawable(R.raw.custom_emoji_reaction, "" + R.raw.custom_emoji_reaction, AndroidUtilities.dp(60), AndroidUtilities.dp(60), false, null);
+                effectImageReceiver.setImageBitmap(tLottieDrawable);
             }
         }
     }

@@ -117,7 +117,7 @@ import org.telegram.ui.Components.MsgClockDrawable;
 import org.telegram.ui.Components.PathAnimator;
 import org.telegram.ui.Components.PlayingGameDrawable;
 import org.telegram.ui.Components.Premium.PremiumGradient;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecordStatusDrawable;
 import org.telegram.ui.Components.RoundStatusDrawable;
 import org.telegram.ui.Components.ScamDrawable;
@@ -2325,12 +2325,12 @@ public class Theme {
     public static Drawable dialogs_pollMentionDrawableMuted;
     public static Drawable dialogs_holidayDrawable;
     public static Drawable dialogs_forum_arrowDrawable;
-    public static RLottieDrawable dialogs_archiveAvatarDrawable;
-    public static RLottieDrawable dialogs_archiveDrawable;
-    public static RLottieDrawable dialogs_unarchiveDrawable;
-    public static RLottieDrawable dialogs_pinArchiveDrawable;
-    public static RLottieDrawable dialogs_unpinArchiveDrawable;
-    public static RLottieDrawable dialogs_hidePsaDrawable;
+    public static TLottieDrawable dialogs_archiveAvatarDrawable;
+    public static TLottieDrawable dialogs_archiveDrawable;
+    public static TLottieDrawable dialogs_unarchiveDrawable;
+    public static TLottieDrawable dialogs_pinArchiveDrawable;
+    public static TLottieDrawable dialogs_unpinArchiveDrawable;
+    public static TLottieDrawable dialogs_hidePsaDrawable;
     public static boolean dialogs_archiveDrawableRecolored;
     public static boolean dialogs_hidePsaDrawableRecolored;
     public static boolean dialogs_archiveAvatarDrawableRecolored;
@@ -2339,14 +2339,14 @@ public class Theme {
     private static long lastHolidayCheckTime;
     private static boolean canStartHolidayAnimation;
 
-    public static RLottieDrawable dialogs_swipeMuteDrawable;
-    public static RLottieDrawable dialogs_swipeUnmuteDrawable;
-    public static RLottieDrawable dialogs_swipeDeleteDrawable;
-    public static RLottieDrawable dialogs_swipeCommunityUngroup;
-    public static RLottieDrawable dialogs_swipeReadDrawable;
-    public static RLottieDrawable dialogs_swipeUnreadDrawable;
-    public static RLottieDrawable dialogs_swipePinDrawable;
-    public static RLottieDrawable dialogs_swipeUnpinDrawable;
+    public static TLottieDrawable dialogs_swipeMuteDrawable;
+    public static TLottieDrawable dialogs_swipeUnmuteDrawable;
+    public static TLottieDrawable dialogs_swipeDeleteDrawable;
+    public static TLottieDrawable dialogs_swipeCommunityUngroup;
+    public static TLottieDrawable dialogs_swipeReadDrawable;
+    public static TLottieDrawable dialogs_swipeUnreadDrawable;
+    public static TLottieDrawable dialogs_swipePinDrawable;
+    public static TLottieDrawable dialogs_swipeUnpinDrawable;
 
     public static TextPaint profile_aboutTextPaint;
     public static Drawable profile_verifiedDrawable;
@@ -7731,22 +7731,22 @@ public class Theme {
             if (dialogs_hidePsaDrawable != null) {
                 dialogs_hidePsaDrawable.recycle(false);
             }
-            dialogs_archiveAvatarDrawable = new RLottieDrawable(R.raw.chats_archiveavatar, "chats_archiveavatar", dp(36), dp(36), false, null);
-            dialogs_archiveDrawable = new RLottieDrawable(R.raw.chats_archive, "chats_archive", dp(36), dp(36), false, null);
-            dialogs_unarchiveDrawable = new RLottieDrawable(R.raw.chats_unarchive, "chats_unarchive", dp(36), dp(36), false, null);
-            dialogs_pinArchiveDrawable = new RLottieDrawable(R.raw.chats_hide, "chats_hide", dp(36), dp(36), false, null);
-            dialogs_unpinArchiveDrawable = new RLottieDrawable(R.raw.chats_unhide, "chats_unhide", dp(36), dp(36), false, null);
-            dialogs_hidePsaDrawable = new RLottieDrawable(R.raw.chat_audio_record_delete, "chats_psahide", dp(30), dp(30), false, null);
+            dialogs_archiveAvatarDrawable = new TLottieDrawable(R.raw.chats_archiveavatar, "chats_archiveavatar", dp(36), dp(36), false, null);
+            dialogs_archiveDrawable = new TLottieDrawable(R.raw.chats_archive, "chats_archive", dp(36), dp(36), false, null);
+            dialogs_unarchiveDrawable = new TLottieDrawable(R.raw.chats_unarchive, "chats_unarchive", dp(36), dp(36), false, null);
+            dialogs_pinArchiveDrawable = new TLottieDrawable(R.raw.chats_hide, "chats_hide", dp(36), dp(36), false, null);
+            dialogs_unpinArchiveDrawable = new TLottieDrawable(R.raw.chats_unhide, "chats_unhide", dp(36), dp(36), false, null);
+            dialogs_hidePsaDrawable = new TLottieDrawable(R.raw.chat_audio_record_delete, "chats_psahide", dp(30), dp(30), false, null);
 
-            dialogs_swipeMuteDrawable = new RLottieDrawable(R.raw.swipe_mute, "swipe_mute", dp(36), dp(36), false, null);
-            dialogs_swipeUnmuteDrawable = new RLottieDrawable(R.raw.swipe_unmute, "swipe_unmute", dp(36), dp(36), false, null);
+            dialogs_swipeMuteDrawable = new TLottieDrawable(R.raw.swipe_mute, "swipe_mute", dp(36), dp(36), false, null);
+            dialogs_swipeUnmuteDrawable = new TLottieDrawable(R.raw.swipe_unmute, "swipe_unmute", dp(36), dp(36), false, null);
 
-            dialogs_swipeReadDrawable = new RLottieDrawable(R.raw.swipe_read, "swipe_read", dp(36), dp(36), false, null);
-            dialogs_swipeUnreadDrawable = new RLottieDrawable(R.raw.swipe_unread, "swipe_unread", dp(36), dp(36), false, null);
-            dialogs_swipeDeleteDrawable = new RLottieDrawable(R.raw.swipe_delete, "swipe_delete", dp(36), dp(36), false, null);
-            dialogs_swipeUnpinDrawable = new RLottieDrawable(R.raw.swipe_unpin, "swipe_unpin", dp(36), dp(36), false, null);
-            dialogs_swipePinDrawable = new RLottieDrawable(R.raw.swipe_pin, "swipe_pin", dp(36), dp(36), false, null);
-            dialogs_swipeCommunityUngroup = new RLottieDrawable(R.raw.swipe_community_ungroup, "swipe_community_ungroup", dp(28), dp(28), false, null);
+            dialogs_swipeReadDrawable = new TLottieDrawable(R.raw.swipe_read, "swipe_read", dp(36), dp(36), false, null);
+            dialogs_swipeUnreadDrawable = new TLottieDrawable(R.raw.swipe_unread, "swipe_unread", dp(36), dp(36), false, null);
+            dialogs_swipeDeleteDrawable = new TLottieDrawable(R.raw.swipe_delete, "swipe_delete", dp(36), dp(36), false, null);
+            dialogs_swipeUnpinDrawable = new TLottieDrawable(R.raw.swipe_unpin, "swipe_unpin", dp(36), dp(36), false, null);
+            dialogs_swipePinDrawable = new TLottieDrawable(R.raw.swipe_pin, "swipe_pin", dp(36), dp(36), false, null);
+            dialogs_swipeCommunityUngroup = new TLottieDrawable(R.raw.swipe_community_ungroup, "swipe_community_ungroup", dp(28), dp(28), false, null);
 
             applyCommonTheme();
         }

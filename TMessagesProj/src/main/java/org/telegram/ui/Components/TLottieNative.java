@@ -16,7 +16,7 @@ import java.util.Map;
  * with an instance, call {@link #recycle()}; after that every method throws
  * {@link IllegalStateException}, matching the {@link Bitmap} contract.
  */
-public final class RLottieNative {
+public final class TLottieNative {
 
     // -------------------------------------------------------------------------
     // State
@@ -35,7 +35,7 @@ public final class RLottieNative {
     // Private constructor — only factory methods may call this
     // -------------------------------------------------------------------------
 
-    private RLottieNative(long nativePtr, int[] metaData) {
+    private TLottieNative(long nativePtr, int[] metaData) {
         mNativePtr = nativePtr;
         mMetaData = metaData;
     }
@@ -58,7 +58,7 @@ public final class RLottieNative {
      * @param fitzModifier     Fitzpatrick skin-tone modifier (0 = none)
      * @return a new instance, or {@code null} if the native layer failed
      */
-    public static RLottieNative createFromFile(
+    public static TLottieNative createFromFile(
             String path,
             String json,
             int w, int h,
@@ -69,7 +69,7 @@ public final class RLottieNative {
         return createFromFile(path, json, w, h, null, precache, colorReplacement, limitFps, fitzModifier, null);
     }
 
-    public static RLottieNative createFromFile(
+    public static TLottieNative createFromFile(
             String path, String json, int w, int h, @Nullable int[] metaOut,
             boolean precache, int[] colorReplacement, boolean limitFps, int fitzModifier,
             @Nullable Map<String, Integer> layerColors) {
@@ -81,7 +81,7 @@ public final class RLottieNative {
         if (metaOut != null && metaOut.length == 3) {
             System.arraycopy(meta, 0, metaOut, 0, 3);
         }
-        return new RLottieNative(ptr, meta);
+        return new TLottieNative(ptr, meta);
     }
 
     /**
@@ -93,14 +93,14 @@ public final class RLottieNative {
      * @param colorReplacement optional color replacement table, may be {@code null}
      * @return a new instance, or {@code null} if the native layer failed
      */
-    public static RLottieNative createFromRawJson(
+    public static TLottieNative createFromRawJson(
             String json,
             String name,
             int[] colorReplacement) {
         return createFromRawJson(json, name, null, colorReplacement);
     }
 
-    public static RLottieNative createFromRawJson(
+    public static TLottieNative createFromRawJson(
             String json,
             String name,
             @Nullable int[] metaOut,
@@ -108,7 +108,7 @@ public final class RLottieNative {
         return createFromRawJson(json, name, metaOut, colorReplacement, null);
     }
 
-    public static RLottieNative createFromRawJson(
+    public static TLottieNative createFromRawJson(
             String json, String name, @Nullable int[] metaOut, int[] colorReplacement,
             @Nullable Map<String, Integer> layerColors) {
         if (json == null || json.isEmpty()) {
@@ -124,7 +124,7 @@ public final class RLottieNative {
         if (metaOut != null && metaOut.length == 3) {
             System.arraycopy(meta, 0, metaOut, 0, 3);
         }
-        return new RLottieNative(ptr, meta);
+        return new TLottieNative(ptr, meta);
     }
 
     // -------------------------------------------------------------------------
@@ -214,7 +214,7 @@ public final class RLottieNative {
 
     private void checkNotRecycled() {
         if (mRecycled.get()) {
-            throw new IllegalStateException("Called method on a recycled RLottie instance");
+            throw new IllegalStateException("Called method on a recycled TLottie instance");
         }
     }
 
@@ -231,7 +231,7 @@ public final class RLottieNative {
     }
 
     private static long create(String src, String json, int w, int h, int[] params, boolean precache, int[] colorReplacement, boolean limitFps, int fitzModifier, @Nullable Map<String, Integer> layerColors) {
-        Trace.beginSection("RLottieNative#create");
+        Trace.beginSection("TLottieNative#create");
         try {
             String[] layerNames = layerColors == null ? null : layerColors.keySet().toArray(new String[0]);
             int[] layerValues = layerColors == null ? null : layerNamesToColors(layerNames, layerColors);
@@ -246,7 +246,7 @@ public final class RLottieNative {
      * Prefer {@link #createFromRawJson} for new code.
      */
     private static long createWithJson(String json, String name, int[] params, int[] colorReplacement, String[] layerNames, int[] layerColors) {
-        Trace.beginSection("RLottieNative#createWithJson");
+        Trace.beginSection("TLottieNative#createWithJson");
         try {
             return nCreateWithJson(json, name, params, colorReplacement, layerNames, layerColors);
         } finally {
@@ -259,7 +259,7 @@ public final class RLottieNative {
      * Prefer the instance method {@link #getFrame(int, Bitmap, boolean)} for new code.
      */
     public static int getFrame(long ptr, int frame, Bitmap bitmap, boolean clear) {
-        Trace.beginSection("RLottieNative#getFrame");
+        Trace.beginSection("TLottieNative#getFrame");
         try {
             return nGetFrame(ptr, frame, bitmap, clear);
         } finally {
@@ -280,7 +280,7 @@ public final class RLottieNative {
      * Prefer {@link #recycle()} for new code.
      */
     public static void destroy(long ptr) {
-        Trace.beginSection("RLottieNative#destroy");
+        Trace.beginSection("TLottieNative#destroy");
         try {
             nDestroy(ptr);
         } finally {
@@ -297,10 +297,10 @@ public final class RLottieNative {
      * Safe to call on any thread; does not produce an instance.
      */
     public static long getFramesCount(String src, String json) {
-        final RLottieNative rLottieNative = createFromFile(src, json, 0, 0, false, null, false, 0);
-        if (rLottieNative != null) {
-            final int framesCount = rLottieNative.getFrameCount();
-            rLottieNative.recycle();
+        final TLottieNative tLottieNative = createFromFile(src, json, 0, 0, false, null, false, 0);
+        if (tLottieNative != null) {
+            final int framesCount = tLottieNative.getFrameCount();
+            tLottieNative.recycle();
             return framesCount;
         }
         return 0;
@@ -310,17 +310,15 @@ public final class RLottieNative {
      * Returns the animation duration in seconds without keeping the file open.
      */
     public static double getDuration(String src, String json) {
-        final RLottieNative rLottieNative = createFromFile(src, json, 0, 0, false, null, false, 0);
-        if (rLottieNative != null) {
-            final int framesCount = rLottieNative.getFrameCount();
-            final int fps = rLottieNative.getFps();
-            rLottieNative.recycle();
+        final TLottieNative tLottieNative = createFromFile(src, json, 0, 0, false, null, false, 0);
+        if (tLottieNative != null) {
+            final int framesCount = tLottieNative.getFrameCount();
+            final int fps = tLottieNative.getFps();
+            tLottieNative.recycle();
             return (double) framesCount / fps;
         }
         return 0;
     }
-
-
 
     // -------------------------------------------------------------------------
     // Native

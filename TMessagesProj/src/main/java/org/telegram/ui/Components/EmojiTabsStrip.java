@@ -814,7 +814,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
         }
 
         private BackupImageView imageView;
-        private RLottieDrawable lottieDrawable;
+        private TLottieDrawable lottieDrawable;
         private PremiumLockIconView lockView;
         private boolean round, forceSelector;
         Long animatedEmojiDocumentId;
@@ -850,7 +850,7 @@ public class EmojiTabsStrip extends ScrollableHorizontalScrollView {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                lottieDrawable = new RLottieDrawable(lottieId, "" + lottieId, AndroidUtilities.dp(24), AndroidUtilities.dp(24), false, null);
+                lottieDrawable = new TLottieDrawable(lottieId, "" + lottieId, AndroidUtilities.dp(24), AndroidUtilities.dp(24), false, null);
                 lottieDrawable.setBounds(AndroidUtilities.dp(3), AndroidUtilities.dp(3), AndroidUtilities.dp(27), AndroidUtilities.dp(27));
                 lottieDrawable.setMasterParent(this);
                 lottieDrawable.setAllowDecodeSingleFrame(true);

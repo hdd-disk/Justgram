@@ -277,7 +277,7 @@ import org.telegram.ui.Components.PlayPauseDrawable;
 import org.telegram.ui.Components.Premium.LimitReachedBottomSheet;
 import org.telegram.ui.Components.Premium.PremiumFeatureBottomSheet;
 import org.telegram.ui.Components.QuoteSpan;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.RectOld;
@@ -11156,7 +11156,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 VideoEditedInfo.MediaEntity entity = editState.mediaEntities.get(a);
                 if (entity.type == 0 && (entity.subType & 1) != 0 && entity.view instanceof BackupImageView) {
                     ImageReceiver imageReceiver = ((BackupImageView) entity.view).getImageReceiver();
-                    RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+                    TLottieDrawable drawable = imageReceiver.getLottieAnimation();
                     if (drawable == null) {
                         continue;
                     }
@@ -11172,7 +11172,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 VideoEditedInfo.MediaEntity entity = editState.mediaEntities.get(a);
                 if (entity.type == 0 && (entity.subType & 1) != 0 && entity.view instanceof BackupImageView) {
                     ImageReceiver imageReceiver = ((BackupImageView) entity.view).getImageReceiver();
-                    RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+                    TLottieDrawable drawable = imageReceiver.getLottieAnimation();
                     if (drawable == null) {
                         continue;
                     }
@@ -12883,7 +12883,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
                 }
 
                 @Override
-                protected void didSetAnimatedSticker(RLottieDrawable drawable) {
+                protected void didSetAnimatedSticker(TLottieDrawable drawable) {
                     if (videoPlayer == null) {
                         return;
                     }

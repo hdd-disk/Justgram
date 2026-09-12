@@ -17,7 +17,7 @@ import org.telegram.messenger.MessagesStorage;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +34,8 @@ public class DownloadProgressIcon extends View implements NotificationCenter.Not
 
     ImageReceiver downloadImageReceiver = new ImageReceiver(this);
     ImageReceiver downloadCompleteImageReceiver = new ImageReceiver(this);
-    RLottieDrawable downloadDrawable;
-    RLottieDrawable downloadCompleteDrawable;
+    TLottieDrawable downloadDrawable;
+    TLottieDrawable downloadCompleteDrawable;
     boolean showCompletedIcon;
     boolean hasUnviewedDownloads;
     int currentColor;
@@ -47,8 +47,8 @@ public class DownloadProgressIcon extends View implements NotificationCenter.Not
         downloadImageReceiver.ignoreNotifications = true;
         downloadCompleteImageReceiver.ignoreNotifications = true;
 
-        downloadDrawable = new RLottieDrawable(R.raw.download_progress, "download_progress", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
-        downloadCompleteDrawable = new RLottieDrawable(R.raw.download_finish, "download_finish", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
+        downloadDrawable = new TLottieDrawable(R.raw.download_progress, "download_progress", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
+        downloadCompleteDrawable = new TLottieDrawable(R.raw.download_finish, "download_finish", AndroidUtilities.dp(28), AndroidUtilities.dp(28), true, null);
 
         downloadImageReceiver.setImageBitmap(downloadDrawable);
         downloadCompleteImageReceiver.setImageBitmap(downloadCompleteDrawable);

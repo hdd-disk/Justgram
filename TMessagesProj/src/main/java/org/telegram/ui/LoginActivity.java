@@ -182,8 +182,8 @@ import org.telegram.ui.Components.Premium.GLIcon.GLIconTextureView;
 import org.telegram.ui.Components.Premium.GLIcon.Icon3D;
 import org.telegram.ui.Components.Premium.StarParticlesView;
 import org.telegram.ui.Components.ProxyDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RadialProgressView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.SimpleThemeDescription;
@@ -3552,7 +3552,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
     }
 
     public class LoginActivitySmsView extends SlideView implements NotificationCenter.NotificationCenterDelegate {
-        /* package */ RLottieDrawable hintDrawable;
+        /* package */ TLottieDrawable hintDrawable;
 
         private String phone;
         private String phoneHash;
@@ -3563,7 +3563,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private TextView confirmTextView;
         private TextView titleTextView;
         private ImageView blackImageView;
-        private RLottieImageView blueImageView;
+        private TLottieImageView blueImageView;
         private LoadingTextView timeText;
 
         private FrameLayout bottomContainer;
@@ -3572,7 +3572,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private FrameLayout problemFrame;
         private TextView wrongCode;
         private LinearLayout openFragmentButton;
-        private RLottieImageView openFragmentImageView;
+        private TLottieImageView openFragmentImageView;
         private TextView openFragmentButtonText;
 
         private Bundle currentParams;
@@ -3583,9 +3583,9 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private TextView missedCallDescriptionSubtitle2;
         private ImageView missedCallArrowIcon, missedCallPhoneIcon;
 
-        private RLottieDrawable starsToDotsDrawable;
-        private RLottieDrawable dotsDrawable;
-        private RLottieDrawable dotsToStarsDrawable;
+        private TLottieDrawable starsToDotsDrawable;
+        private TLottieDrawable dotsDrawable;
+        private TLottieDrawable dotsToStarsDrawable;
         private boolean isDotsAnimationVisible;
 
         private Timer timeTimer;
@@ -3726,8 +3726,8 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 FrameLayout frameLayout = new FrameLayout(context);
                 innerLinearLayout.addView(frameLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
 
-                blueImageView = new RLottieImageView(context);
-                hintDrawable = new RLottieDrawable(R.raw.phone_flash_call, String.valueOf(R.raw.phone_flash_call), AndroidUtilities.dp(64), AndroidUtilities.dp(64), true, null);
+                blueImageView = new TLottieImageView(context);
+                hintDrawable = new TLottieDrawable(R.raw.phone_flash_call, String.valueOf(R.raw.phone_flash_call), AndroidUtilities.dp(64), AndroidUtilities.dp(64), true, null);
                 blueImageView.setAnimation(hintDrawable);
                 frameLayout.addView(blueImageView, LayoutHelper.createFrame(64, 64));
 
@@ -3742,15 +3742,15 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
 
                 int size = currentType == AUTH_TYPE_MESSAGE ? 128 : 64;
                 if (currentType == AUTH_TYPE_MESSAGE) {
-                    hintDrawable = new RLottieDrawable(R.raw.code_laptop, String.valueOf(R.raw.code_laptop), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
+                    hintDrawable = new TLottieDrawable(R.raw.code_laptop, String.valueOf(R.raw.code_laptop), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
                 } else {
-                    hintDrawable = new RLottieDrawable(R.raw.sms_incoming_info, String.valueOf(R.raw.sms_incoming_info), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
+                    hintDrawable = new TLottieDrawable(R.raw.sms_incoming_info, String.valueOf(R.raw.sms_incoming_info), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
 
-                    starsToDotsDrawable = new RLottieDrawable(R.raw.phone_stars_to_dots, String.valueOf(R.raw.phone_stars_to_dots), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
-                    dotsDrawable = new RLottieDrawable(R.raw.phone_dots, String.valueOf(R.raw.phone_dots), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
-                    dotsToStarsDrawable = new RLottieDrawable(R.raw.phone_dots_to_stars, String.valueOf(R.raw.phone_dots_to_stars), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
+                    starsToDotsDrawable = new TLottieDrawable(R.raw.phone_stars_to_dots, String.valueOf(R.raw.phone_stars_to_dots), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
+                    dotsDrawable = new TLottieDrawable(R.raw.phone_dots, String.valueOf(R.raw.phone_dots), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
+                    dotsToStarsDrawable = new TLottieDrawable(R.raw.phone_dots_to_stars, String.valueOf(R.raw.phone_dots_to_stars), AndroidUtilities.dp(size), AndroidUtilities.dp(size), true, null);
                 }
-                blueImageView = new RLottieImageView(context);
+                blueImageView = new TLottieImageView(context);
                 blueImageView.setAnimation(hintDrawable);
                 if (currentType == AUTH_TYPE_MESSAGE && !AndroidUtilities.isSmallScreen()) {
                     blueImageView.setTranslationY(-AndroidUtilities.dp(24));
@@ -3912,7 +3912,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 });
                 errorViewSwitcher.addView(openFragmentButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 52));
 
-                openFragmentImageView = new RLottieImageView(context);
+                openFragmentImageView = new TLottieImageView(context);
                 openFragmentImageView.setAnimation(R.raw.fragment, 36, 36);
                 openFragmentButton.addView(openFragmentImageView, LayoutHelper.createLinear(36, 36, Gravity.CENTER_VERTICAL, 0, 0, 2, 0));
 
@@ -4139,7 +4139,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             wrongCode.setTextColor(Theme.getColor(Theme.key_text_RedBold));
         }
 
-        private void applyLottieColors(RLottieDrawable drawable) {
+        private void applyLottieColors(TLottieDrawable drawable) {
             if (drawable != null) {
                 drawable.setLayerColor("Bubble", Theme.getColor(Theme.key_chats_actionBackground));
                 drawable.setLayerColor("Phone", Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
@@ -5326,7 +5326,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private TextView confirmTextView;
         private TextView cancelButton;
         private TextView titleView;
-        private RLottieImageView lockImageView;
+        private TLottieImageView lockImageView;
 
         private Bundle currentParams;
         private boolean nextPressed;
@@ -5344,7 +5344,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             setOrientation(VERTICAL);
 
             FrameLayout lockFrameLayout = new FrameLayout(context);
-            lockImageView = new RLottieImageView(context);
+            lockImageView = new TLottieImageView(context);
             lockImageView.setAnimation(R.raw.tsv_setup_intro, 120, 120);
             lockImageView.setAutoRepeat(false);
             lockFrameLayout.addView(lockImageView, LayoutHelper.createFrame(120, 120, Gravity.CENTER_HORIZONTAL));
@@ -5671,7 +5671,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
 
     public class LoginActivityResetWaitView extends SlideView {
 
-        private RLottieImageView waitImageView;
+        private TLottieImageView waitImageView;
         private TextView titleView;
         private TextView confirmTextView;
         private TextView resetAccountButton;
@@ -5698,7 +5698,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             innerLinearLayout.setGravity(Gravity.CENTER);
 
             FrameLayout waitFrameLayout = new FrameLayout(context);
-            waitImageView = new RLottieImageView(context);
+            waitImageView = new TLottieImageView(context);
             waitImageView.setAutoRepeat(true);
             waitImageView.setAnimation(R.raw.sandclock, 120, 120);
             waitFrameLayout.addView(waitImageView, LayoutHelper.createFrame(120, 120, Gravity.CENTER_HORIZONTAL));
@@ -5891,7 +5891,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private TextView subtitleView;
         private TextView signInWithGoogleView;
         private LoginOrView loginOrView;
-        private RLottieImageView inboxImageView;
+        private TLottieImageView inboxImageView;
 
         private Bundle currentParams;
         private boolean nextPressed;
@@ -5907,7 +5907,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             setOrientation(VERTICAL);
 
             FrameLayout inboxFrameLayout = new FrameLayout(context);
-            inboxImageView = new RLottieImageView(context);
+            inboxImageView = new TLottieImageView(context);
             inboxImageView.setAnimation(R.raw.tsv_setup_mail, 120, 120);
             inboxImageView.setAutoRepeat(false);
             inboxFrameLayout.addView(inboxImageView, LayoutHelper.createFrame(120, 120, Gravity.CENTER_HORIZONTAL));
@@ -6232,7 +6232,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private TextView emailResetInView;
         private TextView wrongCodeView;
         private LoginOrView loginOrView;
-        private RLottieImageView inboxImageView;
+        private TLottieImageView inboxImageView;
 
         private boolean resetRequestPending;
         private Bundle currentParams;
@@ -6270,7 +6270,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             setOrientation(VERTICAL);
 
             FrameLayout inboxFrameLayout = new FrameLayout(context);
-            inboxImageView = new RLottieImageView(context);
+            inboxImageView = new TLottieImageView(context);
             if (!setup || activityMode == MODE_CHANGE_LOGIN_EMAIL) {
                 inboxImageView.setAnimation(R.raw.email_check_inbox, 120, 120);
             } else {
@@ -7056,7 +7056,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private TextView titleView;
         private TextView confirmTextView;
         private TextView troubleButton;
-        private RLottieImageView inboxImageView;
+        private TLottieImageView inboxImageView;
 
         private Bundle currentParams;
         private String passwordString;
@@ -7078,7 +7078,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             setOrientation(VERTICAL);
 
             FrameLayout inboxFrameLayout = new FrameLayout(context);
-            inboxImageView = new RLottieImageView(context);
+            inboxImageView = new TLottieImageView(context);
             inboxImageView.setAnimation(R.raw.tsv_setup_mail, 120, 120);
             inboxImageView.setAutoRepeat(false);
             inboxFrameLayout.addView(inboxImageView, LayoutHelper.createFrame(120, 120, Gravity.CENTER_HORIZONTAL));
@@ -7722,7 +7722,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private BackupImageView avatarImage;
         private AvatarDrawable avatarDrawable;
         private View avatarOverlay;
-        private RLottieImageView avatarEditor;
+        private TLottieImageView avatarEditor;
         private RadialProgressView avatarProgressView;
         private AnimatorSet avatarAnimation;
         private TextView descriptionTextView;
@@ -7735,8 +7735,8 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private Bundle currentParams;
         private boolean nextPressed = false;
 
-        private RLottieDrawable cameraDrawable;
-        private RLottieDrawable cameraWaitDrawable;
+        private TLottieDrawable cameraDrawable;
+        private TLottieDrawable cameraWaitDrawable;
         private boolean isCameraWaitAnimationAllowed = true;
 
         private ImageUpdater imageUpdater;
@@ -7877,10 +7877,10 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                 avatarEditor.playAnimation();
             });
 
-            cameraDrawable = new RLottieDrawable(R.raw.camera, String.valueOf(R.raw.camera), AndroidUtilities.dp(70), AndroidUtilities.dp(70), false, null);
-            cameraWaitDrawable = new RLottieDrawable(R.raw.camera_wait, String.valueOf(R.raw.camera_wait), AndroidUtilities.dp(70), AndroidUtilities.dp(70), false, null);
+            cameraDrawable = new TLottieDrawable(R.raw.camera, String.valueOf(R.raw.camera), AndroidUtilities.dp(70), AndroidUtilities.dp(70), false, null);
+            cameraWaitDrawable = new TLottieDrawable(R.raw.camera_wait, String.valueOf(R.raw.camera_wait), AndroidUtilities.dp(70), AndroidUtilities.dp(70), false, null);
 
-            avatarEditor = new RLottieImageView(context) {
+            avatarEditor = new TLottieImageView(context) {
                 @Override
                 public void invalidate(int l, int t, int r, int b) {
                     super.invalidate(l, t, r, b);
@@ -8855,7 +8855,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
         private final TextView prevTypeTextView;
         private final TextView errorTextView;
         private final TextView infoTextView;
-        private final RLottieImageView imageView;
+        private final TLottieImageView imageView;
         private final TextView titleTextView;
         private final TextView confirmTextView;
         private final TextView pasteTextView;
@@ -8900,7 +8900,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
 
             setOrientation(VERTICAL);
 
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.setAnimation(R.raw.bubble, 95, 95);
             boolean hideImage = AndroidUtilities.isSmallScreen() || (AndroidUtilities.displaySize.x > AndroidUtilities.displaySize.y && !AndroidUtilities.isTablet());

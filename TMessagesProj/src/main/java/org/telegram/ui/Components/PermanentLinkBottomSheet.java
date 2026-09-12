@@ -37,8 +37,8 @@ public class PermanentLinkBottomSheet extends BottomSheet {
     private final TextView titleView;
     private final TextView subtitle;
     private final TextView manage;
-    private final RLottieImageView imageView;
-    private final RLottieDrawable linkIcon;
+    private final TLottieImageView imageView;
+    private final TLottieDrawable linkIcon;
     private final LinkActionView linkActionView;
     private final long chatId;
     private BaseFragment fragment;
@@ -69,8 +69,8 @@ public class PermanentLinkBottomSheet extends BottomSheet {
 
         linkActionView = new LinkActionView(context, fragment, this, chatId, true, isChannel);
         linkActionView.setPermanent(true);
-        imageView = new RLottieImageView(context);
-        linkIcon = new RLottieDrawable(R.raw.shared_link_enter, "" + R.raw.shared_link_enter, AndroidUtilities.dp(90), AndroidUtilities.dp(90), false, null);
+        imageView = new TLottieImageView(context);
+        linkIcon = new TLottieDrawable(R.raw.shared_link_enter, "" + R.raw.shared_link_enter, AndroidUtilities.dp(90), AndroidUtilities.dp(90), false, null);
         linkIcon.setCustomEndFrame(42);
         imageView.setAnimation(linkIcon);
         linkActionView.setUsers(0, null);

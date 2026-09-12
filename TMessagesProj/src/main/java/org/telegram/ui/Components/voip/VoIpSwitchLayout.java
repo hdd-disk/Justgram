@@ -25,7 +25,7 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 @SuppressLint("ViewConstructor")
 public class VoIpSwitchLayout extends FrameLayout {
@@ -138,11 +138,11 @@ public class VoIpSwitchLayout extends FrameLayout {
     private void attachNewButton(int rawRes, int size, boolean isSelected, Type type) {
         final VoIpButtonView newVoIpButtonView = new VoIpButtonView(getContext(), backgroundProvider);
         if (rawRes == R.raw.camera_flip2) {
-            newVoIpButtonView.singleIcon = new RLottieDrawable(rawRes, "" + rawRes, size, size, true, null);
+            newVoIpButtonView.singleIcon = new TLottieDrawable(rawRes, "" + rawRes, size, size, true, null);
             newVoIpButtonView.singleIcon.setMasterParent(newVoIpButtonView);
         } else {
-            newVoIpButtonView.unSelectedIcon = new RLottieDrawable(rawRes, "" + rawRes, size, size, true, null);
-            newVoIpButtonView.selectedIcon = new RLottieDrawable(rawRes, "" + rawRes, size, size, true, null);
+            newVoIpButtonView.unSelectedIcon = new TLottieDrawable(rawRes, "" + rawRes, size, size, true, null);
+            newVoIpButtonView.selectedIcon = new TLottieDrawable(rawRes, "" + rawRes, size, size, true, null);
             newVoIpButtonView.selectedIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY));
         }
         newVoIpButtonView.setSelectedState(isSelected, false, type);
@@ -179,8 +179,8 @@ public class VoIpSwitchLayout extends FrameLayout {
         switch (newType) {
             case MICRO:
                 if (this.type != Type.MICRO) {
-                    voIpButtonView.unSelectedIcon = new RLottieDrawable(R.raw.call_mute, "" + R.raw.call_mute, size, size, true, null);
-                    voIpButtonView.selectedIcon = new RLottieDrawable(R.raw.call_mute, "" + R.raw.call_mute, size, size, true, null);
+                    voIpButtonView.unSelectedIcon = new TLottieDrawable(R.raw.call_mute, "" + R.raw.call_mute, size, size, true, null);
+                    voIpButtonView.selectedIcon = new TLottieDrawable(R.raw.call_mute, "" + R.raw.call_mute, size, size, true, null);
                     voIpButtonView.selectedIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY));
                     voIpButtonView.selectedIcon.setMasterParent(voIpButtonView);
                 }
@@ -188,8 +188,8 @@ public class VoIpSwitchLayout extends FrameLayout {
             case VIDEO:
                 //R.drawable.calls_sharescreen screencast is not used in the design
                 if (this.type != Type.VIDEO) {
-                    voIpButtonView.unSelectedIcon = new RLottieDrawable(R.raw.video_stop, "" + R.raw.video_stop, size, size, true, null);
-                    voIpButtonView.selectedIcon = new RLottieDrawable(R.raw.video_stop, "" + R.raw.video_stop, size, size, true, null);
+                    voIpButtonView.unSelectedIcon = new TLottieDrawable(R.raw.video_stop, "" + R.raw.video_stop, size, size, true, null);
+                    voIpButtonView.selectedIcon = new TLottieDrawable(R.raw.video_stop, "" + R.raw.video_stop, size, size, true, null);
                     voIpButtonView.selectedIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY));
                     voIpButtonView.selectedIcon.setMasterParent(voIpButtonView);
                 }
@@ -199,14 +199,14 @@ public class VoIpSwitchLayout extends FrameLayout {
                     ignoreSetState = true;
                     attachNewButton(R.raw.camera_flip2, size, isSelected, newType);
                 } else if (this.type != Type.CAMERA) {
-                    voIpButtonView.singleIcon = new RLottieDrawable(R.raw.camera_flip2, "" + R.raw.camera_flip2, size, size, true, null);
+                    voIpButtonView.singleIcon = new TLottieDrawable(R.raw.camera_flip2, "" + R.raw.camera_flip2, size, size, true, null);
                     voIpButtonView.singleIcon.setMasterParent(voIpButtonView);
                 }
                 break;
             case SPEAKER:
                 if (this.type == Type.BLUETOOTH) {
                     ignoreSetState = isSelected == voIpButtonView.isSelectedState;
-                    RLottieDrawable icon = isSelected ? voIpButtonView.selectedIcon : voIpButtonView.unSelectedIcon;
+                    TLottieDrawable icon = isSelected ? voIpButtonView.selectedIcon : voIpButtonView.unSelectedIcon;
                     icon.setMasterParent(voIpButtonView);
                     icon.setOnAnimationEndListener(() -> AndroidUtilities.runOnUIThread(() -> attachSpeakerToBt(size)));
                     icon.start();
@@ -220,7 +220,7 @@ public class VoIpSwitchLayout extends FrameLayout {
             case BLUETOOTH:
                 if (this.type == Type.SPEAKER) {
                     ignoreSetState = isSelected == voIpButtonView.isSelectedState;
-                    RLottieDrawable icon = isSelected ? voIpButtonView.selectedIcon : voIpButtonView.unSelectedIcon;
+                    TLottieDrawable icon = isSelected ? voIpButtonView.selectedIcon : voIpButtonView.unSelectedIcon;
                     icon.setMasterParent(voIpButtonView);
                     icon.setOnAnimationEndListener(() -> AndroidUtilities.runOnUIThread(() -> attachBtToSpeaker(size)));
                     icon.start();
@@ -241,23 +241,23 @@ public class VoIpSwitchLayout extends FrameLayout {
     }
 
     private void attachSpeakerToBt(int size) {
-        voIpButtonView.unSelectedIcon = new RLottieDrawable(R.raw.speaker_to_bt, "" + R.raw.speaker_to_bt, size, size, true, null);
-        voIpButtonView.selectedIcon = new RLottieDrawable(R.raw.speaker_to_bt, "" + R.raw.speaker_to_bt, size, size, true, null);
+        voIpButtonView.unSelectedIcon = new TLottieDrawable(R.raw.speaker_to_bt, "" + R.raw.speaker_to_bt, size, size, true, null);
+        voIpButtonView.selectedIcon = new TLottieDrawable(R.raw.speaker_to_bt, "" + R.raw.speaker_to_bt, size, size, true, null);
         voIpButtonView.selectedIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY));
     }
 
     private void attachBtToSpeaker(int size) {
-        voIpButtonView.unSelectedIcon = new RLottieDrawable(R.raw.bt_to_speaker, "" + R.raw.bt_to_speaker, size, size, true, null);
-        voIpButtonView.selectedIcon = new RLottieDrawable(R.raw.bt_to_speaker, "" + R.raw.bt_to_speaker, size, size, true, null);
+        voIpButtonView.unSelectedIcon = new TLottieDrawable(R.raw.bt_to_speaker, "" + R.raw.bt_to_speaker, size, size, true, null);
+        voIpButtonView.selectedIcon = new TLottieDrawable(R.raw.bt_to_speaker, "" + R.raw.bt_to_speaker, size, size, true, null);
         voIpButtonView.selectedIcon.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY));
     }
 
     public static class VoIpButtonView extends View {
         private static final int ITEM_SIZE = 52;
 
-        private RLottieDrawable unSelectedIcon;
-        private RLottieDrawable selectedIcon;
-        private RLottieDrawable singleIcon;
+        private TLottieDrawable unSelectedIcon;
+        private TLottieDrawable selectedIcon;
+        private TLottieDrawable singleIcon;
         private final Paint maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint whiteCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint darkPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

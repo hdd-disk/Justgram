@@ -950,13 +950,13 @@ public class AIEditorAlert extends BottomSheetWithRecyclerListView implements No
     }
 
     private CharSequence title;
-    private RLottieDrawable titleLoadingDrawable;
+    private TLottieDrawable titleLoadingDrawable;
 
     @Override
     protected CharSequence getTitle() {
         if (title == null) {
             title = getString(R.string.AIEditor);
-            titleLoadingDrawable = new RLottieDrawable(R.raw.emoji_stars, "emoji_stars", dp(24), dp(24));
+            titleLoadingDrawable = new TLottieDrawable(R.raw.emoji_stars, "emoji_stars", dp(24), dp(24));
             titleLoadingDrawable.setAllowDecodeSingleFrame(true);
             titleLoadingDrawable.setAutoRepeat(1);
         }

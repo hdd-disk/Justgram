@@ -81,8 +81,8 @@ import org.telegram.ui.Components.EditTextBoldCursor;
 import org.telegram.ui.Components.ItemOptions;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.LinkSpanDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.Reactions.ReactionsLayoutInBubble;
 import org.telegram.ui.Components.blur3.BlurredBackgroundDrawableViewFactory;
 import org.telegram.ui.Components.blur3.drawable.color.BlurredBackgroundProvider;
@@ -191,7 +191,7 @@ public class ActionBarMenuItem extends FrameLayout {
     private ImageView clearButton;
     private AnimatorSet clearButtonAnimator;
     private View searchAdditionalButton;
-    protected RLottieImageView iconView;
+    protected TLottieImageView iconView;
     private int iconViewResId;
     protected TextView textView;
     private FrameLayout searchContainer;
@@ -268,7 +268,7 @@ public class ActionBarMenuItem extends FrameLayout {
             }
             addView(textView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.MATCH_PARENT));
         } else {
-            iconView = new RLottieImageView(context);
+            iconView = new TLottieImageView(context);
             iconView.setScaleType(ImageView.ScaleType.CENTER);
             iconView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
             addView(iconView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
@@ -1233,15 +1233,15 @@ public class ActionBarMenuItem extends FrameLayout {
         if (iconView == null) {
             return;
         }
-        if (drawable instanceof RLottieDrawable) {
-            iconView.setAnimation((RLottieDrawable) drawable);
+        if (drawable instanceof TLottieDrawable) {
+            iconView.setAnimation((TLottieDrawable) drawable);
         } else {
             iconView.setImageDrawable(drawable);
         }
         iconViewResId = 0;
     }
 
-    public RLottieImageView getIconView() {
+    public TLottieImageView getIconView() {
         return iconView;
     }
 

@@ -38,7 +38,7 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.ButtonBounce;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 
 public class AcceptDeclineView extends View {
 
@@ -87,7 +87,7 @@ public class AcceptDeclineView extends View {
     Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private boolean isVideo;// = true;
-    private RLottieDrawable acceptVoiceDrawable;
+    private TLottieDrawable acceptVoiceDrawable;
     private Drawable acceptVideoDrawable;
     private final ImageWithWavesView.AvatarWavesDrawable avatarWavesDrawable;
     private final Paint maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -130,7 +130,7 @@ public class AcceptDeclineView extends View {
         callDrawable = ContextCompat.getDrawable(context, R.drawable.calls_decline).mutate();
         cancelDrawable = ContextCompat.getDrawable(context, R.drawable.ic_close_white).mutate();
         cancelDrawable.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY));
-        acceptVoiceDrawable = new RLottieDrawable(R.raw.call_accept, "" + R.raw.call_accept, dp(48), dp(48), true, null);
+        acceptVoiceDrawable = new TLottieDrawable(R.raw.call_accept, "" + R.raw.call_accept, dp(48), dp(48), true, null);
         acceptVoiceDrawable.setAutoRepeat(1);
         acceptVoiceDrawable.setCustomEndFrame(90);
         acceptVoiceDrawable.setMasterParent(this);

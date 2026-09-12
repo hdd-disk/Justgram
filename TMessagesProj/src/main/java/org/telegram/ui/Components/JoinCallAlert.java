@@ -501,7 +501,7 @@ public class JoinCallAlert extends BottomSheet {
         }
 
         if (type == TYPE_CREATE) {
-            RLottieImageView imageView = new RLottieImageView(context);
+            TLottieImageView imageView = new TLottieImageView(context);
             imageView.setAutoRepeat(true);
             imageView.setAnimation(R.raw.utyan_schedule, 120, 120);
             imageView.playAnimation();

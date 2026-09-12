@@ -76,7 +76,7 @@ import org.telegram.ui.Components.FragmentFloatingButton;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.NumberPicker;
 import org.telegram.ui.Components.OutlineTextContainerView;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.SizeNotifierFrameLayout;
 import org.telegram.ui.Components.TextViewSwitcher;
@@ -104,7 +104,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
 
     private final static int ID_SWITCH_TYPE = 1;
 
-    private RLottieImageView lockImageView;
+    private TLottieImageView lockImageView;
 
     private ListAdapter listAdapter;
     private RecyclerListView listView;
@@ -418,7 +418,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
                 innerLinearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 frameLayout.addView(innerLinearLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-                lockImageView = new RLottieImageView(context);
+                lockImageView = new TLottieImageView(context);
                 lockImageView.setFocusable(false);
                 lockImageView.setAnimation(R.raw.tsv_setup_intro, 120, 120);
                 lockImageView.setAutoRepeat(false);
@@ -1098,7 +1098,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
                     view = new HeaderCell(mContext);
                     break;
                 case VIEW_TYPE_UTYAN:
-                    view = new RLottieImageHolderView(mContext);
+                    view = new TLottieImageHolderView(mContext);
                     view.setTag(RecyclerListView.TAG_NOT_SECTION);
                     break;
                 case VIEW_TYPE_INFO:
@@ -1162,7 +1162,7 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
                     break;
                 }
                 case VIEW_TYPE_UTYAN: {
-                    RLottieImageHolderView holderView = (RLottieImageHolderView) holder.itemView;
+                    TLottieImageHolderView holderView = (TLottieImageHolderView) holder.itemView;
                     holderView.imageView.setAnimation(R.raw.utyan_passcode, 100, 100);
                     holderView.imageView.playAnimation();
                     break;
@@ -1242,12 +1242,12 @@ public class PasscodeActivity extends BaseFragment implements NotificationCenter
         return themeDescriptions;
     }
 
-    private final static class RLottieImageHolderView extends FrameLayout {
-        private final RLottieImageView imageView;
+    private final static class TLottieImageHolderView extends FrameLayout {
+        private final TLottieImageView imageView;
 
-        private RLottieImageHolderView(@NonNull Context context) {
+        private TLottieImageHolderView(@NonNull Context context) {
             super(context);
-            imageView = new RLottieImageView(context);
+            imageView = new TLottieImageView(context);
             imageView.setOnClickListener(v -> {
                 if (!imageView.getAnimatedDrawable().isRunning()) {
                     imageView.getAnimatedDrawable().setCurrentFrame(0, false);

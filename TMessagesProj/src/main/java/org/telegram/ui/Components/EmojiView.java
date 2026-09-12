@@ -3887,7 +3887,7 @@ public class EmojiView extends FrameLayout implements
 
     private class EmojiPackHeader extends FrameLayout implements NotificationCenter.NotificationCenterDelegate {
 
-        RLottieImageView lockView;
+        TLottieImageView lockView;
         SimpleTextView headerView;
         TextView markView;
 
@@ -3904,7 +3904,7 @@ public class EmojiView extends FrameLayout implements
         public EmojiPackHeader(Context context) {
             super(context);
 
-            lockView = new RLottieImageView(context);
+            lockView = new TLottieImageView(context);
             lockView.setAnimation(R.raw.unlock_icon, 24, 24);
             lockView.setColorFilter(getThemedColor(Theme.key_chat_emojiPanelStickerSetName));
             addView(lockView, LayoutHelper.createFrameRelatively(20, 20, Gravity.START, 10, 15, 0, 0));

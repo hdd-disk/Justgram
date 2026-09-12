@@ -138,8 +138,8 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
     private final FlashViews.ImageViewInvertable switchCameraButton;
     private final FlashViews.ImageViewInvertable flashButton;
     private final FlashViews flashViews;
-    private RLottieDrawable flashOnDrawable, flashOffDrawable;
-    private RLottieDrawable switchCameraDrawable;
+    private TLottieDrawable flashOnDrawable, flashOffDrawable;
+    private TLottieDrawable switchCameraDrawable;
     private ImageView muteImageView;
     private float progress;
     private CameraInfo selectedCamera;
@@ -471,7 +471,7 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
             flashButton.setContentDescription(LocaleController.getString(flashing ? R.string.AccDescrCameraFlashOff : R.string.AccDescrCameraFlashOn));
             if (!flashing) {
                 if (flashOnDrawable == null) {
-                    flashOnDrawable = new RLottieDrawable(R.raw.roundcamera_flash_on, "roundcamera_flash_on", buttonsSizePx, buttonsSizePx);
+                    flashOnDrawable = new TLottieDrawable(R.raw.roundcamera_flash_on, "roundcamera_flash_on", buttonsSizePx, buttonsSizePx);
                     flashOnDrawable.setCallback(flashButton);
                 }
                 flashButton.setImageDrawable(flashOnDrawable);
@@ -483,7 +483,7 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
                 }
             } else {
                 if (flashOffDrawable == null) {
-                    flashOffDrawable = new RLottieDrawable(R.raw.roundcamera_flash_off, "roundcamera_flash_off", buttonsSizePx, buttonsSizePx);
+                    flashOffDrawable = new TLottieDrawable(R.raw.roundcamera_flash_off, "roundcamera_flash_off", buttonsSizePx, buttonsSizePx);
                     flashOffDrawable.setCallback(flashButton);
                 }
                 flashButton.setImageDrawable(flashOffDrawable);
@@ -706,7 +706,7 @@ public class InstantCameraView extends FrameLayout implements NotificationCenter
         }
 
         if (switchCameraDrawable == null) {
-            switchCameraDrawable = new RLottieDrawable(R.raw.roundcamera_flip, "roundcamera_flip", buttonsSizePx, buttonsSizePx);
+            switchCameraDrawable = new TLottieDrawable(R.raw.roundcamera_flip, "roundcamera_flip", buttonsSizePx, buttonsSizePx);
             switchCameraDrawable.setCurrentFrame(0);
             switchCameraDrawable.setCallback(switchCameraButton);
         }

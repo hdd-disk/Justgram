@@ -62,7 +62,7 @@ import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.Forum.ForumUtilities;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.Premium.PremiumGradient;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Text;
 import org.telegram.ui.Stars.StarsIntroActivity;
 
@@ -471,7 +471,7 @@ public class ShareDialogCell extends FrameLayout implements NotificationCenter.N
         private final LinearGradient gradient;
         private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        private final RLottieDrawable lottieDrawable;
+        private final TLottieDrawable lottieDrawable;
         private final Drawable drawable;
 
         public RepostStoryDrawable(Context context, View parentView, boolean animate, Theme.ResourcesProvider resourcesProvider) {
@@ -490,7 +490,7 @@ public class ShareDialogCell extends FrameLayout implements NotificationCenter.N
             paint.setShader(gradient);
 
             if (animate) {
-                lottieDrawable = new RLottieDrawable(R.raw.story_repost, "story_repost", dp(42), dp(42), true, null);
+                lottieDrawable = new TLottieDrawable(R.raw.story_repost, "story_repost", dp(42), dp(42), true, null);
                 lottieDrawable.setMasterParent(parentView);
                 AndroidUtilities.runOnUIThread(lottieDrawable::start, 450);
                 drawable = null;

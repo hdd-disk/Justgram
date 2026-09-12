@@ -108,8 +108,8 @@ import org.telegram.ui.Components.FlickerLoadingView;
 import org.telegram.ui.Components.HideViewAfterAnimation;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieDrawable;
+import org.telegram.ui.Components.TLottieImageView;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.StaticLayoutEx;
 import org.telegram.ui.Components.ThemeSmallPreviewView;
@@ -162,7 +162,7 @@ public class QrActivity extends BaseFragment {
     private FrameLayout themeLayout;
     private BackupImageView avatarImageView;
     private QrView qrView;
-    private RLottieImageView logoImageView;
+    private TLottieImageView logoImageView;
     private ImageView closeImageView;
 
     private Bitmap emojiThemeIcon;
@@ -369,7 +369,7 @@ public class QrActivity extends BaseFragment {
         });
         rootLayout.addView(qrView);
 
-        logoImageView = new RLottieImageView(context);
+        logoImageView = new TLottieImageView(context);
         logoImageView.setAutoRepeat(true);
         logoImageView.setAnimation(R.raw.plane_logo_plain, 60, 60);
         logoImageView.playAnimation();
@@ -436,7 +436,7 @@ public class QrActivity extends BaseFragment {
             fragmentView.postDelayed(() -> {
                 onItemSelected(currentTheme, 0, true);
 
-                final RLottieDrawable d = logoImageView.getAnimatedDrawable();
+                final TLottieDrawable d = logoImageView.getAnimatedDrawable();
                 if (logoOptimal == null && d != null) {
                     logoOptimal = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                     d.prepareForGenerateCache();
@@ -785,7 +785,7 @@ public class QrActivity extends BaseFragment {
         themeLayout.setVisibility(View.GONE);
         closeImageView.setVisibility(View.GONE);
         logoImageView.setVisibility(View.GONE);
-        RLottieDrawable drawable = logoImageView.getAnimatedDrawable();
+        TLottieDrawable drawable = logoImageView.getAnimatedDrawable();
 
         if (qrView != null) {
             qrView.setForShare(true);
@@ -944,7 +944,7 @@ public class QrActivity extends BaseFragment {
         private AnimatedFloat contentBitmapAlpha = new AnimatedFloat(1f, this,0, 2000, CubicBezierInterpolator.EASE_OUT_QUINT);
         private Paint crossfadeFromPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private Paint crossfadeToPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private RLottieDrawable loadingMatrix;
+        private TLottieDrawable loadingMatrix;
         private final int crossfadeWidthDp = 120;
         private String username;
         private boolean isPhone;
@@ -1161,7 +1161,7 @@ public class QrActivity extends BaseFragment {
                 return;
             }
             if (hasTimer && loadingMatrix == null) {
-                loadingMatrix = new RLottieDrawable(R.raw.qr_matrix, "qr_matrix", dp(200), dp(200));
+                loadingMatrix = new TLottieDrawable(R.raw.qr_matrix, "qr_matrix", dp(200), dp(200));
                 loadingMatrix.setMasterParent(this);
                 loadingMatrix.getPaint().setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
                 loadingMatrix.setAutoRepeat(1);
@@ -1421,8 +1421,8 @@ public class QrActivity extends BaseFragment {
         public final TextView scanButton;
         public final ImageView scanButtonIcon;
         private final RecyclerListView recyclerView;
-        private final RLottieDrawable darkThemeDrawable;
-        private final RLottieImageView darkThemeView;
+        private final TLottieDrawable darkThemeDrawable;
+        private final TLottieImageView darkThemeView;
         private LinearLayoutManager layoutManager;
         private final View topShadow;
         private final View bottomShadow;
@@ -1536,13 +1536,13 @@ public class QrActivity extends BaseFragment {
 
             int drawableColor = fragment.getThemedColor(Theme.key_featuredStickers_addButton);
             int drawableSize = dp(28);
-            darkThemeDrawable = new RLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, drawableSize, drawableSize, false, null);
+            darkThemeDrawable = new TLottieDrawable(R.raw.sun_outline, "" + R.raw.sun_outline, drawableSize, drawableSize, false, null);
             forceDark = !Theme.getActiveTheme().isDark();
             setForceDark(Theme.getActiveTheme().isDark(), false);
             darkThemeDrawable.setPlayInDirectionOfCustomEndFrame(true);
             darkThemeDrawable.setColorFilter(new PorterDuffColorFilter(drawableColor, PorterDuff.Mode.SRC_IN));
 
-            darkThemeView = new RLottieImageView(context) {
+            darkThemeView = new TLottieImageView(context) {
                 @Override
                 public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
                     super.onInitializeAccessibilityNodeInfo(info);

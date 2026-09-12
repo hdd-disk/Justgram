@@ -14,12 +14,12 @@ import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 
 public class DatabaseMigrationHint extends FrameLayout {
 
     LinearLayout container;
-    RLottieImageView stickerView;
+    TLottieImageView stickerView;
     TextView title;
     TextView description1;
     TextView description2;
@@ -32,7 +32,7 @@ public class DatabaseMigrationHint extends FrameLayout {
         container = new LinearLayout(context);
         container.setOrientation(LinearLayout.VERTICAL);
 
-        stickerView = new RLottieImageView(context);
+        stickerView = new TLottieImageView(context);
         stickerView.setAnimation(R.raw.db_migration_placeholder, 150, 150);
         stickerView.getAnimatedDrawable().setAutoRepeat(1);
         stickerView.playAnimation();

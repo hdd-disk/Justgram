@@ -1005,7 +1005,7 @@ public class ProfileActionsView extends View {
         private final Rect bounds = new Rect();
         private Drawable drawableFilled;
         private Drawable drawableOutline;
-        private RLottieDrawable drawableAnimated;
+        private TLottieDrawable drawableAnimated;
         private Text text;
         private float textScale = 1.0f;
 
@@ -1198,7 +1198,7 @@ public class ProfileActionsView extends View {
         @SuppressLint("UseCompatLoadingForDrawables")
         public void updateDrawable(@RawRes int animatedRes, @DrawableRes int filledRes, @DrawableRes int outlineRes) {
             if (animatedRes != 0) {
-                RLottieDrawable drawable = new RLottieDrawable(animatedRes, String.valueOf(animatedRes),
+                TLottieDrawable drawable = new TLottieDrawable(animatedRes, String.valueOf(animatedRes),
                     dp(56), dp(56), false, null);
                 drawable.setMasterParent(ProfileActionsView.this);
                 drawable.start();

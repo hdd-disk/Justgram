@@ -37,7 +37,7 @@ public class SuggestBirthdayActionLayout {
     private final Theme.ResourcesProvider resourcesProvider;
 
 //    private final AnimatedEmojiDrawable sticker;
-    private final RLottieDrawable sticker;
+    private final TLottieDrawable sticker;
 
     private TL_account.TL_birthday birthday;
     private Text text;
@@ -56,7 +56,7 @@ public class SuggestBirthdayActionLayout {
         this.view = view;
         this.resourcesProvider = resourcesProvider;
 
-        sticker = new RLottieDrawable(R.raw.cake, "cake", dp(66), dp(66), true, null);
+        sticker = new TLottieDrawable(R.raw.cake, "cake", dp(66), dp(66), true, null);
         sticker.restart();
 //        sticker = AnimatedEmojiDrawable.make(currentAccount, AnimatedEmojiDrawable.CACHE_TYPE_MESSAGES_LARGE, 5370999492914976897L);
         bounce = new ButtonBounce(view);

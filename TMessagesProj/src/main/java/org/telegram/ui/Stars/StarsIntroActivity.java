@@ -132,7 +132,7 @@ import org.telegram.ui.Components.Premium.GLIcon.GLIconTextureView;
 import org.telegram.ui.Components.Premium.GLIcon.Icon3D;
 import org.telegram.ui.Components.Premium.StarParticlesView;
 import org.telegram.ui.Components.Premium.boosts.UserSelectorBottomSheet;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.RecyclerListView;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 import org.telegram.ui.Components.StarAppsSheet;
@@ -327,7 +327,7 @@ public class StarsIntroActivity extends GradientHeaderActivity implements Notifi
 
         starBalanceIcon = new SpannableStringBuilder("S");
         final ImageReceiverSpan starBalanceIconSpan = new ImageReceiverSpan(starBalanceTextView, currentAccount, 42);
-        starBalanceIconSpan.imageReceiver.setImageBitmap(new RLottieDrawable(R.raw.star_reaction, "s" + R.raw.star_reaction, dp(42), dp(42)));
+        starBalanceIconSpan.imageReceiver.setImageBitmap(new TLottieDrawable(R.raw.star_reaction, "s" + R.raw.star_reaction, dp(42), dp(42)));
         starBalanceIconSpan.imageReceiver.setAutoRepeat(2);
         starBalanceIconSpan.enableShadow(false);
         starBalanceIconSpan.translate(-dp(3), 0);
@@ -3720,7 +3720,7 @@ public class StarsIntroActivity extends GradientHeaderActivity implements Notifi
                     @Override
                     public void didSetImage(ImageReceiver imageReceiver, boolean set, boolean thumb, boolean memCache) {
                         if (set) {
-                            RLottieDrawable drawable = imageReceiver.getLottieAnimation();
+                            TLottieDrawable drawable = imageReceiver.getLottieAnimation();
                             if (drawable != null && !played[0]) {
                                 drawable.setCurrentFrame(0, false);
                                 AndroidUtilities.runOnUIThread(drawable::restart);
