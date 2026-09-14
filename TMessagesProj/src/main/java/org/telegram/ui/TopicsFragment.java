@@ -52,6 +52,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import org.telegram.ui.recyclerview.LinearSmoothScrollerCustom;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.exteragram.messenger.config.BottomNavigationBar;
+
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.AnimationNotificationsLocker;
@@ -401,8 +403,8 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
 
     @Override
     public View createView(Context context) {
-        additionNavigationBarHeight = parentDialogsActivity != null && parentDialogsActivity.hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
-        additionFloatingButtonOffset = parentDialogsActivity != null && parentDialogsActivity.hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
+        additionNavigationBarHeight = parentDialogsActivity != null && parentDialogsActivity.hasMainTabs && BottomNavigationBar.visible() ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
+        additionFloatingButtonOffset = parentDialogsActivity != null && parentDialogsActivity.hasMainTabs && BottomNavigationBar.visible() ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
 
         fragmentView = contentView = new SizeNotifierFrameLayout(context) {
             {
@@ -553,7 +555,7 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
             protected void drawList(Canvas blurCanvas, boolean top, ArrayList<IViewWithInvalidateCallback> views) {
                 for (int i = 0; i < recyclerListView.getChildCount(); i++) {
                     View child = recyclerListView.getChildAt(i);
-                    if (child.getY() < AndroidUtilities.dp(100) && child.getVisibility() == View.VISIBLE) {
+                    if (child.getY() < dp(100) && child.getVisibility() == View.VISIBLE) {
                         int restore = blurCanvas.save();
                         blurCanvas.translate(recyclerListView.getX() + child.getX(), getY() + recyclerListView.getY() + child.getY());
                         if (views != null && child instanceof IViewWithInvalidateCallback) {
@@ -869,13 +871,13 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
         other.setContentDescription(getString(R.string.AccDescrMoreOptions));
         other.addSubItem(toggle_id, R.drawable.msg_discussion, getString(R.string.TopicViewAsMessages));
         addMemberSubMenu = other.addSubItem(add_member_id, R.drawable.msg_addcontact, getString(R.string.AddMember));
-        boostGroupSubmenu = other.addSubItem(boost_group_id, 0, new TLottieDrawable(R.raw.boosts, "" + R.raw.boosts, AndroidUtilities.dp(24), AndroidUtilities.dp(24)), getString(R.string.BoostingBoostGroupMenu), true, false);
+        boostGroupSubmenu = other.addSubItem(boost_group_id, 0, new TLottieDrawable(R.raw.boosts, "" + R.raw.boosts, dp(24), dp(24)), getString(R.string.BoostingBoostGroupMenu), true, false);
         createTopicSubmenu = other.addSubItem(create_topic_id, R.drawable.msg_topic_create, getString(R.string.CreateTopic));
         reportSubmenu = other.addSubItem(report, R.drawable.msg_report, getString(R.string.ReportChat));
         deleteChatSubmenu = other.addSubItem(delete_chat_id, R.drawable.msg_leave, getString(R.string.LeaveMegaMenu), themeDelegate);
 
         avatarContainer = new ChatAvatarContainer(context, this, false, resourceProvider);
-        avatarContainer.getAvatarImageView().setRoundRadius(AndroidUtilities.dp(16));
+        avatarContainer.getAvatarImageView().setRoundRadius(dp(16));
         avatarContainer.setOccupyStatusBar(!AndroidUtilities.isTablet() && !inPreviewMode);
         avatarContainer.allowDrawStories = getDialogId() < 0;
         avatarContainer.setClipChildren(false);
@@ -914,7 +916,7 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
 
         SpannableString generalIcon = new SpannableString("#");
         Drawable generalIconDrawable = ForumUtilities.createGeneralTopicDrawable(getContext(), .85f, Color.WHITE, false);
-        generalIconDrawable.setBounds(0, AndroidUtilities.dp(2), AndroidUtilities.dp(16), AndroidUtilities.dp(18));
+        generalIconDrawable.setBounds(0, dp(2), dp(16), dp(18));
         generalIcon.setSpan(new ImageSpan(generalIconDrawable, DynamicDrawableSpan.ALIGN_CENTER), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         pullForegroundDrawable = new PullForegroundDrawable(
             AndroidUtilities.replaceCharSequence("#", getString(R.string.AccSwipeForGeneral), generalIcon),
@@ -1124,14 +1126,14 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
                         if (view != null) {
                             view.setTranslationX(0);
                         }
-                        if (view != null && (view.getBottom() - pTop) <= AndroidUtilities.dp(1)) {
+                        if (view != null && (view.getBottom() - pTop) <= dp(1)) {
                             currentPosition = 1;
                         }
                     }
                     if (!isDragging) {
                         View view = layoutManager.findViewByPosition(currentPosition);
                         if (view != null) {
-                            int dialogHeight = AndroidUtilities.dp(SharedConfig.useThreeLinesLayout ? 78 : 72) + 1;
+                            int dialogHeight = dp(SharedConfig.useThreeLinesLayout ? 78 : 72) + 1;
                             int canScrollDy = -(view.getTop() - pTop) + (currentPosition - 1) * dialogHeight;
                             int positiveDy = Math.abs(dy);
                             if (canScrollDy < positiveDy) {
@@ -1177,7 +1179,7 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
                     if (firstView != null) {
                         firstView.setTranslationX(0);
                     }
-                    if (currentPosition == 0 && firstView != null && (firstView.getBottom() - pTop) >= AndroidUtilities.dp(4)) {
+                    if (currentPosition == 0 && firstView != null && (firstView.getBottom() - pTop) >= dp(4)) {
                         if (startArchivePullingTime == 0) {
                             startArchivePullingTime = System.currentTimeMillis();
                         }
@@ -1291,7 +1293,7 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
         itemTouchHelper.attachToRecyclerView(recyclerListView);
 
         contentView.addView(recyclerListView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
-        ((ViewGroup.MarginLayoutParams) recyclerListView.getLayoutParams()).topMargin = -AndroidUtilities.dp(100);
+        ((ViewGroup.MarginLayoutParams) recyclerListView.getLayoutParams()).topMargin = -dp(100);
         floatingButton = new FragmentFloatingButton(getContext(), resourceProvider);
         contentView.addView(floatingButton, FragmentFloatingButton.createDefaultLayoutParams());
         floatingButton.setOnClickListener(v -> presentFragment(TopicCreateFragment.create(chatId, 0)));
@@ -1368,7 +1370,7 @@ public class TopicsFragment extends BaseFragment implements NotificationCenter.N
         });
 
         bottomOverlayProgress = new RadialProgressView(context, themeDelegate);
-        bottomOverlayProgress.setSize(AndroidUtilities.dp(22));
+        bottomOverlayProgress.setSize(dp(22));
         bottomOverlayProgress.setVisibility(View.INVISIBLE);
         bottomOverlayContainer.addView(bottomOverlayProgress, LayoutHelper.createFrame(30, 30, Gravity.CENTER));
 

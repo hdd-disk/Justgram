@@ -8,6 +8,8 @@
 
 package org.telegram.ui;
 
+import com.exteragram.messenger.config.BottomNavigationBar;
+
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.AndroidUtilities.dpf2;
 import static org.telegram.messenger.AndroidUtilities.ilerp;
@@ -455,6 +457,25 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
     private boolean doNotSetForeground;
     public boolean hasMainTabs;
+    private MainTabsActivityController mainTabsActivityController;
+    private boolean mainTabsHiddenByScroll;
+
+    public void setMainTabsActivityController(MainTabsActivityController controller) {
+        this.mainTabsActivityController = controller;
+    }
+
+    public void updateMainTabsVisibility() {
+        if (mainTabsActivityController != null) {
+            boolean drawerOpen = LaunchActivity.instance != null
+                    && LaunchActivity.instance.drawerLayoutContainer != null
+                    && LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer() != null
+                    && LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer().isDrawerOpen();
+            boolean visible = BottomNavigationBar.visible()
+                    && !mainTabsHiddenByScroll
+                    && !drawerOpen;
+            mainTabsActivityController.setTabsVisible(visible);
+        }
+    }
 
     private boolean[] isOnline = new boolean[1];
 
@@ -2332,8 +2353,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         setActionsMode();
 
-        additionNavigationBarHeight = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
-        additionFloatingButtonOffset = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
+        additionNavigationBarHeight = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
+        additionFloatingButtonOffset = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
 
         this.nowPlayingHandler = new Handler(Looper.getMainLooper());
         this.nowPlayingRunnable = new Runnable() {
@@ -5933,6 +5954,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (fwdRestrictedHint != null) {
                     fwdRestrictedHint.hide();
                 }
+                mainTabsHiddenByScroll = BottomNavigationBar.floating() && dy > 0 && recyclerView.canScrollVertically(1);
+                updateMainTabsVisibility();
                 checkListViewScroll();
                 if (participantsMap != null && !usersEndReached && layoutManager.findLastVisibleItemPosition() > membersEndRow - 8) {
                     getChannelParticipants(false);

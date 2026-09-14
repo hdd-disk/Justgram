@@ -54,6 +54,7 @@ import android.util.SparseIntArray;
 import android.view.ActionMode;
 
 import com.exteragram.messenger.ExteraConfig;
+import com.exteragram.messenger.drawer.DrawerContainer;
 import com.exteragram.messenger.plugins.IntentsController;
 import com.exteragram.messenger.plugins.PluginsController;
 import android.view.Gravity;
@@ -542,6 +543,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         setupActionBarLayout();
         drawerLayoutContainer.setParentActionBarLayout(actionBarLayout);
         actionBarLayout.setDrawerLayoutContainer(drawerLayoutContainer);
+        syncDrawerContainerEnabled();
         actionBarLayout.setFragmentStack(mainFragmentsStack);
         actionBarLayout.setFragmentStackChangedListener(() -> {
             checkSystemBarColors(true, false);
@@ -1212,6 +1214,9 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         UserConfig.getInstance(0).saveConfig(false);
 
         checkCurrentAccount();
+        if (drawerLayoutContainer != null && drawerLayoutContainer.getDrawerContainer() != null) {
+            drawerLayoutContainer.getDrawerContainer().onAccountChanged();
+        }
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.activeAccountChanged, account);
         if (AndroidUtilities.isTablet()) {
             layersActionBarLayout.removeAllFragments();
@@ -1426,6 +1431,21 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         }
         termsOfServiceView.show(account, tos);
         termsOfServiceView.animate().alpha(1f).setDuration(150).setInterpolator(AndroidUtilities.decelerateInterpolator).setListener(null).start();
+    }
+
+    public void syncDrawerContainerEnabled() {
+        if (drawerLayoutContainer == null) {
+            return;
+        }
+        if (ExteraConfig.getNavigationDrawer()) {
+            if (drawerLayoutContainer.getDrawerContainer() == null) {
+                drawerLayoutContainer.setDrawerContainer(new DrawerContainer(this));
+            }
+        } else {
+            if (drawerLayoutContainer.getDrawerContainer() != null) {
+                drawerLayoutContainer.setDrawerContainer(null);
+            }
+        }
     }
 
     public void showPasscodeActivity(boolean fingerprint, boolean animated, int x, int y, Runnable onShow, Runnable onStart) {

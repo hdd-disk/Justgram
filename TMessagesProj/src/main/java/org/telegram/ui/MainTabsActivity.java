@@ -36,6 +36,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.math.MathUtils;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.exteragram.messenger.config.BottomNavigationBar;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildConfig;
@@ -811,17 +813,23 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             args.putBoolean("needPhonebook", true);
             args.putBoolean("needFinishFragment", false);
             args.putBoolean("hasMainTabs", true);
-            return new ContactsActivity(args);
+            ContactsActivity contactsActivity = new ContactsActivity(args);
+            contactsActivity.setMainTabsActivityController(new MainTabsActivityControllerImpl());
+            return contactsActivity;
         } else if (position == POSITION_CALLS_OR_SETTINGS) {
             if (getUserConfig().showCallsTab) {
                 Bundle args = new Bundle();
                 args.putBoolean("needFinishFragment", false);
                 args.putBoolean("hasMainTabs", true);
-                return new CallLogActivity(args);
+                CallLogActivity callLogActivity = new CallLogActivity(args);
+                callLogActivity.setMainTabsActivityController(new MainTabsActivityControllerImpl());
+                return callLogActivity;
             }
             Bundle args = new Bundle();
             args.putBoolean("hasMainTabs", true);
-            return new SettingsActivity(args);
+            SettingsActivity settingsActivity = new SettingsActivity(args);
+            settingsActivity.setMainTabsActivityController(new MainTabsActivityControllerImpl());
+            return settingsActivity;
         } else if (position == POSITION_CHATS) {
             Bundle args = new Bundle();
             args.putBoolean("hasMainTabs", true);
@@ -834,7 +842,9 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             args.putBoolean("my_profile", true);
             // args.putBoolean("expandPhoto", true);
             args.putBoolean("hasMainTabs", true);
-            return new ProfileActivity(args);
+            ProfileActivity profileActivity = new ProfileActivity(args);
+            profileActivity.setMainTabsActivityController(new MainTabsActivityControllerImpl());
+            return profileActivity;
         }
         return null;
     }
@@ -1094,8 +1104,8 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         final float scale = lerp(0.85f, 1f, factor);
 
         tabsViewWrapper.setTranslationY(lerp(hiddenY, normalY, factor));
-        tabsView.setClickable(factor > 1);
-        tabsView.setEnabled(factor > 1);
+        tabsView.setClickable(factor > 0.5f);
+        tabsView.setEnabled(factor > 0.5f);
         tabsView.setAlpha(factor);
         tabsView.setVisibility(factor > 0 ? View.VISIBLE : View.GONE);
     }
@@ -1123,7 +1133,11 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
     private class MainTabsActivityControllerImpl implements MainTabsActivityController {
         @Override
         public void setTabsVisible(boolean visible) {
-            animatorTabsVisible.setValue(visible, true);
+            if (BottomNavigationBar.hidden()) {
+                animatorTabsVisible.setValue(false, true);
+            } else {
+                animatorTabsVisible.setValue(visible, true);
+            }
         }
     }
 

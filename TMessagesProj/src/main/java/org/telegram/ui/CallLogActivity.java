@@ -1,5 +1,7 @@
 package org.telegram.ui;
 
+import com.exteragram.messenger.config.BottomNavigationBar;
+
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.LocaleController.formatString;
 import static org.telegram.messenger.LocaleController.getString;
@@ -137,6 +139,8 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 	private HintView2 hideCallTabsHintView;
 	private boolean needFinishFragment = true;
 	private boolean hasMainTabs;
+	private MainTabsActivityController mainTabsActivityController;
+	private boolean mainTabsHiddenByScroll;
 
 	private @Nullable ImageView actionModeCloseView;
 	private NumberTextView selectedDialogsCountTextView;
@@ -199,6 +203,23 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 		}
 	}
 
+	public void setMainTabsActivityController(MainTabsActivityController controller) {
+		this.mainTabsActivityController = controller;
+	}
+
+	public void updateMainTabsVisibility() {
+		if (mainTabsActivityController != null) {
+			boolean drawerOpen = LaunchActivity.instance != null
+					&& LaunchActivity.instance.drawerLayoutContainer != null
+					&& LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer() != null
+					&& LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer().isDrawerOpen();
+			boolean visible = BottomNavigationBar.visible()
+					&& !mainTabsHiddenByScroll
+					&& !drawerOpen;
+			mainTabsActivityController.setTabsVisible(visible);
+		}
+	}
+
 	private class EmptyTextProgressView extends FrameLayout {
 
 		private final TextView emptyTextView1;
@@ -244,7 +265,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 			emptyTextView2.setTextColor(Theme.getColor(Theme.key_emptyListPlaceholder));
 			emptyTextView2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 			emptyTextView2.setGravity(Gravity.CENTER);
-			emptyTextView2.setLineSpacing(AndroidUtilities.dp(2), 1);
+			emptyTextView2.setLineSpacing(dp(2), 1);
 			addView(emptyTextView2, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER, 17, 80, 17, 0));
 
 			progressView.setAlpha(0f);
@@ -469,8 +490,8 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 
 			profileSearchCell = new ProfileSearchCell(context);
 			profileSearchCell.setCallCellStyle();
-			profileSearchCell.setPadding(LocaleController.isRTL ? AndroidUtilities.dp(32) : 0, 0, LocaleController.isRTL ? 0 : AndroidUtilities.dp(32), 0);
-			profileSearchCell.setSublabelOffset(AndroidUtilities.dp(LocaleController.isRTL ? 2 : -2), -AndroidUtilities.dp(7));
+			profileSearchCell.setPadding(LocaleController.isRTL ? dp(32) : 0, 0, LocaleController.isRTL ? 0 : dp(32), 0);
+			profileSearchCell.setSublabelOffset(dp(LocaleController.isRTL ? 2 : -2), -dp(7));
 			addView(profileSearchCell, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
 			avatarsImageView = new AvatarsImageView(context, false);
@@ -503,7 +524,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 			checkBox.setChecked(checked, animated);
 		}
 
-		public void set(CallLogRow row, View.OnClickListener imageOnClick) {
+		public void set(CallLogRow row, OnClickListener imageOnClick) {
 			imageView.setImageResource(row.video ? R.drawable.menu_videocall : R.drawable.menu_call_create_2_24);
 			TLRPC.Message last = row.calls.get(0);
 			SpannableString subtitle;
@@ -607,7 +628,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 				cell.setChecked(item.checked, false);
 			}
 
-			public static UItem of(CallLogRow row, View.OnClickListener onImageClick) {
+			public static UItem of(CallLogRow row, OnClickListener onImageClick) {
 				final UItem item = UItem.ofFactory(Factory.class);
 				item.object = row;
 				item.clickCallback = onImageClick;
@@ -631,8 +652,8 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 
 			profileSearchCell = new ProfileSearchCell(context);
 			profileSearchCell.setCallCellStyle();
-			profileSearchCell.setPadding(LocaleController.isRTL ? (AndroidUtilities.dp(28 + 16) + width) : 0, 0, LocaleController.isRTL ? 0 : (AndroidUtilities.dp(28 + 16) + width), 0);
-			profileSearchCell.setSublabelOffset(0, -AndroidUtilities.dp(4));
+			profileSearchCell.setPadding(LocaleController.isRTL ? (dp(28 + 16) + width) : 0, 0, LocaleController.isRTL ? 0 : (dp(28 + 16) + width), 0);
+			profileSearchCell.setSublabelOffset(0, -dp(4));
 			addView(profileSearchCell, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
 			button.setText(text);
@@ -640,11 +661,11 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 			button.setTextColor(Theme.getColor(Theme.key_featuredStickers_buttonText));
 			button.setProgressColor(Theme.getColor(Theme.key_featuredStickers_buttonProgress));
 			button.setBackgroundRoundRect(Theme.getColor(Theme.key_telegram_color), Theme.getColor(Theme.key_featuredStickers_addButtonPressed), 16);
-			button.setPadding(AndroidUtilities.dp(14), 0, AndroidUtilities.dp(14), 0);
+			button.setPadding(dp(14), 0, dp(14), 0);
 			addView(button, LayoutHelper.createFrameRelatively(LayoutHelper.WRAP_CONTENT, 28, Gravity.TOP | Gravity.END, 0, 16, 14, 0));
 		}
 
-		public void setChat(TLRPC.Chat chat, View.OnClickListener onJoinClick) {
+		public void setChat(TLRPC.Chat chat, OnClickListener onJoinClick) {
 			currentChat = chat;
 			button.setTag(chat.id);
 			String text;
@@ -680,7 +701,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 				((GroupCallCell) view).setChat((TLRPC.Chat) item.object, item.clickCallback);
 			}
 
-			public static UItem of(TLRPC.Chat chat, View.OnClickListener onJoinClick) {
+			public static UItem of(TLRPC.Chat chat, OnClickListener onJoinClick) {
 				final UItem item = UItem.ofFactory(Factory.class);
 				item.object = chat;
 				item.clickCallback = onJoinClick;
@@ -706,8 +727,8 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 			hasMainTabs = arguments.getBoolean("hasMainTabs", false);
 		}
 
-		additionNavigationBarHeight = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
-		additionFloatingButtonOffset = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
+		additionNavigationBarHeight = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
+		additionFloatingButtonOffset = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
 
 		return true;
 	}
@@ -871,6 +892,8 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 
 				if (dy != 0 && scrollUpdated) {
 					floatingButton.setButtonVisible(dy < 0, true);
+					mainTabsHiddenByScroll = BottomNavigationBar.floating() && dy > 0 && recyclerView.canScrollVertically(1);
+					updateMainTabsVisibility();
 				}
 				scrollUpdated = true;
 
@@ -1159,7 +1182,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 		CheckBoxCell cell = new CheckBoxCell(getParentActivity(), 1);
 		cell.setBackground(Theme.getSelectorDrawable(false));
 		cell.setText(getString(R.string.DeleteCallsForEveryone), "", false, false);
-		cell.setPadding(LocaleController.isRTL ? AndroidUtilities.dp(8) : 0, 0, LocaleController.isRTL ? 0 : AndroidUtilities.dp(8), 0);
+		cell.setPadding(LocaleController.isRTL ? dp(8) : 0, 0, LocaleController.isRTL ? 0 : dp(8), 0);
 		frameLayout.addView(cell, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 48, Gravity.TOP | Gravity.LEFT, 8, 0, 8, 0));
 		cell.setOnClickListener(v -> {
 			CheckBoxCell cell1 = (CheckBoxCell) v;
@@ -1254,7 +1277,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 		actionMode.addView(selectedDialogsCountTextView, LayoutHelper.createLinear(0, LayoutHelper.MATCH_PARENT, 1.0f, hasMainTabs ? 18 : 72, 0, 0, 0));
 		selectedDialogsCountTextView.setOnTouchListener((v, event) -> true);
 
-		actionModeViews.add(actionMode.addItemWithWidth(delete, R.drawable.msg_delete, AndroidUtilities.dp(54), getString(R.string.Delete)));
+		actionModeViews.add(actionMode.addItemWithWidth(delete, R.drawable.msg_delete, dp(54), getString(R.string.Delete)));
 	}
 
 	private boolean addOrRemoveSelectedDialog(ArrayList<TLRPC.Message> messages, CallCell cell) {
@@ -1524,7 +1547,11 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 	}
 
 	private void checkUi_floatingButton() {
-        floatingButton.setTranslationY(-navigationBarHeight - additionFloatingButtonOffset - additionalFloatingTranslation);
+		additionNavigationBarHeight = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
+		additionFloatingButtonOffset = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
+		if (floatingButton != null) {
+			floatingButton.setTranslationY(-navigationBarHeight - additionFloatingButtonOffset - additionalFloatingTranslation);
+		}
 	}
 
 	private void checkUi_listViewPadding() {
@@ -1699,7 +1726,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 
 		ImageView linkOptionsView = new ImageView(context);
 		linkOptionsView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_ab_other));
-		linkOptionsView.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
+		linkOptionsView.setContentDescription(getString(R.string.AccDescrMoreOptions));
 		linkOptionsView.setScaleType(ImageView.ScaleType.CENTER);
 		linkOptionsView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_dialogTextGray3, resourcesProvider), PorterDuff.Mode.SRC_IN));
 		linkContainer.addView(linkOptionsView, LayoutHelper.createFrame(40, 48, Gravity.RIGHT | Gravity.CENTER_VERTICAL));
@@ -1845,7 +1872,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 				.add(R.drawable.msg_qrcode, getString(R.string.GetQRCode), () -> {
 					QRCodeBottomSheet qrCodeBottomSheet = new QRCodeBottomSheet(
 						context,
-						LocaleController.getString(R.string.InviteByQRCode),
+						getString(R.string.InviteByQRCode),
 						currentLink[0],
 						getString(R.string.QRCodeLinkGroupCall),
 						false

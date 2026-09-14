@@ -1,11 +1,13 @@
 package com.exteragram.messenger.badges;
 
+import com.exteragram.messenger.api.dto.BadgeDTO;
 import tw.nekomimi.nekogram.helpers.remote.TrustedPluginsRemoteHelper;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public final class BadgesController {
     public static final BadgesController INSTANCE = new BadgesController();
@@ -57,5 +59,30 @@ public final class BadgesController {
 
     public boolean hasBadge(Object user) {
         return true;
+    }
+
+    public boolean canChangeBadge() {
+        return false;
+    }
+
+    public boolean canChangeBadge(Object user) {
+        return false;
+    }
+
+    public BadgeDTO getBadge(Object user) {
+        return null;
+    }
+
+    public BadgeDTO getDefaultBadge() {
+        return null;
+    }
+
+    public void updateBadge(BadgeDTO badgeDTO, Consumer<String> callback) {
+        if (callback != null) {
+            callback.accept("ok");
+        }
+    }
+
+    public void showBadgeBulletin(Object fragment, Object user, Object resourcesProvider, int account, Object containerLayout, Boolean showButton) {
     }
 }

@@ -11223,4 +11223,28 @@
     <string name="UnsupportedMessageTitle">Unsupported Message</string>
     <string name="UnsupportedMessageMessage">Update Telegram to view this message</string>
     <string name="UnsupportedUpdate">Update</string>
+
+    <string name="NavigationDrawer">Navigation Drawer</string>
+    <string name="NavigationDrawerImmersiveAnimation">Immersive Animation</string>
+    <string name="NavigationDrawerInfo">Replaces the top-right menu with a classic swipe-to-open drawer panel.</string>
+    <string name="NavigationDrawerProxyPingShort">%1$d ms</string>
+    <string name="PredictiveBackInfo">Adjusts how far the screen moves when swiping back.</string>
+    <string name="PredictiveBackIntensity">Predictive Back Intensity</string>
+    <string name="PredictiveBackMax">Max</string>
+    <string name="SpringAnimations">Spring Animations</string>
+    <string name="SpringAnimationsInfo">Enables smoother animations when switching screens and opening the drawer.</string>
+    <string name="TabletMode">Tablet Mode</string>
+    <string name="BottomNavigationBarMode">Bottom Navigation Bar</string>
+    <string name="BottomNavigationModeFloating">Floating</string>
+    <string name="BottomNavigationModeHide">Hide</string>
+    <string name="BottomNavigationModeShow">Show</string>
+    <string name="MainMenuAddDivider">Add Divider</string>
+    <string name="MainMenuDivider">Divider</string>
+    <string name="MainMenuHiddenItems">Hidden Menu Items</string>
+    <string name="MainMenuItems">Menu Items</string>
+    <string name="MainMenuItemsInfo">Tap to show or hide items, hold to reorder.</string>
+    <string name="MainMenuRemoveSettingsInfo">Settings cannot be hidden while the bottom navigation bar is hidden.</string>
+    <string name="AppNavigation">App Navigation</string>
+    <string name="RestartRequired">Restart the app for changes to take effect.</string>
+    <string name="Feed">Feed</string>
 </resources>

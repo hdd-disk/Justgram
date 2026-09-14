@@ -8,6 +8,8 @@
 
 package org.telegram.ui;
 
+import com.exteragram.messenger.config.BottomNavigationBar;
+
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.AndroidUtilities.lerp;
 import static org.telegram.messenger.LocaleController.getString;
@@ -153,6 +155,7 @@ public class ContactsActivity extends BaseFragment implements FactorAnimator.Tar
     private boolean onlyUsers;
     private boolean needPhonebook;
     public boolean hasMainTabs;
+    private MainTabsActivityController mainTabsActivityController;
     private boolean destroyAfterSelect;
     private boolean returnAsResult;
     private boolean createSecretChat;
@@ -216,6 +219,10 @@ public class ContactsActivity extends BaseFragment implements FactorAnimator.Tar
         }
     }
 
+    public void setMainTabsActivityController(MainTabsActivityController controller) {
+        this.mainTabsActivityController = controller;
+    }
+
     @Override
     public boolean onFragmentCreate() {
         super.onFragmentCreate();
@@ -252,8 +259,8 @@ public class ContactsActivity extends BaseFragment implements FactorAnimator.Tar
         getContactsController().checkInviteText();
         getContactsController().reloadContactsStatusesMaybe(false);
 
-        additionNavigationBarHeight = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
-        additionFloatingButtonOffset = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
+        additionNavigationBarHeight = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
+        additionFloatingButtonOffset = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
 
         return true;
     }
@@ -1662,13 +1669,26 @@ public class ContactsActivity extends BaseFragment implements FactorAnimator.Tar
 
     private void checkUi_floatingButtonPosition() {
         if (floatingButton != null) {
+            additionNavigationBarHeight = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
+            additionFloatingButtonOffset = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT + DialogsActivity.MAIN_TABS_MARGIN) : 0;
             floatingButton.setTranslationY(-navigationBarHeight - additionFloatingButtonOffset - additionalFloatingTranslation);
         }
     }
 
-    private void checkUi_floatingButtonVisible() {
+    public void checkUi_floatingButtonVisible() {
         if (floatingButton != null && listViewAdapter != null) {
             floatingButton.setButtonVisible(floatingButtonVisibleByScroll && !searching && !listViewAdapter.isEmpty(), true);
+        }
+        if (mainTabsActivityController != null) {
+            boolean drawerOpen = LaunchActivity.instance != null
+                    && LaunchActivity.instance.drawerLayoutContainer != null
+                    && LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer() != null
+                    && LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer().isDrawerOpen();
+            boolean visible = BottomNavigationBar.visible()
+                    && (!BottomNavigationBar.floating() || floatingButtonVisibleByScroll)
+                    && !searching
+                    && !drawerOpen;
+            mainTabsActivityController.setTabsVisible(visible);
         }
     }
 

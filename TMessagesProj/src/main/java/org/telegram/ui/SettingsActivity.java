@@ -1,5 +1,7 @@
 package org.telegram.ui;
 
+import com.exteragram.messenger.config.BottomNavigationBar;
+
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.AndroidUtilities.lerp;
 import static org.telegram.messenger.AndroidUtilities.replaceSingleTag;
@@ -185,6 +187,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
     private TextView subtitleView;
     private TextView versionView;
     public boolean hasMainTabs;
+    private MainTabsActivityController mainTabsActivityController;
+    private boolean mainTabsHiddenByScroll;
 
     private View navigationBar;
 
@@ -208,6 +212,23 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         }
     }
 
+    public void setMainTabsActivityController(MainTabsActivityController controller) {
+        this.mainTabsActivityController = controller;
+    }
+
+    public void updateMainTabsVisibility() {
+        if (mainTabsActivityController != null) {
+            boolean drawerOpen = LaunchActivity.instance != null
+                    && LaunchActivity.instance.drawerLayoutContainer != null
+                    && LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer() != null
+                    && LaunchActivity.instance.drawerLayoutContainer.getDrawerContainer().isDrawerOpen();
+            boolean visible = BottomNavigationBar.visible()
+                    && !mainTabsHiddenByScroll
+                    && !drawerOpen;
+            mainTabsActivityController.setTabsVisible(visible);
+        }
+    }
+
     @Override
     public boolean onFragmentCreate() {
         getNotificationCenter().addObserver(this, NotificationCenter.updateInterfaces);
@@ -218,7 +239,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             hasMainTabs = arguments.getBoolean("hasMainTabs", false);
         }
 
-        additionNavigationBarHeight = hasMainTabs ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
+        additionNavigationBarHeight = (hasMainTabs && BottomNavigationBar.visible()) ? dp(DialogsActivity.MAIN_TABS_HEIGHT_WITH_MARGINS) : 0;
         return super.onFragmentCreate();
     }
 
@@ -357,6 +378,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 updateActionBarVisible();
+                mainTabsHiddenByScroll = BottomNavigationBar.floating() && dy > 0 && recyclerView.canScrollVertically(1);
+                updateMainTabsVisibility();
                 if (listView.scrollingByUser) {
                     AndroidUtilities.hideKeyboard(fragmentView);
                 }
@@ -433,7 +456,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 super.onDraw(canvas);
             }
         };
-        avatarProgressView.setSize(AndroidUtilities.dp(26));
+        avatarProgressView.setSize(dp(26));
         avatarProgressView.setProgressColor(0xffffffff);
         avatarProgressView.setNoProgress(false);
         avatarContainer.addView(avatarProgressView, LayoutHelper.createFrame(90, 90, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 15, 0, 0));
@@ -861,10 +884,10 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 showDialog(AlertsCreator.createSupportAlert(this, resourceProvider));
                 break;
             case 18:
-                Browser.openUrl(getParentActivity(), LocaleController.getString(R.string.TelegramFaqUrl));
+                Browser.openUrl(getParentActivity(), getString(R.string.TelegramFaqUrl));
                 break;
             case 19:
-                Browser.openUrl(getParentActivity(), LocaleController.getString(R.string.PrivacyPolicyUrl));
+                Browser.openUrl(getParentActivity(), getString(R.string.PrivacyPolicyUrl));
                 break;
 
             case 20:
@@ -880,7 +903,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 if (MessagesController.getInstance(currentAccount).isFrozen()) {
                     AccountFrozenAlert.show(currentAccount);
                 } else {
-                    Browser.openUrl(getContext(), LocaleController.getString(R.string.TelegramFeaturesUrl));
+                    Browser.openUrl(getContext(), getString(R.string.TelegramFeaturesUrl));
                 }
                 break;
             }
@@ -1108,7 +1131,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             }
 
             public static UItem of(int id, int account) {
-                final UItem item = UItem.ofFactory(AccountCell.Factory.class);
+                final UItem item = UItem.ofFactory(Factory.class);
                 item.id = id;
                 item.intValue = account;
                 return item;
@@ -1385,8 +1408,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         public void set(
             CharSequence title,
             CharSequence text,
-            CharSequence noText, View.OnClickListener noListener,
-            CharSequence yesText, View.OnClickListener yesListener
+            CharSequence noText, OnClickListener noListener,
+            CharSequence yesText, OnClickListener yesListener
         ) {
             titleView.setText(Emoji.replaceEmoji(title, titleView.getPaint().getFontMetricsInt(), false));
             textView.setText(Emoji.replaceEmoji(text, textView.getPaint().getFontMetricsInt(), false));
@@ -1422,8 +1445,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             public static UItem of(
                 CharSequence title,
                 CharSequence text,
-                CharSequence noText, View.OnClickListener noListener,
-                CharSequence yesText, View.OnClickListener yesListener
+                CharSequence noText, OnClickListener noListener,
+                CharSequence yesText, OnClickListener yesListener
             ) {
                 final UItem item = UItem.ofFactory(Factory.class);
                 item.text = title;
@@ -1800,7 +1823,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
     }
 
     private void listCodecs(String type, StringBuilder info) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
         try {
@@ -1838,7 +1861,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 }
                 MediaCodecInfo codec = MediaCodecList.getCodecInfoAt(decoderIndexes.get(a));
                 info.append("{d} ").append(codec.getName()).append(" (");
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     if (codec.isHardwareAccelerated()) {
                         info.append("gpu"); // as Gpu
                     }
@@ -1858,7 +1881,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 }
                 MediaCodecInfo codec = MediaCodecList.getCodecInfoAt(encoderIndexes.get(a));
                 info.append("{e} ").append(codec.getName()).append(" (");
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     if (codec.isHardwareAccelerated()) {
                         info.append("gpu"); // as Gpu
                     }

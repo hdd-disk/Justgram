@@ -6,7 +6,7 @@ import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.TLRPC;
 
 public class ChatUtils {
-    private static final ChatUtils[] Instance = new ChatUtils[16];
+    private static final ChatUtils[] Instance = new ChatUtils[UserConfig.MAX_ACCOUNT_COUNT];
 
     private final int selectedAccount;
 
