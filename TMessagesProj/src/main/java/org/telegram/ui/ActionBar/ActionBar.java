@@ -28,6 +28,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+
+import org.telegram.ui.DialogsActivity;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
@@ -51,6 +53,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.exteragram.messenger.ExteraConfig;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
@@ -166,7 +170,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
     private FrameLayout titlesContainer;
     private boolean useContainerForTitles;
 
-    private View.OnTouchListener interceptTouchEventListener;
+    private OnTouchListener interceptTouchEventListener;
     private final Theme.ResourcesProvider resourcesProvider;
 
     SizeNotifierFrameLayout contentView;
@@ -278,7 +282,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
                 actionBarMenuOnItemClick.onItemClick(-1);
             }
         });
-        backButtonImageView.setContentDescription(LocaleController.getString(R.string.AccDescrGoBack));
+        backButtonImageView.setContentDescription(getString(R.string.AccDescrGoBack));
     }
 
     public Drawable getBackButtonDrawable() {
@@ -555,6 +559,10 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         }
     }
 
+    private boolean shouldUseDialogsDrawerTitleOffset() {
+        return (this.backButtonDrawable instanceof MenuDrawable) && ExteraConfig.getNavigationDrawer() && (this.parentFragment instanceof DialogsActivity);
+    }
+
     public void setTitleRightMargin(int value) {
         titleRightMargin = value;
     }
@@ -779,7 +787,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         }
         addView(actionMode, indexOfChild(backButtonImageView));
         actionMode.setPadding(0, occupyStatusBar ? AndroidUtilities.statusBarHeight : 0, 0, 0);
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) actionMode.getLayoutParams();
+        LayoutParams layoutParams = (LayoutParams) actionMode.getLayoutParams();
         layoutParams.height = LayoutHelper.MATCH_PARENT;
         layoutParams.width = LayoutHelper.MATCH_PARENT;
         layoutParams.bottomMargin = extraHeight;
@@ -1110,7 +1118,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
             actionModeTop = new View(getContext());
             actionModeTop.setBackgroundColor(getThemedColor(Theme.key_actionBarActionModeDefaultTop));
             addView(actionModeTop);
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) actionModeTop.getLayoutParams();
+            LayoutParams layoutParams = (LayoutParams) actionModeTop.getLayoutParams();
             layoutParams.height = AndroidUtilities.statusBarHeight;
             layoutParams.width = LayoutHelper.MATCH_PARENT;
             layoutParams.gravity = Gravity.TOP | Gravity.LEFT;
@@ -1288,14 +1296,14 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         interceptTouches = value;
     }
 
-    public void setInterceptTouchEventListener(View.OnTouchListener listener) {
+    public void setInterceptTouchEventListener(OnTouchListener listener) {
         interceptTouchEventListener = listener;
     }
 
     public void setExtraHeight(int value) {
         extraHeight = value;
         if (actionMode != null) {
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) actionMode.getLayoutParams();
+            LayoutParams layoutParams = (LayoutParams) actionMode.getLayoutParams();
             layoutParams.bottomMargin = extraHeight;
             actionMode.setLayoutParams(layoutParams);
         }
@@ -1389,7 +1397,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
 
         ignoreLayoutRequest = true;
         if (actionModeTop != null) {
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) actionModeTop.getLayoutParams();
+            LayoutParams layoutParams = (LayoutParams) actionModeTop.getLayoutParams();
             layoutParams.height = AndroidUtilities.statusBarHeight;
         }
         if (actionMode != null) {
@@ -1402,7 +1410,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         int textLeft;
         if (backButtonImageView != null && backButtonImageView.getVisibility() != GONE) {
             backButtonImageView.measure(MeasureSpec.makeMeasureSpec(dp(54), MeasureSpec.EXACTLY), actionBarHeightSpec);
-            textLeft = dp(AndroidUtilities.isTablet() ? 80 : 72);
+            textLeft = shouldUseDialogsDrawerTitleOffset() ? dp(AndroidUtilities.isTablet() ? 68 : 56) : dp(AndroidUtilities.isTablet() ? 80 : 72);
         } else {
             textLeft = dp(AndroidUtilities.isTablet() ? 26 : 18);
         }
@@ -1520,7 +1528,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         int textLeft;
         if (backButtonImageView != null && backButtonImageView.getVisibility() != GONE) {
             backButtonImageView.layout(0, additionalTop, backButtonImageView.getMeasuredWidth(), additionalTop + backButtonImageView.getMeasuredHeight());
-            textLeft = glassMode ? dp(76) : dp(AndroidUtilities.isTablet() ? 80 : 72);
+            textLeft = glassMode ? dp(76) : (shouldUseDialogsDrawerTitleOffset() ? dp(AndroidUtilities.isTablet() ? 68 : 56) : dp(AndroidUtilities.isTablet() ? 80 : 72));
         } else {
             textLeft = glassMode ? dp(24) : dp(AndroidUtilities.isTablet() ? 26 : 18);
         }
@@ -1675,7 +1683,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
         }
 
 
-        CharSequence textToSet = title != null ? LocaleController.getString(title, titleId) : lastTitle;
+        CharSequence textToSet = title != null ? getString(title, titleId) : lastTitle;
         Drawable rightDrawableToSet = title != null ? null : lastRightDrawable;
         boolean ellipsize = false;
         if (title != null) {

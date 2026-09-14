@@ -6,6 +6,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.exteragram.messenger.preferences.appearance.AppNavigationPreferencesActivity;
+
 import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
@@ -13,12 +15,14 @@ import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.INavigationLayout;
 import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Components.IconBackgroundColors;
 import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
 import org.telegram.ui.Components.UniversalRecyclerView;
 import org.telegram.ui.LaunchActivity;
 import org.telegram.ui.MainTabsActivity;
+import org.telegram.ui.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
     private final static int ID_ADAPTIVE_CHAT_TITLE = 3;
     private final static int ID_HIDE_CALL_BUTTON = 4;
     private final static int ID_IOS_MESSAGE_INPUT_FIELD = 5;
+    private final static int ID_APP_NAVIGATION_SETTINGS = 6;
 
     @Override
     public View createView(Context context) {
@@ -89,6 +94,10 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
         items.add(UItem.asCheck(ID_HIDE_CALL_BUTTON, getString(R.string.HideCallButton)).setChecked(JustgramConfig.hideCallButton));
         items.add(UItem.asCheck(ID_IOS_MESSAGE_INPUT_FIELD, getString(R.string.iOSMessageInputField)).setChecked(JustgramConfig.iOSMessageInputField));
         adapter.whiteSectionEnd();
+
+        adapter.whiteSectionStart();
+        items.add(SettingsActivity.SettingCell.Factory.of(ID_APP_NAVIGATION_SETTINGS, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.msg_list, getString(R.string.AppNavigation), null));
+        adapter.whiteSectionEnd();
     }
 
     private void onClick(UItem item, View view) {
@@ -132,8 +141,10 @@ public class JustgramAppearanceSettingsActivity extends BaseFragment {
                 JustgramConfig.iOSMessageInputField = !JustgramConfig.iOSMessageInputField;
                 JustgramConfig.saveConfig();
                 listView.adapter.update(true);
-                break;    
-
+                break;
+            case ID_APP_NAVIGATION_SETTINGS:
+                presentFragment(new AppNavigationPreferencesActivity());
+                break;
         }
     }
 }

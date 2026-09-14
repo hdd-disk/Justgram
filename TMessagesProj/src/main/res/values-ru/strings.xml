@@ -260,4 +260,28 @@
     <string name="RemindTodayAt">\'Отправить сегодня в\' HH:mm</string>
     <string name="RemindDayAt">\'Отправить\' d MMM \'в\' HH:mm</string>
     <string name="RemindDayYearAt">\'Напомнить\' d MMM yyyy \'в\' HH:mm</string>
+
+    <string name="NavigationDrawer">Боковое меню</string>
+    <string name="NavigationDrawerImmersiveAnimation">Иммерсивная анимация</string>
+    <string name="NavigationDrawerInfo">Заменяет меню в правом верхнем углу на боковую панель, открывающуюся свайпом.</string>
+    <string name="NavigationDrawerProxyPingShort">%1$d мс</string>
+    <string name="PredictiveBackInfo">Настраивает, насколько далеко сдвигается экран при жесте назад.</string>
+    <string name="PredictiveBackIntensity">Амплитуда предиктивного жеста</string>
+    <string name="PredictiveBackMax">Макс</string>
+    <string name="SpringAnimations">Spring-анимации</string>
+    <string name="SpringAnimationsInfo">Включает более плавные анимации при переключении между экранами и открытии меню.</string>
+    <string name="TabletMode">Планшетный режим</string>
+    <string name="BottomNavigationBarMode">Нижняя панель навигации</string>
+    <string name="BottomNavigationModeFloating">Плавающая</string>
+    <string name="BottomNavigationModeHide">Скрывать</string>
+    <string name="BottomNavigationModeShow">Показывать</string>
+    <string name="MainMenuAddDivider">Добавить разделитель</string>
+    <string name="MainMenuDivider">Разделитель</string>
+    <string name="MainMenuHiddenItems">Скрытые элементы</string>
+    <string name="MainMenuItems">Элементы меню</string>
+    <string name="MainMenuItemsInfo">Нажмите, чтобы скрыть или показать пункты, удерживайте для изменения порядка.</string>
+    <string name="MainMenuRemoveSettingsInfo">Настройки нельзя скрыть, если отключена нижняя панель навигации.</string>
+    <string name="AppNavigation">Навигация в приложении</string>
+    <string name="RestartRequired">Перезапустите приложение, чтобы изменения вступили в силу.</string>
+    <string name="Feed">Лента</string>
 </resources>
