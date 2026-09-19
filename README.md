@@ -16,7 +16,7 @@ MTproto protocol manuals: https://core.telegram.org/mtproto
 > **Building on Windows is not supported.**
 
 
-#### 1. Install ninja-build, gperf, meson, libuv1-dev, nasm, cmake, autoconf, automake, libtool, pkg-config, git
+#### 1. Install python 3.11, ninja-build, gperf, meson, libuv1-dev, nasm, cmake, autoconf, automake, libtool, pkg-config, git
 
 #### 2. Clone repository:
 ```
