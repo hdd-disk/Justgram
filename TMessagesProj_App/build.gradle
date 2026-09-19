@@ -39,9 +39,9 @@ android {
         localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
     }
 
-    def releaseStorePassword = localProperties.getProperty('RELEASE_STORE_PASSWORD', "")
-    def releaseKeyAlias = localProperties.getProperty('RELEASE_KEY_ALIAS', "")
-    def releaseKeyPassword = localProperties.getProperty('RELEASE_KEY_PASSWORD', "")
+    def releaseStorePassword = localProperties.getProperty('RELEASE_STORE_PASSWORD', "android")
+    def releaseKeyAlias = localProperties.getProperty('RELEASE_KEY_ALIAS', "androidkey")
+    def releaseKeyPassword = localProperties.getProperty('RELEASE_KEY_PASSWORD', "android")
 
     defaultConfig.applicationId = APP_PACKAGE
 
