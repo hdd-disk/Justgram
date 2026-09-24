@@ -270,7 +270,7 @@ dependencies {
         }
     }
 
-    implementation 'org.unifiedpush.android:connector:3.0.10'
+    implementation 'org.unifiedpush.android:connector:3.3.5'
     implementation 'org.unifiedpush.android:embedded-fcm-distributor:3.0.0'
     implementation 'org.maplibre.gl:android-sdk:13.0.1'
 
