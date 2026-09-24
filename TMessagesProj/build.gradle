@@ -278,7 +278,7 @@ dependencies {
 
     // Plugin runtime only. Chaquopy Java classes are built from src/plugin/java/com/chaquo
     // (the upstream artifact lacks fork members such as Reflector.dirAll()).
-    pluginImplementation 'com.linkedin.dexmaker:dexmaker:2.28.3'
+    pluginImplementation 'com.linkedin.dexmaker:dexmaker:2.28.6'
     pluginImplementation 'org.mvel:mvel2:2.5.2.Final'
     chaquopyAbis.each { abi ->
         chaquopyTargetJni "com.chaquo.python:target:${chaquopyTargetVersion}:${abi}@zip"
