@@ -241,7 +241,7 @@ dependencies {
     implementation 'androidx.car.app:app:1.7.0'
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
 
-    compileOnly 'org.checkerframework:checker-qual:2.5.2'
+    compileOnly 'org.checkerframework:checker-qual:4.2.3'
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
 
     implementation 'com.googlecode.mp4parser:isoparser:1.0.6'
