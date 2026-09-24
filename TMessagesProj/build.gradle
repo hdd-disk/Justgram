@@ -249,7 +249,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.14.0'
     implementation 'com.google.guava:guava:31.1-android'
 
-    implementation "androidx.credentials:credentials:1.6.0-alpha04"
+    implementation "androidx.credentials:credentials:1.7.0-alpha03"
 
     implementation "io.noties.markwon:core:4.6.2"
     implementation "io.noties.markwon:ext-strikethrough:4.6.2"
