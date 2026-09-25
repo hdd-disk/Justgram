@@ -43,7 +43,7 @@ def normalAbis = ['armeabi-v7a', 'arm64-v8a', 'x86_64']
 
 // Java runtime classes come from src/plugin/java/com/chaquo (see README there).
 def chaquopyTargetVersion = '3.11.10-1'
-def chaquopyPluginVersion = '16.1.0'
+def chaquopyPluginVersion = '17.0.0'
 def chaquopyAbis = pluginAbis.findAll { nativeTarget.isBlank() || it == nativeTarget }
 def abiToNdkTriple = [
     'armeabi-v7a': 'arm-linux-androideabi',
