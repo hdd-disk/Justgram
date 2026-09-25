@@ -245,7 +245,7 @@ dependencies {
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.6'
 
     implementation 'com.googlecode.mp4parser:isoparser:1.0.6'
-    implementation 'com.stripe:stripe-android:23.19.0'
+    implementation 'com.stripe:stripe-android:23.20.0'
     implementation 'com.google.code.gson:gson:2.14.0'
     implementation 'com.google.guava:guava:33.7.1-android'
 
