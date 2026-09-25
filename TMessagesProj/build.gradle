@@ -242,7 +242,7 @@ dependencies {
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
 
     compileOnly 'org.checkerframework:checker-qual:4.2.3'
-    compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
+    compileOnly 'org.checkerframework:checker-compat-qual:2.5.6'
 
     implementation 'com.googlecode.mp4parser:isoparser:1.0.6'
     implementation 'com.stripe:stripe-android:23.19.0'
