@@ -286,7 +286,7 @@ dependencies {
     }
     chaquopyStdlibPyc "com.chaquo.python:target:${chaquopyTargetVersion}:stdlib-pyc@zip"
     chaquopyGradlePlugin "com.chaquo.python:gradle:${chaquopyPluginVersion}@jar"
-    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.5.0'
 }
 
 def chaquopyTargetJniConfig = configurations.getByName("chaquopyTargetJni")
