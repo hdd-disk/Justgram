@@ -4,15 +4,13 @@
 
     <string name="JustgramSettingsGeneral">General</string>
     <string name="JustgramSettingsAppearance">Appearance</string>
-    <string name="JustgramSettingsExperimental">Experimental</string>
+    <string name="JustgramSettingsXray">Xray</string>
 
     <string name="JustgramSettingsAbout">About project</string>
 
     <string name="DisableAds">Disable Ads</string>
     <string name="ShowAccountId">Show Account ID</string>
     <string name="AccountId">Account ID</string>
-
-    <string name="JustgramComingSoon">There\'s nothing here, but not for long.</string>
 
     <string name="WebSocketTransport">Connect over WebSocket</string>
     <string name="WebSocketTransportInfo">Tunnel Telegram traffic through an encrypted WebSocket (WSS) connection. May help when the regular connection is throttled or blocked. Leave the domain empty to use auto-updated public relays, or enter your own domain for reliability. Public relays are run by third parties and can see your IP address and connection metadata, but not the contents of your messages. Turn off if the connection stops working.</string>
@@ -117,9 +115,27 @@
     <string name="PluginsSafeModeShortcut">Start with safe mode</string>
     <string name="RestartPluginSystemToApplyUpdate">Update loaded, restart Plugin Engine to apply</string>
     <string name="RestoreSdkFromApk">Restore SDK from APK</string>
-    <string name="PluginsRestartEngine">Restart Plugin Engine</string>
 
     <string name="IOSMessageInputField">IOS-styled message input field</string>
-    <string name="iOSMessageInputField">IOS-styled message input field</string>
+
+    <string name="XrayVersion">Xray Version</string>
+    <string name="XrayEnable">Enable Xray</string>
+    <string name="XrayRandomPort">Random Local Port</string>
+    <string name="XrayLocalPort">Local SOCKS5 Port</string>
+    <string name="XrayProfiles">Profiles</string>
+    <string name="XrayImportClipboard">Import from Clipboard</string>
+    <string name="XrayAddLinkOrSub">Add Profile or Subscription</string>
+    <string name="XrayPingAll">Ping All Profiles</string>
+    <string name="XrayUpdateSubscriptions">Update All Subscriptions</string>
+    <string name="XrayNoProfiles">No profiles available</string>
+    <string name="XrayManualProfiles">Manual Profiles</string>
+    <string name="XrayViewConfig">View Current Config</string>
+    <string name="XraySubUpdated">Updated %d profile(s)</string>
+    <string name="XrayImportSuccess">Imported %d profile(s)</string>
+    <string name="XrayImportError">Failed to import profile or subscription</string>
+    <string name="XrayTestPing">Test Ping</string>
+    <string name="XrayDeleteProfile">Delete Profile</string>
+    <string name="XrayUpdateSub">Update Subscription</string>
+    <string name="XrayDeleteSub">Delete Subscription</string>
 
 </resources>

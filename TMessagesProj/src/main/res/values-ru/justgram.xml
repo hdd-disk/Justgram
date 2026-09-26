@@ -4,6 +4,7 @@
 
     <string name="JustgramSettingsGeneral">Основные</string>
     <string name="JustgramSettingsAppearance">Внешний вид</string>
+    <string name="JustgramSettingsXray">Xray</string>
 
     <string name="JustgramSettingsAbout">О проекте</string>
 
@@ -17,8 +18,6 @@
     <string name="WebSocketDomainAuto">Автоматически</string>
 
     <string name="DevTools">Инструменты разработчика</string>
-
-    <string name="JustgramComingSoon">Здесь пока ничего нет, но это ненадолго.</string>
 
     <string name="TelegramChannel">Канал</string>
     <string name="TelegramChat">Чат</string>
@@ -79,5 +78,25 @@
     <string name="RestartPluginSystemToApplyUpdate">Обновление загружено, перезапустите систему плагинов для применения</string>
 
     <string name="IOSMessageInputField">Поле ввода в стиле IOS</string>
+
+    <string name="XrayVersion">Версия Xray</string>
+    <string name="XrayEnable">Включить Xray</string>
+    <string name="XrayRandomPort">Случайный локальный порт</string>
+    <string name="XrayLocalPort">Локальный SOCKS5 порт</string>
+    <string name="XrayProfiles">Профили</string>
+    <string name="XrayImportClipboard">Импортировать из буфера обмена</string>
+    <string name="XrayAddLinkOrSub">Добавить профиль или подписку</string>
+    <string name="XrayPingAll">Пинг всех профилей</string>
+    <string name="XrayUpdateSubscriptions">Обновить все подписки</string>
+    <string name="XrayNoProfiles">Нет доступных профилей</string>
+    <string name="XrayManualProfiles">Добавленные вручную</string>
+    <string name="XrayViewConfig">Просмотреть конфиг</string>
+    <string name="XraySubUpdated">Обновлено профилей: %d</string>
+    <string name="XrayImportSuccess">Импортировано профилей: %d</string>
+    <string name="XrayImportError">Не удалось импортировать профиль или подписку</string>
+    <string name="XrayTestPing">Проверить пинг</string>
+    <string name="XrayDeleteProfile">Удалить профиль</string>
+    <string name="XrayUpdateSub">Обновить подписку</string>
+    <string name="XrayDeleteSub">Удалить подписку</string>
 
 </resources>

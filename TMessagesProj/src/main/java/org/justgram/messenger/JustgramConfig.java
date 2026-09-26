@@ -24,6 +24,12 @@ public class JustgramConfig {
     public static boolean useChatAttachMediaMenu = false;
     public static boolean iOSMessageInputField = false;
 
+    public static boolean xrayRandomPort = false;
+    public static int xrayLocalPort = 25565;
+    public static String xrayProfilesJson = "[]";
+    public static String xraySubscriptionsJson = "[]";
+    public static String xrayActiveProfileId = null;
+
     static {
         loadConfig();
     }
@@ -45,6 +51,13 @@ public class JustgramConfig {
             altSoundIn = preferences.getBoolean("altSoundIn", false);
             useChatAttachMediaMenu = preferences.getBoolean("useChatAttachMediaMenu", false);
             iOSMessageInputField = preferences.getBoolean("iOSMessageInputField", false);
+
+            xrayRandomPort = preferences.getBoolean("xrayRandomPort", false);
+            xrayLocalPort = preferences.getInt("xrayLocalPort", 25565);
+            xrayProfilesJson = preferences.getString("xrayProfilesJson", "[]");
+            xraySubscriptionsJson = preferences.getString("xraySubscriptionsJson", "[]");
+            xrayActiveProfileId = preferences.getString("xrayActiveProfileId", null);
+
             loaded = true;
         }
     }
@@ -66,6 +79,13 @@ public class JustgramConfig {
             editor.putBoolean("altSoundIn", altSoundIn);
             editor.putBoolean("useChatAttachMediaMenu", useChatAttachMediaMenu);
             editor.putBoolean("iOSMessageInputField", iOSMessageInputField);
+
+            editor.putBoolean("xrayRandomPort", xrayRandomPort);
+            editor.putInt("xrayLocalPort", xrayLocalPort);
+            editor.putString("xrayProfilesJson", xrayProfilesJson);
+            editor.putString("xraySubscriptionsJson", xraySubscriptionsJson);
+            editor.putString("xrayActiveProfileId", xrayActiveProfileId);
+
             editor.apply();
         }
     }

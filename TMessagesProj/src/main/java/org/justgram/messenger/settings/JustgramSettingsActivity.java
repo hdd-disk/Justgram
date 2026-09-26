@@ -37,7 +37,8 @@ public class JustgramSettingsActivity extends BaseFragment {
     private final static int ID_GENERAL = 1;
     private final static int ID_APPEARANCE = 2;
     private final static int ID_PLUGINS = 3;
-    private final static int ID_ABOUT = 4;
+    private final static int ID_XRAY = 4;
+    private final static int ID_ABOUT = 5;
 
     private UniversalRecyclerView listView;
     private FrameLayout topView;
@@ -46,7 +47,7 @@ public class JustgramSettingsActivity extends BaseFragment {
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setTitle(LocaleController.getString(R.string.JustgramSettings));
+        actionBar.setTitle(getString(R.string.JustgramSettings));
 
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
@@ -80,7 +81,7 @@ public class JustgramSettingsActivity extends BaseFragment {
         titleView.setGravity(Gravity.CENTER);
         titleView.setSingleLine();
         titleView.setEllipsize(TextUtils.TruncateAt.END);
-        titleView.setText(LocaleController.getString(R.string.AppName));
+        titleView.setText(getString(R.string.AppName));
         titleView.setTextColor(getThemedColor(Theme.key_windowBackgroundWhiteBlackText));
         topView.addView(titleView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 138.333f - 12, 0, 0));
 
@@ -107,6 +108,7 @@ public class JustgramSettingsActivity extends BaseFragment {
         adapter.whiteSectionStart();
         items.add(SettingsActivity.SettingCell.Factory.of(ID_GENERAL, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.settings_account, getString(R.string.JustgramSettingsGeneral)));
         items.add(SettingsActivity.SettingCell.Factory.of(ID_APPEARANCE, IconBackgroundColors.GREEN.top, IconBackgroundColors.GREEN.bottom, R.drawable.settings_chat, getString(R.string.JustgramSettingsAppearance)));
+        items.add(SettingsActivity.SettingCell.Factory.of(ID_XRAY, IconBackgroundColors.ORANGE.top, IconBackgroundColors.ORANGE.bottom, R.drawable.settings_data, getString(R.string.JustgramSettingsXray)));
         if (PluginsController.isPluginEngineSupported()) {
             items.add(SettingsActivity.SettingCell.Factory.of(ID_PLUGINS, IconBackgroundColors.CYAN.top, IconBackgroundColors.CYAN.bottom, R.drawable.msg_plugins_solar_filled, getString(R.string.Plugins)));
         }
@@ -128,6 +130,9 @@ public class JustgramSettingsActivity extends BaseFragment {
                 break;
             case ID_APPEARANCE:
                 presentFragment(new JustgramAppearanceSettingsActivity());
+                break;
+            case ID_XRAY:
+                presentFragment(new JustgramXraySettingsActivity());
                 break;
             case ID_PLUGINS:
                 presentFragment(new PluginsActivity());
