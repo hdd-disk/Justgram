@@ -14139,7 +14139,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private void checkUi_itemBackButtonVisibility() {
-        if (actionBar == null) {
+        if (actionBar == null || actionBar.getBackButton() == null) {
+            return;
+        }
+        if (actionBar.getBackButton().getDrawable() == null) {
+            actionBar.getBackButton().setVisibility(View.GONE);
             return;
         }
 
