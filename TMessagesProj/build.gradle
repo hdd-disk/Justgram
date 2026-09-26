@@ -221,6 +221,7 @@ android {
 }
 
 dependencies {
+    implementation files('lib/libv2ray.aar') { builtBy 'buildXray' }
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.14.0'
     implementation 'androidx.core:core:1.16.0'
@@ -694,5 +695,54 @@ afterEvaluate {
     }
     tasks.matching { it.name.matches('merge.*JniLibFolders') }.configureEach { task ->
         dependsOn tasks.named(resolveNativeTask(task.name))
+    }
+    tasks.matching { it.name.startsWith('preBuild') }.configureEach { task ->
+        task.dependsOn 'buildXray'
+    }
+}
+
+tasks.register("buildXray") {
+    description = 'Build libv2ray.aar from AndroidLibXrayLite Go sources using gomobile.'
+    def xrayDir = file("${projectDir}/lib/AndroidLibXrayLite")
+    def aarFile = file("${projectDir}/lib/libv2ray.aar")
+
+    inputs.dir(xrayDir)
+    outputs.file(aarFile)
+
+    doLast {
+        if (!new File(xrayDir, "go.mod").exists()) {
+            providers.exec {
+                workingDir rootDir
+                commandLine 'git', 'submodule', 'update', '--init', '--recursive', 'TMessagesProj/lib/AndroidLibXrayLite'
+            }.result.get()
+        }
+
+        def userHome = System.getProperty('user.home')
+        def goPath = System.getenv('GOPATH') ?: "${userHome}/go"
+        def gomobileBin = new File("${goPath}/bin/gomobile")
+
+        def sdkDir = getProps('sdk.dir') ?: System.getenv('ANDROID_HOME') ?: System.getenv('ANDROID_SDK_ROOT') ?: '/home/hdd-disk/Android/Sdk'
+        def ndkDir = resolvedNdkDir != null ? resolvedNdkDir.absolutePath : "${sdkDir}/ndk/27.2.12479018"
+
+        def pathEnv = "${goPath}/bin:/usr/local/go/bin:" + (System.getenv('PATH') ?: '')
+
+        if (!gomobileBin.exists()) {
+            providers.exec {
+                environment 'PATH', pathEnv
+                environment 'GOPATH', goPath
+                commandLine 'go', 'install', 'golang.org/x/mobile/cmd/gomobile@latest'
+            }.result.get()
+        }
+
+        def gomobileCmd = gomobileBin.exists() ? gomobileBin.absolutePath : 'gomobile'
+
+        providers.exec {
+            workingDir xrayDir
+            environment 'PATH', pathEnv
+            environment 'ANDROID_HOME', sdkDir
+            environment 'ANDROID_NDK_HOME', ndkDir
+            environment 'GOPATH', goPath
+            commandLine 'bash', '-c', "${gomobileCmd} init && go mod tidy -v && ${gomobileCmd} bind -v -target=android/arm,android/arm64 -androidapi 24 -trimpath -ldflags='-s -w -buildid= -checklinkname=0' -o ${aarFile.absolutePath} ./"
+        }.result.get()
     }
 }

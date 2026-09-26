@@ -14,5 +14,12 @@ if (!jlatexmathDir.exists()) {
         commandLine 'git', 'submodule', 'update', '--init', 'TMessagesProj/lib/jlatexmath'
     }.result.get()
 }
+def xrayGoMod = file('TMessagesProj/lib/AndroidLibXrayLite/go.mod')
+if (!xrayGoMod.exists()) {
+    providers.exec {
+        workingDir rootDir
+        commandLine 'git', 'submodule', 'update', '--init', '--recursive', 'TMessagesProj/lib/AndroidLibXrayLite'
+    }.result.get()
+}
 include ':jlatexmath'
 project(':jlatexmath').projectDir = jlatexmathDir

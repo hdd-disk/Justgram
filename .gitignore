@@ -7,6 +7,9 @@ local.properties
 TMessagesProj/.cxx/
 TMessagesProj/jniLibs/
 TMessagesProj/jniRes/
+TMessagesProj/lib/libv2ray.aar
+TMessagesProj/lib/libv2ray-sources.aar
+TMessagesProj/lib/AndroidLibXrayLite
 **/.DS_Store
 TMessagesProj/afat/
 TMessagesProj_App/afat/

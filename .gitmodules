@@ -62,3 +62,6 @@
 [submodule "TMessagesProj/jni/third_party/shadowhook"]
 	path = TMessagesProj/jni/third_party/shadowhook
 	url = https://github.com/Keeperorowner/android-inline-hook.git
+[submodule "TMessagesProj/lib/AndroidLibXrayLite"]
+	path = TMessagesProj/lib/AndroidLibXrayLite
+	url = https://github.com/2dust/AndroidLibXrayLite.git
