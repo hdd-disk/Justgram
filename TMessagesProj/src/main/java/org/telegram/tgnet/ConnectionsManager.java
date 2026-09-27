@@ -38,6 +38,7 @@ import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.PushListenerController;
 import org.telegram.messenger.SharedConfig;
+import org.justgram.messenger.JustgramConfig;
 import org.telegram.messenger.StatsController;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.Utilities;
@@ -645,12 +646,17 @@ public class ConnectionsManager extends BaseController {
         if (preferences.getBoolean("proxy_enabled", false) && !TextUtils.isEmpty(proxyAddress)) {
             native_setProxySettings(currentAccount, proxyAddress, proxyPort, proxyUsername, proxyPassword, proxySecret);
         }
-        if (preferences.getBoolean("webSocketTransport", false)) {
-            String wsDomain = preferences.getString("webSocketDomain", "").trim();
+        JustgramConfig.loadConfig();
+        SharedPreferences mainPrefs = MessagesController.getGlobalMainSettings();
+        boolean wsEnabled = JustgramConfig.webSocketTransport || mainPrefs.getBoolean("webSocketTransport", false);
+        String wsDomain = !TextUtils.isEmpty(JustgramConfig.webSocketDomain) ? JustgramConfig.webSocketDomain.trim() : mainPrefs.getString("webSocketDomain", "").trim();
+        if (wsEnabled) {
             native_setWebSocketConfig(currentAccount, true, wsDomain, TextUtils.isEmpty(wsDomain) ? buildWebSocketPool() : "");
             if (TextUtils.isEmpty(wsDomain)) {
                 refreshWebSocketDomains(false);
             }
+        } else {
+            native_setWebSocketConfig(currentAccount, false, "", "");
         }
         String installer = "";
         try {
@@ -1018,6 +1024,16 @@ public class ConnectionsManager extends BaseController {
             domain = "";
         }
         domain = domain.trim();
+
+        JustgramConfig.webSocketTransport = enabled;
+        JustgramConfig.webSocketDomain = domain;
+        JustgramConfig.saveConfig();
+
+        SharedPreferences.Editor editor = MessagesController.getGlobalMainSettings().edit();
+        editor.putBoolean("webSocketTransport", enabled);
+        editor.putString("webSocketDomain", domain);
+        editor.apply();
+
         String pool = enabled && TextUtils.isEmpty(domain) ? buildWebSocketPool() : "";
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
             if (a != 0 && !UserConfig.getInstance(a).isClientActivated()) {
@@ -1083,8 +1099,11 @@ public class ConnectionsManager extends BaseController {
     }
 
     private static void pushWebSocketPool() {
+        JustgramConfig.loadConfig();
         SharedPreferences prefs = MessagesController.getGlobalMainSettings();
-        if (!prefs.getBoolean("webSocketTransport", false) || !TextUtils.isEmpty(prefs.getString("webSocketDomain", "").trim())) {
+        boolean wsEnabled = JustgramConfig.webSocketTransport || prefs.getBoolean("webSocketTransport", false);
+        String wsDomain = !TextUtils.isEmpty(JustgramConfig.webSocketDomain) ? JustgramConfig.webSocketDomain.trim() : prefs.getString("webSocketDomain", "").trim();
+        if (!wsEnabled || !TextUtils.isEmpty(wsDomain)) {
             return;
         }
         String pool = buildWebSocketPool();

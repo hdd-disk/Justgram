@@ -39,10 +39,16 @@ public class JustgramConfig {
             if (loaded) {
                 return;
             }
+            Context context = ApplicationLoader.applicationContext;
+            if (context == null) {
+                return;
+            }
             SharedPreferences preferences = getSettings();
             disableAds = preferences.getBoolean("disableAds", true);
             showAccountId = preferences.getBoolean("showAccountId", true);
             fingerprintProtection = preferences.getBoolean("fingerprintProtection", true);
+            webSocketTransport = preferences.getBoolean("webSocketTransport", false);
+            webSocketDomain = preferences.getString("webSocketDomain", "");
             hideTabsSubtitles = preferences.getBoolean("hideTabsSubtitles", false);
             liquidGlassOpacity = preferences.getFloat("liquidGlassOpacity", 0.85f);
             sectionsSeparatedHeaders = preferences.getBoolean("sectionsSeparatedHeaders", true);
