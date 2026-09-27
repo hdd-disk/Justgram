@@ -69,7 +69,7 @@ public final class ExteraConfig {
     }
 
     public static boolean getNavigationDrawer() {
-        return preferences != null ? preferences.getBoolean("navigationDrawer", true) : true;
+        return preferences != null && preferences.getBoolean("navigationDrawer", false);
     }
 
     public static void setNavigationDrawer(boolean value) {
