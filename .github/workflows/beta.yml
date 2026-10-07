@@ -42,14 +42,23 @@ jobs:
             ninja-build gperf meson libuv1-dev nasm cmake \
             autoconf automake libtool pkg-config bash git
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python venv with uv
+        run: |
+          uv venv .venv --python 3.11 --seed
+          uv pip install --python .venv/bin/python "cython==3.0.11"
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
+
       - name: Extract Beta Version and Tag
         id: beta_version
         run: |
           if [ -n "${{ github.ref_name }}" ] && [[ "${{ github.ref }}" == refs/tags/* ]]; then
             RAW_TAG="${{ github.ref_name }}"
-            # Убираем префикс v если есть
             BASE="${RAW_TAG#v}"
-            # Если суффикс бета уже есть, оставляем, иначе добавляем
             if [[ "$BASE" != *"beta"* ]]; then
               BASE="${BASE}-beta"
             fi
