@@ -33,6 +33,8 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+            packages: 'ndk;27.2.12479018'
 
       - name: Install NDK and Build Dependencies
         run: |
