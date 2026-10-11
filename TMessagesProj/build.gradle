@@ -48,9 +48,8 @@ configurations {
 
 def nativeTarget = getProps('NATIVE_TARGET') ?: System.getenv('NATIVE_TARGET') ?: (project.hasProperty('NATIVE_TARGET') ? project.property('NATIVE_TARGET') : '')
 
-// Plugin package is arm-only: shadowhook doesn't support x86.
 def pluginAbis = ['armeabi-v7a', 'arm64-v8a']
-def normalAbis = ['armeabi-v7a', 'arm64-v8a', 'x86_64']
+def normalAbis = ['armeabi-v7a', 'arm64-v8a']
 
 // Java runtime classes come from src/plugin/java/com/chaquo (see README there).
 def chaquopyTargetVersion = '3.11.10-1'
