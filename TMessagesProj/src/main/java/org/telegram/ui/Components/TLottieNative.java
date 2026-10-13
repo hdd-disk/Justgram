@@ -141,11 +141,11 @@ public final class TLottieNative {
     }
 
     public static TLottieNative createFromRawJson(String json) {
-        return createFromRawJson(json, null, null, null);
+        return createFromRawJson(json, (String) null, null, null);
     }
 
     public static TLottieNative createFromRawJson(String json, @Nullable int[] metaOut) {
-        return createFromRawJson(json, metaOut, null, null);
+        return createFromRawJson(json, (String) null, metaOut, null);
     }
 
     // -------------------------------------------------------------------------

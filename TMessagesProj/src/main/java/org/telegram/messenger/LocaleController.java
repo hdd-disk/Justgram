@@ -60,6 +60,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -1387,7 +1388,7 @@ public class LocaleController {
             }
             changingConfiguration = true;
             Locale.setDefault(currentLocale);
-            android.content.res.Configuration config = new android.content.res.Configuration();
+            Configuration config = new Configuration();
             config.locale = currentLocale;
             ApplicationLoader.applicationContext.getResources().updateConfiguration(config, ApplicationLoader.applicationContext.getResources().getDisplayMetrics());
             changingConfiguration = false;
@@ -1443,16 +1444,40 @@ public class LocaleController {
         return getStringInternal(key, null, res);
     }
 
+    public static boolean isLocked(Context context, String key, @StringRes int stringRes) {
+        if (BuildVars.LOCKED_LOCAL_STRINGS == null || BuildVars.LOCKED_LOCAL_STRINGS.isEmpty()) {
+            return false;
+        }
+        if (key != null && BuildVars.LOCKED_LOCAL_STRINGS.contains(key)) {
+            return true;
+        }
+        if (stringRes != 0 && context != null) {
+            try {
+                String entryName = context.getResources().getResourceEntryName(stringRes);
+                if (entryName != null && BuildVars.LOCKED_LOCAL_STRINGS.contains(entryName)) {
+                    return true;
+                }
+            } catch (Exception ignored) {}
+        }
+        return false;
+    }
+
     private String getStringInternal(String key, String fallback, int res) {
         final String value = getStringV2(key, res, fallback);
         if (value == null) {
-            return "LOC_ERR:" + key;
+            String errKey = key;
+            if (errKey == null && res != 0 && ApplicationLoader.applicationContext != null) {
+                try {
+                    errKey = ApplicationLoader.applicationContext.getResources().getResourceEntryName(res);
+                } catch (Exception ignored) {}
+            }
+            return "LOC_ERR:" + errKey;
         }
         return value;
     }
 
     public static String getServerString(String key) {
-        String value = (BuildVars.USE_CLOUD_STRINGS && (key == null || !BuildVars.LOCKED_LOCAL_STRINGS.contains(key))) ? getInstance().localizationExternal.getByResName(key) : null;
+        String value = (BuildVars.USE_CLOUD_STRINGS && !isLocked(ApplicationLoader.applicationContext, key, 0)) ? getInstance().localizationExternal.getByResName(key) : null;
         if (value == null) {
             value = getInstance().getLocalizedString(key);
         }
@@ -1564,9 +1589,9 @@ public class LocaleController {
                 stringBuilder.insert(a, symbol);
             }
 
-            String value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localizationExternal.getByResName(param) : null;
+            String value = (BuildVars.USE_CLOUD_STRINGS && !isLocked(ApplicationLoader.applicationContext, param, 0)) ? getInstance().localizationExternal.getByResName(param) : null;
             if (value == null) {
-                value = BuildVars.USE_CLOUD_STRINGS ? getInstance().localizationExternal.getByResName(key + "_other") : null;
+                value = (BuildVars.USE_CLOUD_STRINGS && !isLocked(ApplicationLoader.applicationContext, key + "_other", 0)) ? getInstance().localizationExternal.getByResName(key + "_other") : null;
             }
             if (value == null) {
                 try {
@@ -1628,7 +1653,13 @@ public class LocaleController {
         try {
             final String value = getInstance().getStringV2(key, res, fallback);
             if (value == null) {
-                return "LOC_ERR: " + key;
+                String errKey = key;
+                if (errKey == null && res != 0 && ApplicationLoader.applicationContext != null) {
+                    try {
+                        errKey = ApplicationLoader.applicationContext.getResources().getResourceEntryName(res);
+                    } catch (Exception ignored) {}
+                }
+                return "LOC_ERR: " + errKey;
             }
 
             if (getInstance().currentLocale != null) {
@@ -1654,7 +1685,13 @@ public class LocaleController {
         try {
             final String value = getInstance().getStringV2(key, res, fallback);
             if (value == null) {
-                return "LOC_ERR: " + key;
+                String errKey = key;
+                if (errKey == null && res != 0 && ApplicationLoader.applicationContext != null) {
+                    try {
+                        errKey = ApplicationLoader.applicationContext.getResources().getResourceEntryName(res);
+                    } catch (Exception ignored) {}
+                }
+                return "LOC_ERR: " + errKey;
             }
 
             SpannableStringBuilder builder = new SpannableStringBuilder(value);
@@ -4436,8 +4473,34 @@ public class LocaleController {
         }
     }
     private String getLocalizedString(String key) {
+        if (key == null) {
+            return null;
+        }
         checkLocalizationInternal();
-        return localizationInternal.getByResName(key);
+        String value = localizationInternal.getByResName(key);
+        if (value == null && ApplicationLoader.applicationContext != null) {
+            try {
+                int resId = ApplicationLoader.applicationContext.getResources().getIdentifier(key, "string", ApplicationLoader.applicationContext.getPackageName());
+                if (resId != 0) {
+                    value = ApplicationLoader.applicationContext.getString(resId);
+                }
+            } catch (Exception ignored) {}
+        }
+        return value;
+    }
+
+    private String getLocalizedString(@StringRes int stringRes) {
+        if (stringRes == 0) {
+            return null;
+        }
+        checkLocalizationInternal();
+        String value = localizationInternal.getByResId(ApplicationLoader.applicationContext, stringRes);
+        if (value == null && ApplicationLoader.applicationContext != null) {
+            try {
+                value = ApplicationLoader.applicationContext.getString(stringRes);
+            } catch (Exception ignored) {}
+        }
+        return value;
     }
 
     @Nullable
@@ -4446,14 +4509,14 @@ public class LocaleController {
         String value;
 
         if (BuildVars.USE_CLOUD_STRINGS) {
-            if (key == null || !BuildVars.LOCKED_LOCAL_STRINGS.contains(key)) {
+            if (!isLocked(context, key, stringRes)) {
                 value = localizationExternal.getByResNameOrResId(context, key, stringRes);
                 if (value != null) {
                     return value;
                 }
             }
 
-            if (fallback == null || !BuildVars.LOCKED_LOCAL_STRINGS.contains(fallback)) {
+            if (fallback != null && !isLocked(context, fallback, 0)) {
                 value = localizationExternal.getByResName(fallback);
                 if (value != null) {
                     return value;
@@ -4467,7 +4530,38 @@ public class LocaleController {
             return value;
         }
 
-        return localizationInternal.getByResName(fallback);
+        value = localizationInternal.getByResName(fallback);
+        if (value != null) {
+            return value;
+        }
+
+        if (context != null) {
+            if (stringRes != 0) {
+                try {
+                    return context.getString(stringRes);
+                } catch (Exception ignored) {}
+            }
+
+            if (key != null) {
+                try {
+                    int resId = context.getResources().getIdentifier(key, "string", context.getPackageName());
+                    if (resId != 0) {
+                        return context.getString(resId);
+                    }
+                } catch (Exception ignored) {}
+            }
+
+            if (fallback != null) {
+                try {
+                    int resId = context.getResources().getIdentifier(fallback, "string", context.getPackageName());
+                    if (resId != 0) {
+                        return context.getString(resId);
+                    }
+                } catch (Exception ignored) {}
+            }
+        }
+
+        return null;
     }
 
 

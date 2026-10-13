@@ -31,19 +31,19 @@ class TelegramBuildAppPlugin : Plugin<Project> {
                 // through this task too or they only ever render in English.
                 stringsXml.from(
                     telegramModule.fileTree("src/main/res/values") {
-                        include("strings.xml", "mg_strings.xml")
+                        include("strings.xml", "mg_strings.xml", "justgram.xml")
                     },
                     project.fileTree("src/main/res/values") {
-                        include("strings.xml", "mg_strings.xml")
+                        include("strings.xml", "mg_strings.xml", "justgram.xml")
                     }
                 )
 
                 localizationFiles.from(
                     telegramModule.fileTree("src/main/res") {
-                        include("values-*/strings.xml", "values-*/mg_strings.xml")
+                        include("values-*/strings.xml", "values-*/mg_strings.xml", "values-*/justgram.xml")
                     },
                     project.fileTree("src/main/res") {
-                        include("values-*/strings.xml", "values-*/mg_strings.xml")
+                        include("values-*/strings.xml", "values-*/mg_strings.xml", "values-*/justgram.xml")
                     }
                 )
 

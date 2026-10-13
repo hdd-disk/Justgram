@@ -1,5 +1,7 @@
 package org.telegram.messenger;
 
+import org.telegram.messenger.ILocationServiceProvider;
+import org.telegram.messenger.IMapsProvider;
 import org.telegram.messenger.regular.BuildConfig;
 
 public class ApplicationLoaderImpl extends ApplicationLoader {

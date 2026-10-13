@@ -150,8 +150,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
 
         coreLibraryDesugaringEnabled true
     }
@@ -528,7 +528,6 @@ def getProps(String propName) {
         return "";
     }
 }
-apply plugin: 'com.google.gms.google-services'
 
 task checkVisibility {
     doFirst {
@@ -554,11 +553,14 @@ preBuild.dependsOn checkVisibility
 
 // Shared first step: init submodules and apply source-tree patches (idempotent).
 // All per-ABI tasks depend on this so patches are applied exactly once.
-task patchNativeSources {
+
+tasks.register('patchNativeSources') {
     description = 'Init native submodules and apply source patches.'
+
     doLast {
         providers.exec {
             workingDir rootDir
+
             commandLine 'git', 'submodule', 'update', '--init',
                 'TMessagesProj/jni/third_party/libvpx',
                 'TMessagesProj/jni/third_party/ffmpeg',
@@ -569,27 +571,36 @@ task patchNativeSources {
                 'TMessagesProj/jni/third_party/openh264',
                 'TMessagesProj/jni/third_party/libyuv',
                 'TMessagesProj/jni/tlottie',
-                'TMessagesProj/jni/boringssl',
+                'TMessagesProj/jni/third_party/boringssl',
                 'TMessagesProj/jni/td'
         }.result.get()
+
         def ffmpegDir = file("${projectDir}/jni/third_party/ffmpeg")
-        def ffmpegSha = providers.exec {
-            commandLine 'git', '-C', ffmpegDir.toString(), 'rev-parse', 'HEAD'
-        }.standardOutput.asText.get().trim()
-        new File(ffmpegDir, 'VERSION').text = ffmpegSha + '\n'
+        if (ffmpegDir.exists() && new File(ffmpegDir, '.git').exists()) {
+            def ffmpegSha = providers.exec {
+                commandLine 'git', '-C', ffmpegDir.toString(), 'rev-parse', 'HEAD'
+            }.standardOutput.asText.get().trim()
+
+            new File(ffmpegDir, 'VERSION').text = ffmpegSha + '\n'
+        }
 
         def ndkDir = android.ndkDirectory.toString()
         def ninjaPath = System.getenv('NINJA_PATH') ?: 'ninja'
+
         for (script in ['patch_boringssl.sh', 'patch_dav1d.sh', 'patch_td.sh']) {
-            providers.exec {
-                workingDir "${projectDir}/jni"
-                environment 'NDK', ndkDir
-                environment 'NINJA_PATH', ninjaPath
-                commandLine 'bash', script
-            }.result.get()
+            def scriptFile = file("${projectDir}/jni/${script}")
+            if (scriptFile.exists()) {
+                providers.exec {
+                    workingDir "${projectDir}/jni"
+                    environment 'NDK', ndkDir
+                    environment 'NINJA_PATH', ninjaPath
+                    commandLine 'bash', script
+                }.result.get()
+            }
         }
     }
 }
+
 
 def mediaBuildScript = 'build_ffmpeg_libvpx_dav1d_android_ndk27_merged.sh'
 
@@ -623,10 +634,10 @@ def pointSymlink = { String linkPath, String target ->
             def quietBuild = getProps('QUIET_NATIVE_BUILD') ? '1' : '0'
 
             def sentinel = file("${projectDir}/jni/ffmpeg/.ndk-${android.ndkVersion}-${abi}")
-            if (!(sentinel.exists()
-                    && file("${projectDir}/jni/ffmpeg/${abi}/libavcodec.a").exists()
-                    && file("${projectDir}/jni/ffmpeg/${abi}/libopus.a").exists()
-                    && file("${projectDir}/jni/ffmpeg/include/libavcodec/avcodec.h").exists())) {
+            def hasPrebuiltFfmpeg = file("${projectDir}/jni/prebuild/lib/${abi}/libavcodec.a").exists() &&
+                    file("${projectDir}/jni/prebuild/lib/${abi}/libopus.a").exists() &&
+                    file("${projectDir}/jni/prebuild/include/${abi}/libavutil/avconfig.h").exists()
+            if (!sentinel.exists() && !hasPrebuiltFfmpeg) {
                 pointSymlink(mediaJniLink, "${projectDir}/jni")
                 pointSymlink(mediaNdkLink, ndkDir)
                 if (!file("${projectDir}/jni/ffmpeg/build/opus/${abi}/libopus.a").exists()) {
@@ -650,7 +661,7 @@ def pointSymlink = { String linkPath, String target ->
                 sentinel.text = ndkDir + '\n'
             }
 
-            if (!file("${projectDir}/jni/prebuild/${abi}/libtlottie.a").exists()) {
+            if (!file("${projectDir}/jni/prebuild/lib/${abi}/libtlottie.a").exists()) {
                 pointSymlink(mediaJniLink, "${projectDir}/jni")
                 ['arm64-v8a', 'armeabi-v7a'].each {
                     file("${projectDir}/jni/prebuild/${it}").mkdirs()
@@ -681,7 +692,7 @@ def pointSymlink = { String linkPath, String target ->
                 }.result.get()
             }
 
-            if (!file("${projectDir}/jni/prebuild/${abi}/libopenh264.a").exists()) {
+            if (!file("${projectDir}/jni/prebuild/lib/${abi}/libopenh264.a").exists()) {
                 pointSymlink(mediaJniLink, "${projectDir}/jni")
                 pointSymlink(mediaNdkLink, ndkDir)
                 providers.exec {
@@ -698,13 +709,16 @@ def pointSymlink = { String linkPath, String target ->
             }
 
             for (script in ['build_boringssl.sh', 'build_tde2e.sh']) {
-                providers.exec {
-                    workingDir "${projectDir}/jni"
-                    environment 'NDK', ndkDir
-                    environment 'NINJA_PATH', ninjaPath
-                    environment 'QUIET_BUILD', quietBuild
-                    commandLine 'bash', script, abi
-                }.result.get()
+                def scriptFile = file("${projectDir}/jni/${script}")
+                if (scriptFile.exists()) {
+                    providers.exec {
+                        workingDir "${projectDir}/jni"
+                        environment 'NDK', ndkDir
+                        environment 'NINJA_PATH', ninjaPath
+                        environment 'QUIET_BUILD', quietBuild
+                        commandLine 'bash', script, abi
+                    }.result.get()
+                }
             }
         }
     }

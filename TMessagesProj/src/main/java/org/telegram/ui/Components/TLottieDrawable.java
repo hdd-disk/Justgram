@@ -34,6 +34,8 @@ import androidx.annotation.RawRes;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 
+import me.vkryl.core.reference.ReferenceList;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.DispatchQueue;
@@ -500,8 +502,6 @@ public class TLottieDrawable extends BitmapDrawable implements Animatable, Bitma
                             args.colorReplacement, layerColors);
                 } else {
                     replacement = TLottieNative.createFromRawJson(args.json, metaData,
-                            args.colorReplacement, layerColors);
-                }
                             args.colorReplacement, layerColors);
                 }
                 if (replacement != null) {
@@ -1338,6 +1338,7 @@ public class TLottieDrawable extends BitmapDrawable implements Animatable, Bitma
         public @RawRes int resId;
         File file;
         String json;
+        String name;
     }
 
     public final void setAllowDrawFramesWhileCacheGenerating(boolean allow) {

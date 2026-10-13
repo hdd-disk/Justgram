@@ -2682,6 +2682,8 @@
     <string name="DeleteProxyMultiConfirm">Are you sure you want to delete these proxies?</string>
     <string name="UseProxyTitle">Proxy Server</string>
     <string name="UseProxySettings">Use Proxy</string>
+    <string name="UseProxyForCalls">Use proxy for calls</string>
+    <string name="UseProxyForCallsInfo">Proxy servers may decrease the quality of your calls.</string>
     <string name="UseProxyAddress">Server</string>
     <string name="UseProxyPassword">Password</string>
     <string name="UseProxyPort">Port</string>

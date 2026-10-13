@@ -8,6 +8,7 @@ import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.MessagesController;
+import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.PushListenerController;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UnifiedPushReceiver;
@@ -150,6 +151,16 @@ public final class UnifiedPushListenerServiceProvider implements PushListenerCon
         // Throttled like every other retry, so this cannot turn into a register() every 30 s:
         // the backoff passes the first time or two and then holds the attempts off.
         ensureRegistered();
+    }
+
+    private static void notifyStateChanged() {
+        AndroidUtilities.runOnUIThread(() -> {
+            for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+                if (UserConfig.getInstance(a).isClientActivated()) {
+                    NotificationCenter.getInstance(a).postNotificationName(NotificationCenter.notificationsSettingsUpdated);
+                }
+            }
+        });
     }
 
     /**

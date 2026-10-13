@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.R;
-import org.telegram.ui.Components.RLottieNative;
+import org.telegram.ui.Components.TLottieNative;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -993,7 +993,7 @@ final class RoundVideoOverlayRenderer {
         int atlasWidth = Math.max(logoAtlasWidth, textSize);
         int atlasHeight = logoAtlasHeight + textSize;
 
-        RLottieNative lottie = RLottieNative.createFromRawJson(
+        TLottieNative lottie = TLottieNative.createFromRawJson(
                 AndroidUtilities.readRes(R.raw.plane_logo_plain)
         );
         if (lottie == null) throw new IllegalStateException("Unable to load watermark animation");

@@ -23,11 +23,13 @@ import com.exteragram.messenger.ExteraConfig;
 import com.exteragram.messenger.api.dto.NowPlayingDTO;
 import com.exteragram.messenger.nowplaying.ServiceEmoji;
 import com.exteragram.messenger.utils.ui.UIUtil;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSource;
+
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.Player;
+import androidx.media3.exoplayer.source.ProgressiveMediaSource;
+import androidx.media3.datasource.DefaultDataSource;
 import java.util.List;
 import kotlin.jvm.internal.Intrinsics;
 import kotlin.ranges.RangesKt;
@@ -45,6 +47,7 @@ import org.telegram.ui.Components.LayoutHelper;
 import org.telegram.ui.Components.PlayPauseDrawable;
 import org.telegram.ui.Components.ScaleStateListAnimator;
 
+@UnstableApi
 @SuppressLint({"ViewConstructor"})
 public abstract class NowPlayingCard extends FrameLayout {
     private final TextView albumView;
@@ -269,6 +272,7 @@ public abstract class NowPlayingCard extends FrameLayout {
         invalidate();
     }
 
+    @UnstableApi
     private void initializePlayer() {
         releasePlayer();
         if (this.nowPlayingCardData == null) {

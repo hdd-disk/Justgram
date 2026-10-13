@@ -99,9 +99,9 @@ public final class InstantCameraView2 extends InstantCameraViewBase {
     private AnimatorSet visibilityAnimator;
     private ValueAnimator zoomResetAnimator;
     private ValueAnimator cameraFlipAnimator;
-    private RLottieDrawable switchCameraDrawable;
-    private RLottieDrawable flashOnDrawable;
-    private RLottieDrawable flashOffDrawable;
+    private TLottieDrawable switchCameraDrawable;
+    private TLottieDrawable flashOnDrawable;
+    private TLottieDrawable flashOffDrawable;
     private boolean startedNotificationSent;
     private boolean resumeNotificationPending;
     private boolean stopNotificationSent;
@@ -256,8 +256,9 @@ public final class InstantCameraView2 extends InstantCameraViewBase {
         flashButton.setOnClickListener(view -> toggleFlash());
 
         buttonIconSize = dp(isNewDesign ? 24 : 28);
-        switchCameraDrawable = new RLottieDrawable(
+        switchCameraDrawable = new TLottieDrawable(
                 R.raw.roundcamera_flip,
+                "roundcamera_flip",
                 buttonIconSize,
                 buttonIconSize
         );
@@ -567,7 +568,7 @@ public final class InstantCameraView2 extends InstantCameraViewBase {
     }
 
     @Override
-    public InstantCameraViewBase.InstantViewCameraContainer getCameraContainer() {
+    public InstantViewCameraContainer getCameraContainer() {
         return cameraContainer;
     }
 
@@ -935,8 +936,9 @@ public final class InstantCameraView2 extends InstantCameraViewBase {
         boolean enabled = stateInfo != null && stateInfo.isFlashEnabled();
         if (enabled) {
             if (flashOffDrawable == null) {
-                flashOffDrawable = new RLottieDrawable(
+                flashOffDrawable = new TLottieDrawable(
                         R.raw.roundcamera_flash_off,
+                        "roundcamera_flash_off",
                         buttonIconSize,
                         buttonIconSize
                 );
@@ -945,8 +947,9 @@ public final class InstantCameraView2 extends InstantCameraViewBase {
             flashButton.setImageDrawable(flashOffDrawable);
         } else {
             if (flashOnDrawable == null) {
-                flashOnDrawable = new RLottieDrawable(
+                flashOnDrawable = new TLottieDrawable(
                         R.raw.roundcamera_flash_on,
+                        "roundcamera_flash_on",
                         buttonIconSize,
                         buttonIconSize
                 );
@@ -1327,7 +1330,7 @@ public final class InstantCameraView2 extends InstantCameraViewBase {
         return Math.max(minimum, Math.min(maximum, value));
     }
 
-    private final class CameraContainer extends InstantCameraViewBase.InstantViewCameraContainer {
+    private final class CameraContainer extends InstantViewCameraContainer {
         private ImageReceiver imageReceiver;
         private float imageProgress;
         private boolean messageTransition;

@@ -16,6 +16,7 @@ import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.Utilities;
 import org.telegram.tgnet.ConnectionsManager;
+import org.telegram.utils.proxy.ProxySettings;
 
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -291,7 +292,15 @@ public class XrayManager {
 
     private void enableTgProxy(int port) {
         try {
-            SharedConfig.ProxyInfo proxyInfo = SharedConfig.addProxy(new SharedConfig.ProxyInfo("127.0.0.1", port, "", "", ""));
+            ProxySettings proxySettings = ProxySettings.builder()
+                    .setAddress("127.0.0.1")
+                    .setPort(port)
+                    .setUser("")
+                    .setPassword("")
+                    .setSecret("")
+                    .setType(ProxySettings.Type.SOCKS5)
+                    .build();
+            SharedConfig.ProxyInfo proxyInfo = SharedConfig.addProxy(new SharedConfig.ProxyInfo(proxySettings));
             SharedConfig.currentProxy = proxyInfo;
             SharedConfig.saveProxyList();
 
@@ -305,7 +314,7 @@ public class XrayManager {
             editor.putBoolean("proxy_enabled_calls", true);
             editor.commit();
 
-            ConnectionsManager.setProxySettings(true, "127.0.0.1", port, "", "", "");
+            ConnectionsManager.setProxySettings(true, proxySettings);
 
             AndroidUtilities.runOnUIThread(() -> NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.proxySettingsChanged));
         } catch (Exception ignored) {
@@ -319,7 +328,7 @@ public class XrayManager {
             editor.putBoolean("proxy_enabled_calls", false);
             editor.commit();
 
-            ConnectionsManager.setProxySettings(false, "", 1080, "", "", "");
+            ConnectionsManager.setProxySettings(false, null);
 
             AndroidUtilities.runOnUIThread(() -> NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.proxySettingsChanged));
         } catch (Exception ignored) {
