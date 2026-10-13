@@ -1,6 +1,7 @@
 package com.exteragram.messenger.nowplaying.ui.components;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import androidx.core.graphics.ColorUtils;
 import androidx.palette.graphics.Palette;
 import com.exteragram.messenger.api.dto.NowPlayingDTO;
@@ -15,7 +16,10 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.ImageLocation;
 import org.telegram.messenger.ImageReceiver;
+import org.telegram.messenger.MediaController;
+import org.telegram.messenger.MessageObject;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.audioinfo.AudioInfo;
 import org.telegram.tgnet.TLRPC;
 
 public final class NowPlayingCardData {
@@ -112,13 +116,56 @@ public final class NowPlayingCardData {
         }
 
         public final void create(final NowPlayingDTO nowPlayingDTO, TLRPC.Document document, final Callback callback) {
-            String coverUrl;
-            TLRPC.PhotoSize closestPhotoSizeWithSize;
-            ImageLocation forDocument = (!Intrinsics.areEqual(nowPlayingDTO.getPlatform(), "TELEGRAM") || document == null || (closestPhotoSizeWithSize = FileLoader.getClosestPhotoSizeWithSize(document.thumbs, 1000)) == null) ? null : ImageLocation.getForDocument(closestPhotoSizeWithSize, document);
-            if (forDocument == null && (coverUrl = nowPlayingDTO.getCoverUrl()) != null && coverUrl.length() != 0) {
-                forDocument = ImageLocation.getForPath(nowPlayingDTO.getCoverUrl());
+            TLRPC.Document targetDocument = document;
+            if (targetDocument == null && Intrinsics.areEqual(nowPlayingDTO.getPlatform(), "TELEGRAM")) {
+                MessageObject playingMessage = MediaController.getInstance().getPlayingMessageObject();
+                if (playingMessage != null && playingMessage.isMusic()) {
+                    targetDocument = playingMessage.getDocument();
+                }
             }
+
+            ImageLocation forDocument = null;
+            Bitmap localCoverBitmap = null;
+
+            if (targetDocument != null) {
+                TLRPC.PhotoSize closestPhotoSizeWithSize = FileLoader.getClosestPhotoSizeWithSize(targetDocument.thumbs, 1000, false, null, true);
+                if (closestPhotoSizeWithSize != null) {
+                    forDocument = ImageLocation.getForDocument(closestPhotoSizeWithSize, targetDocument);
+                }
+
+                if (forDocument == null) {
+                    MessageObject playingMessage = MediaController.getInstance().getPlayingMessageObject();
+                    if (playingMessage != null && playingMessage.getDocument() != null && playingMessage.getDocument().id == targetDocument.id) {
+                        AudioInfo audioInfo = MediaController.getInstance().getAudioInfo();
+                        if (audioInfo != null && audioInfo.getCover() != null) {
+                            localCoverBitmap = audioInfo.getCover();
+                        }
+                    }
+                }
+
+                if (forDocument == null && localCoverBitmap == null) {
+                    String artworkUrl = MessageObject.getArtworkUrl(targetDocument, false);
+                    if (!TextUtils.isEmpty(artworkUrl)) {
+                        forDocument = ImageLocation.getForPath(artworkUrl);
+                    }
+                }
+            }
+
+            if (localCoverBitmap != null) {
+                final Bitmap finalBitmap = localCoverBitmap;
+                Utilities.themeQueue.postRunnable(() -> {
+                    Pair<Integer, Integer> pairExtractColors = extractColors(finalBitmap);
+                    final Integer numComponent1 = pairExtractColors.getFirst();
+                    final Integer numComponent2 = pairExtractColors.getSecond();
+                    AndroidUtilities.runOnUIThread(() -> callback.onDataLoaded(
+                            new NowPlayingCardData(nowPlayingDTO, numComponent1, numComponent2, finalBitmap, null, 0L, 32, null)
+                    ));
+                });
+                return;
+            }
+
             final ImageLocation imageLocation = forDocument;
+            final TLRPC.Document finalDocument = targetDocument;
             if (imageLocation == null) {
                 AndroidUtilities.runOnUIThread(() -> callback.onDataLoaded(new NowPlayingCardData(nowPlayingDTO, null, null, null, null, 0L, 32, null)));
                 return;
@@ -127,7 +174,7 @@ public final class NowPlayingCardData {
             final AtomicBoolean atomicBoolean = new AtomicBoolean(false);
             final Ref.ObjectRef<Runnable> ref$ObjectRef = new Ref.ObjectRef<>();
             ref$ObjectRef.element = () -> create$finish(atomicBoolean, ref$ObjectRef, imageReceiver, callback, new NowPlayingCardData(nowPlayingDTO, null, null, null, imageLocation, 0L, 32, null));
-            AndroidUtilities.runOnUIThread(() -> m1242$r8$lambda$AOf_1ZcjMCUyw5uKAO3aSljOk(imageReceiver, ref$ObjectRef, imageLocation, nowPlayingDTO, atomicBoolean, callback));
+            AndroidUtilities.runOnUIThread(() -> m1242$r8$lambda$AOf_1ZcjMCUyw5uKAO3aSljOk(imageReceiver, ref$ObjectRef, imageLocation, nowPlayingDTO, finalDocument, atomicBoolean, callback));
         }
 
         private static void create$finish(AtomicBoolean atomicBoolean, Ref.ObjectRef<Runnable> ref$ObjectRef, ImageReceiver imageReceiver, Callback callback, NowPlayingCardData nowPlayingCardData) {
@@ -140,12 +187,12 @@ public final class NowPlayingCardData {
             }
         }
 
-        public static void m1242$r8$lambda$AOf_1ZcjMCUyw5uKAO3aSljOk(final ImageReceiver imageReceiver, final Ref.ObjectRef<Runnable> ref$ObjectRef, final ImageLocation imageLocation, final NowPlayingDTO nowPlayingDTO, final AtomicBoolean atomicBoolean, final Callback callback) {
+        public static void m1242$r8$lambda$AOf_1ZcjMCUyw5uKAO3aSljOk(final ImageReceiver imageReceiver, final Ref.ObjectRef<Runnable> ref$ObjectRef, final ImageLocation imageLocation, final NowPlayingDTO nowPlayingDTO, final TLRPC.Document document, final AtomicBoolean atomicBoolean, final Callback callback) {
             imageReceiver.onAttachedToWindow();
             imageReceiver.setDelegate((imageReceiver2, z, z2, z3) -> create$lambda$2$0(nowPlayingDTO, imageLocation, atomicBoolean, ref$ObjectRef, imageReceiver, callback, imageReceiver2, z, z2, z3));
             Runnable t = ref$ObjectRef.element;
             AndroidUtilities.runOnUIThread(t, 15000L);
-            imageReceiver.setImage(imageLocation, null, null, null, null, 0);
+            imageReceiver.setImage(imageLocation, null, null, null, document != null ? document : nowPlayingDTO, 0);
         }
 
         private static void create$lambda$2$0(final NowPlayingDTO nowPlayingDTO, final ImageLocation imageLocation, final AtomicBoolean atomicBoolean, final Ref.ObjectRef<Runnable> ref$ObjectRef, final ImageReceiver imageReceiver, final Callback callback, ImageReceiver imageReceiver2, boolean z, boolean z2, boolean z3) {

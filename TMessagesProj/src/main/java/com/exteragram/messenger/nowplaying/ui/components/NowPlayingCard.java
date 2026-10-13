@@ -244,9 +244,13 @@ public abstract class NowPlayingCard extends FrameLayout {
             onSavedMusicClick();
             return true;
         });
-        if (nowPlayingCardData.getImageLocation() != null) {
+        if (nowPlayingCardData.getImageLocation() != null || nowPlayingCardData.getCoverBitmap() != null) {
             Bitmap coverBitmap = nowPlayingCardData.getCoverBitmap();
-            this.imageView.setImage(nowPlayingCardData.getImageLocation(), (String) null, coverBitmap != null ? new BitmapDrawable(getContext().getResources(), coverBitmap) : null, 0, (Object) null);
+            if (nowPlayingCardData.getImageLocation() != null) {
+                this.imageView.setImage(nowPlayingCardData.getImageLocation(), (String) null, coverBitmap != null ? new BitmapDrawable(getContext().getResources(), coverBitmap) : null, 0, (Object) null);
+            } else {
+                this.imageView.setImageBitmap(coverBitmap);
+            }
             if (nowPlayingCardData.getCoverBitmap() != null) {
                 this.artistView.setTextColor(-1);
                 this.nameView.setTextColor(-1);
