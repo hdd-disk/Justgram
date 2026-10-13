@@ -153,7 +153,6 @@ public final class ExteraConfig {
             arrayList.add(MainMenuItem.CONTACTS.getId());
         }
         arrayList.add(MainMenuItem.SAVED.getId());
-        arrayList.add(MainMenuItem.FEED.getId());
         arrayList.add(MainMenuItem.BOTS.getId());
         if (BottomNavigationBar.hidden()) {
             arrayList.add(MainMenuItem.SETTINGS.getId());
@@ -248,11 +247,6 @@ public final class ExteraConfig {
                 if (!mainMenuLayout.contains(id) && !mainMenuHiddenItems.contains(id)) {
                     mainMenuHiddenItems.add(id);
                 }
-            }
-            int feedId = MainMenuItem.FEED.getId();
-            if (!mainMenuLayout.contains(feedId) && !mainMenuHiddenItems.contains(feedId)) {
-                mainMenuLayout.add(feedId);
-                saveMainMenuLayout();
             }
             ensureSettingsVisibility();
             sanitizeMenu();

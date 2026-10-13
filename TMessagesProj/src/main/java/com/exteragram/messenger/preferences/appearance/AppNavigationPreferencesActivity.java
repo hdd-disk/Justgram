@@ -82,7 +82,6 @@ public class AppNavigationPreferencesActivity extends BasePreferencesActivity {
         this.itemDetails.put(MainMenuItem.NEW_CHANNEL.getId(), new ItemInfo(LocaleController.getString(R.string.NewChannel), R.drawable.msg_channel));
         this.itemDetails.put(MainMenuItem.CALLS.getId(), new ItemInfo(LocaleController.getString(R.string.Calls), R.drawable.msg_calls));
         this.itemDetails.put(MainMenuItem.SAVED.getId(), new ItemInfo(LocaleController.getString(R.string.SavedMessages), R.drawable.msg_saved));
-        this.itemDetails.put(MainMenuItem.FEED.getId(), new ItemInfo(LocaleController.getString(R.string.Feed), R.drawable.ic_feed));
         this.itemDetails.put(MainMenuItem.SETTINGS.getId(), new ItemInfo(LocaleController.getString(R.string.Settings), R.drawable.msg_settings));
         this.itemDetails.put(MainMenuItem.PLUGINS.getId(), new ItemInfo(LocaleController.getString(R.string.Plugins), R.drawable.msg_plugins));
         this.itemDetails.put(MainMenuItem.BROWSER.getId(), new ItemInfo(LocaleController.getString(R.string.BrowserSettingsTitle), R.drawable.msg2_language));

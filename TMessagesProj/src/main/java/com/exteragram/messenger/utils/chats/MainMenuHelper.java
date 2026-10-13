@@ -248,9 +248,6 @@ public abstract class MainMenuHelper {
                     bundle.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
                     fragment.presentFragment(new ChatActivity(bundle));
                 }, null);
-            case FEED:
-                return new MenuItemInfo(R.drawable.ic_feed, LocaleController.getString(R.string.Feed), () -> {
-                }, null);
             case SETTINGS:
                 return new MenuItemInfo(R.drawable.msg_settings, LocaleController.getString(R.string.Settings), () -> fragment.presentFragment(new SettingsActivity()), null);
             case BROWSER:

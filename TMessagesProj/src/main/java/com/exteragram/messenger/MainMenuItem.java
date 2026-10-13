@@ -13,8 +13,7 @@ public enum MainMenuItem {
     SETTINGS(8),
     PLUGINS(102),
     BROWSER(101),
-    QR(17),
-    FEED(106);
+    QR(17);
 
     private final int id;
 

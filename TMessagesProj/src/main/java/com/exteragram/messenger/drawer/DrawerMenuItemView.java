@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.exteragram.messenger.MainMenuItem;
-import com.exteragram.messenger.feed.FeedController;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.MessagesStorage;
@@ -67,9 +66,6 @@ public class DrawerMenuItemView extends FrameLayout {
     private int resolveUnreadCounter(int i) {
         if (this.layoutButtonId == MainMenuItem.ARCHIVE.getId()) {
             return MessagesStorage.getInstance(i).getArchiveUnreadCount();
-        }
-        if (this.layoutButtonId == MainMenuItem.FEED.getId()) {
-            return FeedController.getInstance(i).getUnreadCount();
         }
         return 0;
     }
