@@ -3504,7 +3504,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             if (searchString != null || folderId != 0 || communityId != 0) {
                 actionBar.setBackButtonDrawable(backDrawable = new BackDrawable(false));
             } else if (ExteraConfig.getNavigationDrawer()) {
-                actionBar.setBackButtonDrawable(new MenuDrawable());
+                if (menuDrawable == null) {
+                    menuDrawable = new MenuDrawable();
+                    menuDrawable.setRotateToBack(false);
+                }
+                actionBar.setBackButtonDrawable(menuDrawable);
             } else {
                 actionBar.setBackButtonDrawable(null);
             }

@@ -27,6 +27,7 @@ import org.telegram.ui.Components.BulletinFactory;
 import org.telegram.ui.Components.UItem;
 import org.telegram.ui.Components.UniversalAdapter;
 import org.telegram.ui.Components.UniversalRecyclerView;
+import org.telegram.ui.LaunchActivity;
 
 public class AppNavigationPreferencesActivity extends BasePreferencesActivity {
     private CharSequence[] bottomNavigationModes;
@@ -295,6 +296,9 @@ public class AppNavigationPreferencesActivity extends BasePreferencesActivity {
             switch (appNavigationItemFromId) {
                 case DRAWER:
                     toggleBooleanSettingAndRefresh(uItem, val -> ExteraConfig.setNavigationDrawer(val));
+                    if (LaunchActivity.instance != null) {
+                        LaunchActivity.instance.syncDrawerContainerEnabled();
+                    }
                     getNotificationCenter().postNotificationName(NotificationCenter.mainUserInfoChanged);
                     UniversalRecyclerView universalRecyclerView = this.listView;
                     if (universalRecyclerView != null && universalRecyclerView.adapter != null) {

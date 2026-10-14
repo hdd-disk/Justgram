@@ -7250,8 +7250,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                 updateCurrentConnectionState(account);
             }
         } else if (id == NotificationCenter.mainUserInfoChanged) {
-
-        } else if (id == NotificationCenter.attachMenuBotsDidLoad) {
+            syncDrawerContainerEnabled();        } else if (id == NotificationCenter.attachMenuBotsDidLoad) {
             refreshDrawer(true);
         } else if (id == NotificationCenter.pluginMenuItemsUpdated) {
             refreshDrawer(true);
