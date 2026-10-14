@@ -420,6 +420,25 @@ public class JustgramXraySettingsActivity extends BaseFragment {
                 BulletinFactory.of(this).createSimpleBulletin(R.drawable.msg_copy, String.format(getString(R.string.XraySubUpdated), count)).show();
             }, (error) -> BulletinFactory.of(this).createErrorBulletin(error).show());
         });
+        options.add(R.drawable.msg_edit, getString(R.string.Rename), () -> {
+            AlertsCreator.createSimpleTextInputAlert(
+                    getContext(),
+                    this,
+                    getString(R.string.Rename),
+                    null,
+                    null,
+                    sub.name,
+                    100,
+                    getString(R.string.Save),
+                    null,
+                    (result) -> {
+                        if (!TextUtils.isEmpty(result)) {
+                            XrayManager.getInstance().updateSubscriptionName(sub, result);
+                            listView.adapter.update(true);
+                        }
+                    }
+            );
+        });
         options.add(R.drawable.msg_delete, getString(R.string.XrayDeleteSub), true, () -> {
             XrayManager.getInstance().deleteSubscription(sub);
             listView.adapter.update(true);

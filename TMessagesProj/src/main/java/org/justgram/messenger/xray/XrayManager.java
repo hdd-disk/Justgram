@@ -2,6 +2,7 @@ package org.justgram.messenger.xray;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
@@ -19,9 +20,12 @@ import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.utils.proxy.ProxySettings;
 
 import java.net.ServerSocket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import libv2ray.CoreCallbackHandler;
@@ -104,6 +108,12 @@ public class XrayManager {
                 for (int i = 0; i < subArray.length(); i++) {
                     XraySubscription sub = XraySubscription.fromJsonObject(subArray.getJSONObject(i));
                     if (sub != null) {
+                        if (TextUtils.isEmpty(sub.name) || sub.name.startsWith("Subscription ")) {
+                            String nameFromUrl = extractSubscriptionName(null, null, sub.url);
+                            if (!TextUtils.isEmpty(nameFromUrl)) {
+                                sub.name = nameFromUrl;
+                            }
+                        }
                         subscriptions.add(sub);
                     }
                 }
@@ -459,6 +469,208 @@ public class XrayManager {
         }
     }
 
+    private String extractSubscriptionName(Response response, String rawContent, String url) {
+        String name = null;
+
+        if (response != null) {
+            String profileTitle = response.header("profile-title");
+            if (TextUtils.isEmpty(profileTitle)) {
+                profileTitle = response.header("subscription-title");
+            }
+            if (TextUtils.isEmpty(profileTitle)) {
+                profileTitle = response.header("sub-title");
+            }
+
+            if (!TextUtils.isEmpty(profileTitle)) {
+                name = decodeProfileTitle(profileTitle);
+            }
+
+            if (TextUtils.isEmpty(name)) {
+                String contentDisposition = response.header("content-disposition");
+                if (!TextUtils.isEmpty(contentDisposition)) {
+                    name = extractFilenameFromContentDisposition(contentDisposition);
+                }
+            }
+        }
+
+        if (TextUtils.isEmpty(name) && !TextUtils.isEmpty(rawContent)) {
+            name = extractNameFromContent(rawContent);
+        }
+
+        if (TextUtils.isEmpty(name) && !TextUtils.isEmpty(url)) {
+            name = extractNameFromUrl(url);
+        }
+
+        if (TextUtils.isEmpty(name) && !TextUtils.isEmpty(url)) {
+            try {
+                Uri uri = Uri.parse(url);
+                String host = uri.getHost();
+                if (!TextUtils.isEmpty(host)) {
+                    name = host;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        return name != null ? name.trim() : null;
+    }
+
+    private static String decodeProfileTitle(String raw) {
+        if (TextUtils.isEmpty(raw)) return null;
+        String str = raw.trim();
+
+        if (str.startsWith("\"") && str.endsWith("\"") && str.length() > 1) {
+            str = str.substring(1, str.length() - 1).trim();
+        }
+
+        String lower = str.toLowerCase(Locale.US);
+        if (lower.startsWith("base64:")) {
+            String b64 = str.substring(7).trim();
+            String decoded = XrayParser.safeBase64Decode(b64);
+            if (!TextUtils.isEmpty(decoded)) {
+                str = decoded.trim();
+            }
+        } else if (str.contains("%")) {
+            try {
+                str = URLDecoder.decode(str, "UTF-8");
+            } catch (Exception ignored) {
+            }
+        } else {
+            try {
+                byte[] bytes = str.getBytes(StandardCharsets.ISO_8859_1);
+                String utf8 = new String(bytes, StandardCharsets.UTF_8);
+                if (!utf8.contains("\uFFFD")) {
+                    str = utf8;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        return str.trim();
+    }
+
+    private static String extractFilenameFromContentDisposition(String header) {
+        if (TextUtils.isEmpty(header)) return null;
+
+        try {
+            int utfIdx = header.toLowerCase(Locale.US).indexOf("filename*=utf-8''");
+            if (utfIdx != -1) {
+                String val = header.substring(utfIdx + "filename*=utf-8''".length());
+                int endIdx = val.indexOf(';');
+                if (endIdx != -1) val = val.substring(0, endIdx);
+                val = val.trim();
+                if (val.startsWith("\"") && val.endsWith("\"") && val.length() > 1) {
+                    val = val.substring(1, val.length() - 1);
+                }
+                val = URLDecoder.decode(val, "UTF-8");
+                return cleanupFilename(val);
+            }
+
+            int fnIdx = header.toLowerCase(Locale.US).indexOf("filename=");
+            if (fnIdx != -1) {
+                String val = header.substring(fnIdx + "filename=".length());
+                int endIdx = val.indexOf(';');
+                if (endIdx != -1) val = val.substring(0, endIdx);
+                val = val.trim();
+                if (val.startsWith("\"") && val.endsWith("\"") && val.length() > 1) {
+                    val = val.substring(1, val.length() - 1);
+                }
+                if (val.contains("%")) {
+                    val = URLDecoder.decode(val, "UTF-8");
+                }
+                return cleanupFilename(val);
+            }
+        } catch (Exception ignored) {
+        }
+
+        return null;
+    }
+
+    private static String cleanupFilename(String filename) {
+        if (TextUtils.isEmpty(filename)) return null;
+        String fn = filename.trim();
+        String lower = fn.toLowerCase(Locale.US);
+        if (lower.endsWith(".txt") || lower.endsWith(".json") || lower.endsWith(".yaml") || lower.endsWith(".yml") || lower.endsWith(".conf")) {
+            int dot = fn.lastIndexOf('.');
+            if (dot > 0) {
+                fn = fn.substring(0, dot);
+            }
+        }
+        return fn.trim();
+    }
+
+    private static String extractNameFromUrl(String url) {
+        if (TextUtils.isEmpty(url)) return null;
+
+        try {
+            int hashIdx = url.indexOf('#');
+            if (hashIdx != -1 && hashIdx < url.length() - 1) {
+                String fragment = url.substring(hashIdx + 1).trim();
+                if (!TextUtils.isEmpty(fragment)) {
+                    try {
+                        fragment = URLDecoder.decode(fragment, "UTF-8");
+                    } catch (Exception ignored) {
+                    }
+                    if (!TextUtils.isEmpty(fragment)) {
+                        return fragment.trim();
+                    }
+                }
+            }
+
+            Uri uri = Uri.parse(url);
+            String nameParam = uri.getQueryParameter("name");
+            if (TextUtils.isEmpty(nameParam)) {
+                nameParam = uri.getQueryParameter("title");
+            }
+            if (!TextUtils.isEmpty(nameParam)) {
+                return nameParam.trim();
+            }
+        } catch (Exception ignored) {
+        }
+
+        return null;
+    }
+
+    private static String extractNameFromContent(String content) {
+        if (TextUtils.isEmpty(content)) return null;
+
+        String text = content.trim();
+        if (!text.startsWith("vless://") && !text.startsWith("vmess://") && !text.startsWith("trojan://") && !text.startsWith("ss://") && !text.startsWith("hy2://")) {
+            String decoded = XrayParser.safeBase64Decode(text);
+            if (!TextUtils.isEmpty(decoded)) {
+                text = decoded;
+            }
+        }
+
+        String[] lines = text.split("[\\r\\n]+");
+        int count = 0;
+        for (String line : lines) {
+            count++;
+            if (count > 15) break;
+            String l = line.trim();
+            if (TextUtils.isEmpty(l)) continue;
+
+            String lower = l.toLowerCase(Locale.US);
+
+            if (lower.startsWith("#profile_title=") || lower.startsWith("//profile_title=")
+                    || lower.startsWith("#name=") || lower.startsWith("//name=")
+                    || lower.startsWith("#title=") || lower.startsWith("//title=")) {
+                int eq = l.indexOf('=');
+                if (eq != -1 && eq < l.length() - 1) {
+                    String val = l.substring(eq + 1).trim();
+                    if (val.startsWith("\"") && val.endsWith("\"") && val.length() > 1) {
+                        val = val.substring(1, val.length() - 1);
+                    }
+                    if (!TextUtils.isEmpty(val)) {
+                        return val.trim();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     private void downloadSubscription(String url, Utilities.Callback<Integer> onSuccess, Utilities.Callback<String> onError) {
         try {
             Request request = new Request.Builder()
@@ -484,6 +696,8 @@ public class XrayManager {
                     return;
                 }
 
+                String extractedName = extractSubscriptionName(response, content, url);
+
                 synchronized (XrayManager.this) {
                     XraySubscription sub = null;
                     for (XraySubscription s : subscriptions) {
@@ -496,8 +710,14 @@ public class XrayManager {
                     if (sub == null) {
                         sub = new XraySubscription();
                         sub.url = url;
-                        sub.name = "Subscription " + (subscriptions.size() + 1);
+                        if (!TextUtils.isEmpty(extractedName)) {
+                            sub.name = extractedName;
+                        } else {
+                            sub.name = "Subscription " + (subscriptions.size() + 1);
+                        }
                         subscriptions.add(sub);
+                    } else if (!TextUtils.isEmpty(extractedName)) {
+                        sub.name = extractedName;
                     }
 
                     sub.profileCount = parsed.size();
@@ -538,6 +758,12 @@ public class XrayManager {
         Utilities.globalQueue.postRunnable(() -> downloadSubscription(sub.url, onSuccess, onError));
     }
 
+    public synchronized void updateSubscriptionName(XraySubscription sub, String newName) {
+        if (sub == null || TextUtils.isEmpty(newName)) return;
+        sub.name = newName.trim();
+        saveToPrefs();
+    }
+
     public void updateSubscriptions(Utilities.Callback<Integer> onSuccess, Utilities.Callback<String> onError) {
         List<XraySubscription> subs = getSubscriptions();
         if (subs.isEmpty()) {
@@ -560,8 +786,12 @@ public class XrayManager {
                         if (response.isSuccessful() && response.body() != null) {
                             String content = response.body().string();
                             List<XrayProfile> parsed = XrayParser.parseProfiles(content);
+                            String extractedName = extractSubscriptionName(response, content, sub.url);
 
                             synchronized (XrayManager.this) {
+                                if (!TextUtils.isEmpty(extractedName)) {
+                                    sub.name = extractedName;
+                                }
                                 sub.profileCount = parsed.size();
                                 sub.lastUpdate = System.currentTimeMillis();
 
