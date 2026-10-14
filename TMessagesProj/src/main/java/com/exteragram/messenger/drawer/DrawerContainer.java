@@ -1206,6 +1206,9 @@ public class DrawerContainer extends FrameLayout implements NotificationCenter.N
         INavigationLayout parentActionBarLayout;
         BaseFragment lastFragment;
         ViewGroup view;
+        if (motionEvent == null) {
+            return false;
+        }
         if (canOpen(motionEvent)) {
             ViewParent parent = getParent();
             if (!(parent instanceof DrawerLayoutContainer) || (parentActionBarLayout = ((DrawerLayoutContainer) parent).getParentActionBarLayout()) == null || parentActionBarLayout.getFragmentStack().size() != 1 || !parentActionBarLayout.allowSwipe() || (((lastFragment = parentActionBarLayout.getLastFragment()) != null && lastFragment.getLastSheet() != null && lastFragment.getLastSheet().attachedToParent()) || (view = parentActionBarLayout.getView()) == null)) {

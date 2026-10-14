@@ -13657,7 +13657,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     public boolean canOpenDrawerBySwipe(MotionEvent ev) {
-        return ExteraConfig.getNavigationDrawer() && !onlySelect && communityId == 0 && folderId == 0 && !searching && commentView == null;
+        final boolean isFirstTab = filterTabsView == null || filterTabsView.getTabsCount() < 2 || filterTabsView.getCurrentTabId() == filterTabsView.getFirstTabId();
+        return ExteraConfig.getNavigationDrawer() && isFirstTab && !onlySelect && communityId == 0 && folderId == 0 && !searching && commentView == null;
     }
 
     @Override
