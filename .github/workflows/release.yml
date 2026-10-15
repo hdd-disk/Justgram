@@ -16,7 +16,7 @@ jobs:
 
     permissions:
       contents: write 
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,6 +33,8 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+            packages: 'ndk;27.2.12479018'
 
       - name: Install NDK and Build Dependencies
         run: |
@@ -42,12 +44,16 @@ jobs:
             ninja-build gperf meson libuv1-dev nasm cmake \
             autoconf automake libtool pkg-config bash git
 
-      - name: Extract Version from gradle.properties
-        id: gradle_version
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python venv with uv
         run: |
-          VERSION=$(grep 'APP_VERSION_NAME' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')
-          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          uv venv .venv --python 3.11 --seed
+          uv pip install --python .venv/bin/python "cython==3.0.11"
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
 
       - name: Prepare Changelog
         run: |
@@ -80,8 +86,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-rust-
 
-      - name: Build APKs (ARM32 and ARM64)
-        run: ./gradlew assembleArmeabi-v7aRelease assembleArm64-v8aRelease --stacktrace
+      - name: Build APKs
+        run: ./gradlew assembleBundleNormalRelease assembleBundlePluginRelease
 
       - name: Upload Release
         uses: softprops/action-gh-release@v2
