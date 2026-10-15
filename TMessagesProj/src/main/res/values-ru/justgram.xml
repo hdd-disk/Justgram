@@ -96,6 +96,10 @@
     <string name="XrayImportError">Не удалось импортировать профиль или подписку</string>
     <string name="XrayTestPing">Проверить пинг</string>
     <string name="XrayDeleteProfile">Удалить профиль</string>
+    <string name="XrayDeleteProfiles_one">Удалить %1$d профиль?</string>
+    <string name="XrayDeleteProfiles_few">Удалить %1$d профиля?</string>
+    <string name="XrayDeleteProfiles_many">Удалить %1$d профилей?</string>
+    <string name="XrayDeleteProfiles_other">Удалить %1$d профилей?</string>
     <string name="XrayUpdateSub">Обновить подписку</string>
     <string name="XrayDeleteSub">Удалить подписку</string>
 

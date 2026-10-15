@@ -135,6 +135,8 @@
     <string name="XrayImportError">Failed to import profile or subscription</string>
     <string name="XrayTestPing">Test Ping</string>
     <string name="XrayDeleteProfile">Delete Profile</string>
+    <string name="XrayDeleteProfiles_one">Delete %1$d profile?</string>
+    <string name="XrayDeleteProfiles_other">Delete %1$d profiles?</string>
     <string name="XrayUpdateSub">Update Subscription</string>
     <string name="XrayDeleteSub">Delete Subscription</string>
 

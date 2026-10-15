@@ -1,5 +1,6 @@
 package org.justgram.messenger.settings;
 
+import static org.telegram.messenger.LocaleController.formatPluralString;
 import static org.telegram.messenger.LocaleController.getString;
 
 import android.content.ClipData;
@@ -450,7 +451,7 @@ public class JustgramXraySettingsActivity extends BaseFragment {
         if (getParentActivity() == null || selectedProfileIds.isEmpty()) return;
         AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity(), getResourceProvider());
         builder.setTitle(getString(R.string.Delete));
-        builder.setMessage("Delete " + selectedProfileIds.size() + " profile(s)?");
+        builder.setMessage(formatPluralString("XrayDeleteProfiles", selectedProfileIds.size()));
         builder.setPositiveButton(getString(R.string.Delete), (dialog, which) -> {
             XrayManager.getInstance().deleteProfiles(selectedProfileIds);
             clearSelection();
