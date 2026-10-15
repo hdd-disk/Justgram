@@ -5,6 +5,9 @@ import org.telegram.messenger.LocaleController;
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.AndroidUtilities.dpf2;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.app.ActivityManager;
 import android.view.ViewGroup;
@@ -46,7 +49,7 @@ import org.telegram.ui.Components.AnimatedFloat;
 import org.telegram.ui.Components.ButtonBounce;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LoadingDrawable;
-import org.telegram.ui.Components.RLottieDrawable;
+import org.telegram.ui.Components.TLottieDrawable;
 import org.telegram.ui.Components.Premium.GLIcon.WalletDiamondTextureView;
 import org.telegram.ui.Components.Text;
 import org.telegram.ui.Components.TextStyleSpan;
@@ -70,7 +73,7 @@ public class WalletActionLayout {
     private final Drawable cardDrawable;
     private final Path cardClip = new Path();
     private final WalletCardMotion cardMotion;
-    private final RLottieDrawable gramDrawable;
+    private final TLottieDrawable gramDrawable;
     private WalletDiamondTextureView diamondSurface;
     private boolean surfaceEnabled, surfaceFailed;
     private float surfaceOriginX, surfaceOriginY;
@@ -140,7 +143,7 @@ public class WalletActionLayout {
         this.resourcesProvider = resourcesProvider;
         cardDrawable = parentView.getResources().getDrawable(R.drawable.wallet_action_card_gradient).mutate();
         cardMotion = WalletCardMotion.get(parentView.getContext());
-        gramDrawable = new RLottieDrawable(R.raw.wallet_diamond_white, dp(42), dp(42), false, null);
+        gramDrawable = new TLottieDrawable(R.raw.wallet_diamond_white, dp(42), dp(42), false, null);
         gramDrawable.setMasterParent(parentView);
         gramDrawable.setAutoRepeat(0);
         parentView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
@@ -584,9 +587,9 @@ public class WalletActionLayout {
             sendingGradientRotation = (initialRotation + 240f * (float) animation.getAnimatedValue()) % 360f;
             parentView.invalidate();
         });
-        receiveAnimator.addListener(new android.animation.AnimatorListenerAdapter() {
+        receiveAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(android.animation.Animator animation) {
+            public void onAnimationEnd(Animator animation) {
                 finishReceiveAnimation();
             }
         });
@@ -761,7 +764,7 @@ public class WalletActionLayout {
         surfaceEnabled = enabled;
         if (enabled && diamondSurface == null && !surfaceFailed && parentView instanceof ViewGroup
                 && SharedConfig.getDevicePerformanceClass() != SharedConfig.PERFORMANCE_CLASS_LOW) {
-            ActivityManager manager = (ActivityManager) parentView.getContext().getSystemService(android.content.Context.ACTIVITY_SERVICE);
+            ActivityManager manager = (ActivityManager) parentView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
             if (manager != null && manager.getDeviceConfigurationInfo().reqGlEsVersion >= 0x30000) {
                 diamondSurface = new WalletDiamondTextureView(parentView.getContext(), this::updateDiamondPose) {
                     @Override

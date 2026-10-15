@@ -224,6 +224,7 @@ android {
 
 dependencies {
     implementation files('lib/libv2ray.aar') { builtBy 'buildXray' }
+    implementation 'com.neovisionaries:nv-websocket-client:2.14'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.14.0'
     implementation 'androidx.core:core:1.16.0'
@@ -561,7 +562,7 @@ tasks.register('patchNativeSources') {
         providers.exec {
             workingDir rootDir
 
-            commandLine 'git', 'submodule', 'update', '--init',
+            commandLine 'git', 'submodule', 'update', '--init', '--recursive',
                 'TMessagesProj/jni/third_party/libvpx',
                 'TMessagesProj/jni/third_party/ffmpeg',
                 'TMessagesProj/jni/third_party/dav1d',
@@ -572,6 +573,8 @@ tasks.register('patchNativeSources') {
                 'TMessagesProj/jni/third_party/libyuv',
                 'TMessagesProj/jni/tlottie',
                 'TMessagesProj/jni/third_party/boringssl',
+                'TMessagesProj/jni/third_party/lsplant',
+                'TMessagesProj/jni/third_party/shadowhook',
                 'TMessagesProj/jni/td'
         }.result.get()
 

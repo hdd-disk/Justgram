@@ -27,12 +27,12 @@ project(':jlatexmath').projectDir = jlatexmathDir
 // Same for the androidx media3 fork: since 12.10.2 upstream applies its
 // core_settings.gradle from the TMessagesProj_Modules/media submodule, at
 // settings-evaluation time, so a fresh clone cannot even configure without it.
-def mediaModuleDir = file('TMessagesProj_Modules/media3')
+def mediaModuleDir = file('TMessagesProj_Modules/media')
 if (!file("$mediaModuleDir/core_settings.gradle").exists()) {
-    exec {
+    providers.exec {
         workingDir rootDir
         commandLine 'git', 'submodule', 'update', '--init', 'TMessagesProj_Modules/media'
-    }
+    }.result.get()
 }
 
 dependencyResolutionManagement {
@@ -44,3 +44,4 @@ dependencyResolutionManagement {
 
 gradle.ext.androidxMediaModulePrefix = 'TMessagesProj_Modules:media3:media-'
 apply from: file("$mediaModuleDir/core_settings.gradle")
+project(':TMessagesProj_Modules:media3').projectDir = mediaModuleDir

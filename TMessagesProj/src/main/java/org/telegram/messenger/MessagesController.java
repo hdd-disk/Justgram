@@ -17905,11 +17905,11 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     // must be run from Utilities.stageQueue
-    public void processUpdates(TLRPC.Updates updates, boolean fromQueue) {
-        if (updates == null) {
+    public void processUpdates(TLRPC.Updates rawUpdates, boolean fromQueue) {
+        if (rawUpdates == null) {
             return;
         }
-        updates = PluginsController.getInstance().executeUpdatesHook(updates.getClass().getSimpleName(), currentAccount, updates);
+        final TLRPC.Updates updates = PluginsController.getInstance().executeUpdatesHook(rawUpdates.getClass().getSimpleName(), currentAccount, rawUpdates);
         if (updates == null) {
             return;
         }

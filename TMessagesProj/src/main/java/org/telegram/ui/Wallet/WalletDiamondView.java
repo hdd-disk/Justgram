@@ -29,7 +29,7 @@ import org.telegram.ui.Components.Premium.GLIcon.GLIconRenderer;
 import org.telegram.ui.Components.Premium.GLIcon.GLIconTextureView;
 import org.telegram.ui.Components.Premium.GLIcon.Icon3D;
 import org.telegram.ui.Components.Premium.StarParticlesView;
-import org.telegram.ui.Components.RLottieImageView;
+import org.telegram.ui.Components.TLottieImageView;
 
 /** A square, transparently padded Wallet diamond, with a lightweight device fallback. */
 public class WalletDiamondView extends FrameLayout {
@@ -39,7 +39,7 @@ public class WalletDiamondView extends FrameLayout {
     private DiamondSurfaceView glView;
     private GLIconTextureView textureView;
     private GLIconRenderer renderer;
-    private RLottieImageView lottieView;
+    private TLottieImageView lottieView;
     private boolean attached;
     private boolean running;
     private boolean paused;
@@ -180,7 +180,7 @@ public class WalletDiamondView extends FrameLayout {
     }
 
     private void createLottieView() {
-        lottieView = new RLottieImageView(getContext());
+        lottieView = new TLottieImageView(getContext());
         lottieView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         lottieView.setAnimation(R.raw.wallet_diamond_blue, animationSizeDp, animationSizeDp);
         lottieView.getAnimatedDrawable().setAutoRepeat(0);
